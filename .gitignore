@@ -12,3 +12,4 @@ invitation
 .vscode/
 .grifter/
 .env
+*.fizz
