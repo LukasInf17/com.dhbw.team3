@@ -91,6 +91,6 @@ func translations() buffalo.MiddlewareFunc {
 func forceSSL() buffalo.MiddlewareFunc {
 	return ssl.ForceSSL(secure.Options{
 		SSLRedirect:     ENV == "production",
-		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
+		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https", "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload"},
 	})
 }
