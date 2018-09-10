@@ -33,7 +33,7 @@ func App() *buffalo.App {
 			HttpOnly: true,
 			MaxAge:   86400 * 7,
 			Secure:   true,
-			SameSite: http.SameSiteDefaultMode,
+			SameSite: http.SameSiteStrictMode,
 		}
 		app = buffalo.New(buffalo.Options{
 			Env:          ENV,
