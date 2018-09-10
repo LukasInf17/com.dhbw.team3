@@ -8,6 +8,7 @@
 - Only via public key
 ### manage application
 - use this command to manage the application:
-- **systemctl [start, stop, status] invit** 
+- **systemctl [start, stop, status] invit**
+- [PostgreSQL setup](https://wiki.ubuntuusers.de/PostgreSQL/)
 
 [Powered by Buffalo](http://gobuffalo.io)
