@@ -18,6 +18,7 @@ import (
 // application is being run. Default is "development".
 var ENV = envy.Get("GO_ENV", "development")
 var app *buffalo.App
+var store *sessions.CookieStore
 var T *i18n.Translator
 
 // App is where all routes and middleware for buffalo
@@ -25,10 +26,15 @@ var T *i18n.Translator
 // application.
 func App() *buffalo.App {
 	if app == nil {
+		store = sessions.NewCookieStore([]byte("123456"))
+		store.Options = &sessions.Options{
+			HttpOnly: true,
+			MaxAge:   86400 * 7,
+		}
 		app = buffalo.New(buffalo.Options{
 			Env:          ENV,
 			SessionName:  "_invitation_session",
-			SessionStore: sessions.NewCookieStore([]byte("123456")),
+			SessionStore: store,
 		})
 
 		// Automatically redirect to SSL
