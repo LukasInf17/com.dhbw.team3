@@ -5,9 +5,9 @@
 
 ## For Admins
 ### Login
-Only via public key
+- Only via public key
 ### manage application
-use this command to manage the application:
-systemctl [start, stop, status] invit 
+- use this command to manage the application:
+- **systemctl [start, stop, status] invit** 
 
 [Powered by Buffalo](http://gobuffalo.io)
