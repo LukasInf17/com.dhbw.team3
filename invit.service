@@ -1,0 +1,10 @@
+[Unit] 
+Description=Invitation Factory
+After=network.target
+[Service]
+Type=simple
+User=root
+ExecStart=/root/go/src/github.com/invitation/bin/invitation
+Restart=on-abort
+[Install]
+WantedBy=multi-user.target
