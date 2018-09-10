@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"net/http"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/middleware"
 	"github.com/gobuffalo/buffalo/middleware/ssl"
@@ -30,10 +32,12 @@ func App() *buffalo.App {
 		store.Options = &sessions.Options{
 			HttpOnly: true,
 			MaxAge:   86400 * 7,
+			Secure:   true,
+			SameSite: http.SameSiteDefaultMode,
 		}
 		app = buffalo.New(buffalo.Options{
 			Env:          ENV,
-			SessionName:  "_invitation_session",
+			SessionName:  "__Secure-__Host-_invitation_session",
 			SessionStore: store,
 		})
 
