@@ -54,7 +54,6 @@ func AuthCreate(c buffalo.Context) error {
 	}
 	c.Session().Set("current_user_id", u.ID)
 	c.Flash().Add("success", "Welcome Back to Buffalo!")
-
 	return c.Redirect(302, "/")
 }
 
