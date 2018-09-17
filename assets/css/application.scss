@@ -1,6 +1,8 @@
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~font-awesome/css/font-awesome.css";
 
+$darkcolor: #212529;
+
 .auth-center {
   display: flex;
   align-items: center;
@@ -17,11 +19,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
   .sign-form {
     max-width: 350px;
     width: 100%;
     padding: 0 20px;
   }
+
   h1 {
     margin-bottom: 20px;
   }
@@ -45,35 +49,41 @@
   display: flex;
   align-items: stretch;
 }
-$linkcolor: rgb(31, 26, 26);
+
 #sidebar {
   min-width: 250px;
   max-width: 250px;
   min-height: 80vh;
-  background: white;
-  color: $linkcolor;
+  background: hsla(0,0%,100%,.5);
   transition: all 0.3s;
+
   @media (max-width: 768px) {
     margin-left: -250px;
   }
+
   ul.components {
     padding: 20px 0;
   }
+
   ul li {
+
     a {
       padding: 10px;
       font-size: 1.1em;
       display: block;
+      color: $darkcolor;
     }
+
     a:hover {
-      background: $linkcolor;
-      color: white;
+      background: $darkcolor;
+      color: hsla(0,0%,100%,.5);
     }
   }
 }
 
 #sidebar.active {
   margin-left: -250px;
+
   @media (max-width: 768px) {
     margin-left: 0;
   }
