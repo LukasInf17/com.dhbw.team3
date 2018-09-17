@@ -13,3 +13,5 @@ invitation
 .grifter/
 .env
 *.fizz
+a/
+buffalo_build_*.*
