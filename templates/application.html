@@ -31,13 +31,10 @@
       </div>
     </nav>
 
+    <%= if (current_user) { %>
     <div class="wrapper">
     	<nav id="sidebar">
-		<div class="sidebar-header">
-			<h3>Bootstrap Sidebar</h3>
-		</div>
 		<ul class="list-unstyled components">
-			<p>Dummy Heading</p>
 			<li class="active">
                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -78,7 +75,7 @@
         </ul>
 	</nav>
     </div>
-
+    <% }  %>
     <div class="container">
       <%= partial("flash.html") %>
       <%= yield %>
