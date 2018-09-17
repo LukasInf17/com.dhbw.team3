@@ -1,86 +1,86 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <title>Buffalo - Invitation</title>
-    <%= stylesheetTag("application.css") %>
-    <meta name="csrf-param" content="authenticity_token" />
-    <meta name="csrf-token" content="<%= authenticity_token %>" />
-    <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
-  </head>
-  <body>
-    <nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
-      <a class="navbar-brand" href="/"><img src="<%= assetPath("images/favicon.ico") %>"/></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Startseite</a>
-          </li>
-        </ul>
-        <%= if (current_user) { %>
-          <span class="email"><%= current_user.Email %></span>
-          <a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a>
-        <% } else { %>
-          <a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
-          <a href="/users/new" class="btn btn-success">Registrieren</a>
-        <% } %>
-      </div>
-    </nav>
 
-    <%= if (current_user) { %>
-    <div class="wrapper">
-    	<nav id="sidebar">
-		<ul class="list-unstyled components">
-			<li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Portfolio</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
-        </ul>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<title>Buffalo - Invitation</title>
+	<%= stylesheetTag("application.css") %>
+	<meta name="csrf-param" content="authenticity_token" />
+	<meta name="csrf-token" content="<%= authenticity_token %>" />
+	<link rel="icon" href="<%= assetPath(" images/favicon.ico") %>">
+</head>
+
+<body>
+	<nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
+		<a class="navbar-brand" href="/"><img src="<%= assetPath(" images/favicon.ico") %>"/></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/">Startseite</a>
+				</li>
+			</ul>
+			<%= if (current_user) { %>
+			<span class="email">
+				<%= current_user.Email %></span>
+			<a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a>
+			<% } else { %>
+			<a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
+			<a href="/users/new" class="btn btn-success">Registrieren</a>
+			<% } %>
+		</div>
 	</nav>
-    </div>
-    <% }  %>
-    <div class="container">
-      <%= partial("flash.html") %>
-      <%= yield %>
-    </div>
 
-    <%= javascriptTag("application.js") %>
-  </body>
+	<%= if (current_user) { %>
+	<div class="wrapper">
+		<nav id="sidebar">
+			<ul class="list-unstyled components">
+				<li class="active">
+					<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Startseite</a>
+				</li>
+				<li>
+					<a href="#">Über uns</a>
+				</li>
+				<li>
+					<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+					<ul class="collapse list-unstyled" id="pageSubmenu">
+						<li>
+							<a href="#">Page 1</a>
+						</li>
+						<li>
+							<a href="#">Page 2</a>
+						</li>
+						<li>
+							<a href="#">Page 3</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">Portfolio</a>
+				</li>
+				<li>
+					<a href="#">Contact</a>
+				</li>
+			</ul>
+		</nav>
+		
+		<div class="container">
+			<%= partial("flash.html") %>
+			<%= yield %>
+		</div>
+	</div>
+	<% } else { %>
+	<div class="container">
+		<%= partial("flash.html") %>
+		<%= yield %>
+	</div>
+	<% } %>
+
+	<%= javascriptTag("application.js") %>
+</body>
+
 </html>
