@@ -1,7 +1,7 @@
 package models_test
 
 import (
-  "github.com/invitation/models"
+	"github.com/invitation/models"
 )
 
 func (ms *ModelSuite) Test_User_Create() {

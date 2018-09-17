@@ -1,7 +1,7 @@
 package actions
 
 import (
-  "github.com/invitation/models"
+	"github.com/invitation/models"
 )
 
 func (as *ActionSuite) Test_Users_New() {

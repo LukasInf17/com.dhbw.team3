@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"strings"
 
-  "github.com/invitation/models"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
+	"github.com/invitation/models"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
