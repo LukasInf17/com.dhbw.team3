@@ -22,10 +22,10 @@
           </li>
         </ul>
         <%= if (current_user) { %>
-          <span><%= current_user.Email %></span>
+          <span class="email"><%= current_user.Email %></span>
           <a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a>
         <% } else { %>
-          <a href="/signin" class="btn btn-primary">Anmelden</a>
+          <a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
           <a href="/users/new" class="btn btn-success">Registrieren</a>
         <% } %>
       </div>
