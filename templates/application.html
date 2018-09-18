@@ -19,6 +19,15 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<a class="navbar-brand" href="/"><img src="<%= assetPath(" images/favicon.ico") %>"/></a>
+
+		<%= if (current_user) { %>
+		<span class="email">
+			<%= current_user.Email %></span>
+		<a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a>
+		<% } else { %>
+		<a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
+		<a href="/users/new" class="btn btn-success">Registrieren</a>
+		<% } %>
 	</nav>
 	<%= if (current_user) { %>
 	<div class="wrapper">
@@ -54,15 +63,6 @@
 				<li>
 					<a href="#">Contact</a>
 				</li>
-				<%= if (current_user) { %>
-				<li><span class="email">
-						<%= current_user.Email %></span></li>
-				<li><a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a></li>
-
-				<% } else { %>
-				<li><a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
-					<a href="/users/new" class="btn btn-success">Registrieren</a></li>
-				<% } %>
 			</ul>
 		</nav>
 

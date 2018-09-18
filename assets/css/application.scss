@@ -40,6 +40,11 @@ $darkcolor: #212529;
   height: 36px;
 }
 
+.email {
+  color: white;
+  margin-right: 10px;
+}
+
 .btn-login {
   margin-right: 5px;
 }
@@ -71,6 +76,11 @@ $darkcolor: #212529;
       font-size: 1.1em;
       display: block;
       color: $darkcolor;
+    }
+
+    a.btn {
+      padding: 10px;
+      font-size: 1.1em;
     }
 
 
