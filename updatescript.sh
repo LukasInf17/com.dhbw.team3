@@ -2,4 +2,3 @@
 
 git pull
 buffalo build
-systemctl restart invit

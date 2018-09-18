@@ -1,0 +1,5 @@
+[Path]
+PathModified=/root/go/src/github.com/invitation/bin/
+
+[Install]
+WantedBy=multi-user.target
