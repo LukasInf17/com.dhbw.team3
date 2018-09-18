@@ -8,4 +8,7 @@ $(() => {
     hammertime.on("swipeleft", function (ev) {
         $('#sidebar').removeClass('active');
     });
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
 });
