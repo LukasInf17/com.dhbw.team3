@@ -21,6 +21,8 @@ import (
 var ENV = envy.Get("GO_ENV", "development")
 var app *buffalo.App
 var store *sessions.CookieStore
+
+// T is the translator
 var T *i18n.Translator
 
 // App is where all routes and middleware for buffalo
@@ -40,6 +42,12 @@ func App() *buffalo.App {
 			SessionName:  "__Secure-__Host-_invitation_session",
 			SessionStore: store,
 		})
+
+		var err error
+		if T, err = i18n.New(packr.NewBox("../locales"), "en"); err != nil {
+			app.Stop(err)
+		}
+		app.Use(T.Middleware())
 
 		// Automatically redirect to SSL
 		app.Use(forceSSL())

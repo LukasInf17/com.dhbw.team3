@@ -2,7 +2,7 @@
   <h1>Invitations</h1>
 </div>
 <ul class="list-unstyled list-inline">
-  <li><a href="<%= newInvitationsPath() %>" class="btn btn-primary">Create New Invitation</a></li>
+  <li><a href="<%= newInvitationsPath() %>" class="btn btn-primary">Neue Einladung erstellen</a></li>
 </ul>
 
 <table class="table table-striped">
@@ -14,9 +14,9 @@
       <tr>
       <td>
           <div class="pull-right">
-            <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editInvitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+            <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-info">Ansehen</a>
+            <a href="<%= editInvitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-warning">Bearbeiten</a>
+            <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Sind Sie sicher?" class="btn btn-danger">Löschen</a>
           </div>
         </td>
       </tr>
