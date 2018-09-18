@@ -48,9 +48,11 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			tx := c.Value("tx").(*pop.Connection)
 			err := tx.Find(u, uid)
 			if err != nil {
-				return errors.WithStack(err)
+				c.Session().Clear()
+				c.Redirect(302, "/")
+			} else {
+				c.Set("current_user", u)
 			}
-			c.Set("current_user", u)
 		}
 		return next(c)
 	}

@@ -43,12 +43,6 @@ func App() *buffalo.App {
 			SessionStore: store,
 		})
 
-		var err error
-		if T, err = i18n.New(packr.NewBox("../locales"), "en"); err != nil {
-			app.Stop(err)
-		}
-		app.Use(T.Middleware())
-
 		// Automatically redirect to SSL
 		app.Use(forceSSL())
 
