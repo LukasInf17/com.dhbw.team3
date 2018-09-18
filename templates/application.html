@@ -54,16 +54,15 @@
 				<li>
 					<a href="#">Contact</a>
 				</li>
-				<li>
-					<%= if (current_user) { %>
-					<span class="email">
-						<%= current_user.Email %></span>
-					<a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a>
-					<% } else { %>
-					<a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
-					<a href="/users/new" class="btn btn-success">Registrieren</a>
-					<% } %>
-				</li>
+				<%= if (current_user) { %>
+				<li><span class="email">
+						<%= current_user.Email %></span></li>
+				<li><a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a></li>
+
+				<% } else { %>
+				<li><a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
+					<a href="/users/new" class="btn btn-success">Registrieren</a></li>
+				<% } %>
 			</ul>
 		</nav>
 

@@ -40,11 +40,6 @@ $darkcolor: #212529;
   height: 36px;
 }
 
-.email {
-  color: white;
-  margin-right: 10px;
-}
-
 .btn-login {
   margin-right: 5px;
 }
@@ -71,14 +66,15 @@ $darkcolor: #212529;
 
   ul li {
 
-    a {
+    a:not(.btn) {
       padding: 10px;
       font-size: 1.1em;
       display: block;
       color: $darkcolor;
     }
 
-    a:hover {
+
+    a:not(.btn):hover {
       background: $darkcolor;
       color: hsla(0,0%,100%,.5);
     }
