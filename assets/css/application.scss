@@ -40,9 +40,27 @@ $darkcolor: #212529;
   height: 36px;
 }
 
+.navbar-nav>li {
+  float: none;
+}
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 230px;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+.navbar-custom>li {
+  display: inline-block;
+}
+
 .email {
   color: white;
   margin-right: 10px;
+  padding-top: 6px;
 }
 
 .btn-login {

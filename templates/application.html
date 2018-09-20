@@ -9,30 +9,43 @@
 	<%= javascriptTag("hammer.min.js") %>
 	<meta name="csrf-param" content="authenticity_token" />
 	<meta name="csrf-token" content="<%= authenticity_token %>" />
-	<link rel="icon" href="<%= assetPath(" images/favicon.ico") %>">
+	<link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
 </head>
 
 <body>
-	<nav class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
+	<nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
+		
 		<button class="navbar-toggler" type="button" id="sidebarCollapse" aria-controls="sidebar" aria-expanded="false"
-		 aria-label="Toggle sidebar">
-			<span class="navbar-toggler-icon"></span>
+		 aria-label="Toggle sidebar"><img src="<%= assetPath("images/menu.png") %>" height="30" width="30" /></a>
+		
 		</button>
-		<a class="navbar-brand" href="/"><img src="<%= assetPath(" images/favicon.ico") %>"/></a>
-
+		<a class="navbar-brand d-none d-md-block" href="/"><img src="<%= assetPath("images/favicon.ico") %>"/></a>
+		
 		<%= if (current_user) { %>
-		<span class="email">
+		<ul class="navbar-nav navbar-custom ml-auto">
+		  <li class="nav-item">
+		    <span class="email d-none d-md-block ml-auto">
 			<%= current_user.Email %></span>
-		<a href="/signout" data-method="DELETE" class="btn btn-danger">Abmelden</a>
+		  </li>
+		  <li>
+		    <a href="/signout" data-method="DELETE" class="btn btn-danger">Logout</a>
+		  </li>
+		</ul>
 		<% } else { %>
-		<a href="/signin" class="btn btn-primary btn-login">Anmelden</a>
-		<a href="/users/new" class="btn btn-success">Registrieren</a>
+		<ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+		    <a href="/signin" class="btn btn-primary btn-login">Login</a>
+		  </li>
+		  <li>
+		    <a href="/users/new" class="btn btn-success">Sign Up</a>
+		  </li>
+		</ul>
 		<% } %>
 	</nav>
 	<%= if (current_user) { %>
 	<div class="wrapper">
 		<nav id="sidebar">
-			<ul class="list-unstyled components">
+			<ul class="sidebar list-unstyled components">
 				<li class="active">
 					<a href="/">Startseite</a>
 				</li>
