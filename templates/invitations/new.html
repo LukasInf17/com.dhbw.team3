@@ -1,8 +1,84 @@
+<head>
+	<%= javascriptTag("addrow.js") %>
+</head>
+
+<%= if (current_user) { %>
+
 <div class="page-header">
-  <h1>New Invitation</h1>
+  <h1 align=center>New Invitation</h1>
 </div>
+<form>
+  <div class="container">
+    <table id="receiver" class=" table order-list">
+    <thead>
+        <tr>
+            <td>Gender</td>
+            <td>Name</td>
+            <td>Email</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-sm-4">
+              <div class="form-group">
+	        <div class="form-check form-check-inline">
+       		  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> male
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> female
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option3"> none 
+                  </label>
+                </div>
+	    </td>
+            <td class="col-sm-3">
+                <input type="name" name="name"  class="form-control"/>
+            </td>
+            <td class="col-sm-4">
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" name="name">
+	    </td>
+            <td class="col-sm-2"><a class="deleteRow"></a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5" style="text-align: left;">
+                <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
+            </td>
+        </tr>
+        <tr>
+        </tr>
+    </tfoot>
+  </table>
+  </div>
+  <div class="form-group">
+    <select class="form-control" id="salutionSelect">
+      <option>Liebe/r Max</option>
+      <option>Sehr geehrte/r Herr Muster</option>
+      <option>Guten Tag Max Muster</option>
+      <option>Moin Max</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="textbody">Text Body</label>
+    <textarea class="form-control" id="textbody" rows="4"></textarea>
+  </div>
+</form>
 
 <%= form_for(invitation, {action: invitationsPath(), method: "POST"}) { %>
   <%= partial("invitations/form.html") %>
   <a href="<%= invitationsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>
+
+<% } else { %>
+  <h1 class="h1">Willkommen zur Invitation-Factory!</h1>
+
+  <p>Melden Sie sich an, um Einladungen verwalten zu können.</p>
 <% } %>
