@@ -120,3 +120,10 @@ $darkcolor: #212529;
 .new-invitation-header {
   text-align: center;
 }
+
+#sidebarCollapse {
+  @media (max-width: 768px) {
+    display: initial;
+  }
+  display: none;
+}
