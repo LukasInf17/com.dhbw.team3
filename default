@@ -18,16 +18,23 @@
 
 # Default server configuration
 #
+#
+
+
+
+
+
 server {
 	listen 80 default_server;
 	listen [::]:80 default_server;
 	
-	return 301 https://invitation-factory.tk;
+	return 301 https://$host$request_uri;
 		#Forward all
 		#location / {
 		#	proxy_pass https://localhost:3000/;
 		#}
 }
+
 
 
 # Virtual Host configuration for example.com
@@ -85,6 +92,7 @@ server {
         # re-write redirects to http as to https, example: /home
         proxy_redirect http:// https://;
 	}
+	
 
 	# pass PHP scripts to FastCGI server
 	#
@@ -122,6 +130,7 @@ server {
     # fetch OCSP records from URL in ssl_certificate and cache them
     ssl_stapling on;
     ssl_stapling_verify on;
+
 }
 server {
     if ($host = invitation-factory.tk) {
