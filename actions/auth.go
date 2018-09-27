@@ -60,6 +60,6 @@ func AuthCreate(c buffalo.Context) error {
 // AuthDestroy clears the session and logs a user out
 func AuthDestroy(c buffalo.Context) error {
 	c.Session().Clear()
-	c.Flash().Add("success", "You have been logged out!")
+	c.Flash().Add("success", "Sie wurden erfolgreich abgemeldet!")
 	return c.Redirect(302, "/")
 }

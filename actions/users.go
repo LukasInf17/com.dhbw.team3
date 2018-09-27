@@ -49,7 +49,7 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			err := tx.Find(u, uid)
 			if err != nil {
 				c.Session().Clear()
-				c.Redirect(302, "/")
+				return c.Redirect(302, "/")
 			} else {
 				c.Set("current_user", u)
 			}
