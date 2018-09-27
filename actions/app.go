@@ -36,6 +36,7 @@ func App() *buffalo.App {
 			MaxAge:   86400 * 7,
 			Secure:   true,
 			SameSite: http.SameSiteLaxMode,
+			Path:     "/",
 		}
 		app = buffalo.New(buffalo.Options{
 			Env:          ENV,

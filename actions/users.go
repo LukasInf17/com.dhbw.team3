@@ -50,9 +50,8 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			if err != nil {
 				c.Session().Clear()
 				return c.Redirect(302, "/")
-			} else {
-				c.Set("current_user", u)
 			}
+			c.Set("current_user", u)
 		}
 		return next(c)
 	}
