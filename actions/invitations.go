@@ -32,15 +32,14 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-
 	invitations := &models.Invitations{}
+	u := c.Value("current_user").(*models.User)
 
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
-
 	// Retrieve all Invitations from the DB
-	if err := q.All(invitations); err != nil {
+	if err := q.Where("userid = ?", u.ID).All(invitations); err != nil {
 		return errors.WithStack(err)
 	}
 
@@ -81,7 +80,8 @@ func (v InvitationsResource) New(c buffalo.Context) error {
 func (v InvitationsResource) Create(c buffalo.Context) error {
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
-
+	u := c.Value("current_user").(*models.User)
+	invitation.UserID = u.ID
 	// Bind invitation to the html form elements
 	if err := c.Bind(invitation); err != nil {
 		return errors.WithStack(err)

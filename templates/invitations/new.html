@@ -1,15 +1,11 @@
-<head>
-  <%= javascriptTag("addrow.js") %>
-</head>
-
 <%= if (current_user) { %>
-
-<div class="page-header">
-  <h1 align=center>New Invitation</h1>
+<%= javascriptTag("addrow.js") %>
+<div class="new-invitation-header">
+  <h1>New Invitation</h1>
 </div>
 <form>
   <div class="container">
-    <table id="receiver" class=" table order-list">
+    <table id="receiver" class="table order-list">
       <thead>
         <tr>
           <td>Gender</td>
@@ -61,18 +57,6 @@
       </tfoot>
     </table>
   </div>
-  <div class="form-group">
-    <select class="form-control" id="salutionSelect">
-      <option>Liebe/r Max</option>
-      <option>Sehr geehrte/r Herr Muster</option>
-      <option>Guten Tag Max Muster</option>
-      <option>Moin Max</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="textbody">Text Body</label>
-    <textarea class="form-control" id="textbody" rows="4"></textarea>
-  </div>
 </form>
 
 <%= form_for(invitation, {action: invitationsPath(), method: "POST"}) { %>
@@ -81,8 +65,8 @@
 <% } %>
 
 <% } else { %>
-  <meta http-equiv="refresh" content="0; URL='https://invitation-factory/'" />
-  <h1 class="h1">Willkommen zur Invitation-Factory!</h1>
+  <meta http-equiv="refresh" content="0; URL='https://invitation-factory.tk/'" />
+  <h1 class="h1">Welcome to Invitation-Factory!</h1>
 
-<p>Melden Sie sich an, um Einladungen verwalten zu können.</p>
+<p>Please log in to administrate your invitations.</p>
 <% } %>
