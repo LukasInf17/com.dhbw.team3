@@ -7,19 +7,25 @@
 
 <table class="table table-striped">
   <thead>
-  <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </thead>
   <tbody>
     <%= for (invitation) in invitations { %>
-      <tr>
+    <tr>
       <td>
-          <div class="pull-right">
-            <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-info">Ansehen</a>
-            <a href="<%= editInvitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-warning">Bearbeiten</a>
-            <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Sind Sie sicher?" class="btn btn-danger">Löschen</a>
-          </div>
-        </td>
-      </tr>
+        <div>
+          Invitation: <%= invitation.CreatedAt %>
+        </div>
+      </td>
+      <td>
+        <div class="pull-right">
+          <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-info">Show</a>
+          <a href="<%= editInvitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-warning">Edit</a>
+          <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Are you sure?"
+            class="btn btn-danger">Delete</a>
+        </div>
+      </td>
+    </tr>
     <% } %>
   </tbody>
 </table>
