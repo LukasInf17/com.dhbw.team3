@@ -89,6 +89,15 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
+	// Get the DB connection from the context
+	tx, ok := c.Value("tx").(*pop.Connection)
+	if !ok {
+		return errors.WithStack(errors.New("no transaction found"))
+	}
+
+	// Validate the data from the html form
+	verrs, err := tx.ValidateAndCreate(invitation)
+	// Getting the guests data
 	var guests []*models.Guest
 
 	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
@@ -100,17 +109,11 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 				Name:         c.Request().FormValue("name" + strconv.Itoa(i)),
 				Email:        c.Request().FormValue("mail" + strconv.Itoa(i)),
 				Gender:       gender,
+				Status:       0,
 			})
 		}
 	}
-	// Get the DB connection from the context
-	tx, ok := c.Value("tx").(*pop.Connection)
-	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
-	}
-
-	// Validate the data from the html form
-	verrs, err := tx.ValidateAndCreate(invitation)
+	// insert the guests
 	for _, guest := range guests {
 		err := tx.Create(guest)
 		if err != nil {

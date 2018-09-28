@@ -33,7 +33,7 @@ $(document).ready(function () {
         newRow.append(cols);
         $("table.order-list").append(newRow);
         counter++;
-        $("#guestCount").value = counter + 1;
+        $("#guestCount").attr("value", counter + 1);
     });
 
 
