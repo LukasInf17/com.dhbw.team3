@@ -1,0 +1,10 @@
+[Unit] 
+Description=Invitation Factory
+After=network.target
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/python3 /usr/share/pgadmin4/web/pgAdmin4.py
+Restart=on-abort
+[Install]
+WantedBy=multi-user.target
