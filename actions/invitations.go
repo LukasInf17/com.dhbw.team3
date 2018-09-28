@@ -86,8 +86,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(invitation); err != nil {
 		return errors.WithStack(err)
 	}
-	invitation.Mailtext += c.Params().Get("name0")
-
+	invitation.Mailtext += c.Param("name0")
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
