@@ -100,7 +100,8 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	// Getting the guests data
 	var guests []models.Guest
 
-	for i := 0; i < 100; i++ {
+	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
+	for i := 0; i < guestCount; i++ {
 		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
 			guests = append(guests, models.Guest{
