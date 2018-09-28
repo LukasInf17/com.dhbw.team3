@@ -98,19 +98,20 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(invitation)
 	// Getting the guests data
-	var guests []*models.Guest
+	var guests []models.Guest
 
-	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
-	for i := 0; i < guestCount; i++ {
+	for i := 0; i < 100; i++ {
 		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
-			guests = append(guests, &models.Guest{
+			guests = append(guests, models.Guest{
 				InvitationID: invitation.ID,
 				Name:         c.Request().FormValue("name" + strconv.Itoa(i)),
 				Email:        c.Request().FormValue("mail" + strconv.Itoa(i)),
 				Gender:       gender,
 				Status:       0,
 			})
+		} else {
+			break
 		}
 	}
 	// insert the guests
