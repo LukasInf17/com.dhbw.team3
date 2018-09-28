@@ -12,8 +12,8 @@ type Guest struct {
 	CreatedAt    time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at" db:"updated_at"`
 	InvitationID uuid.UUID `json:"invitationid" db:"invitationid"`
-	Email        int       `json:"email" db:"email"`
-	Gender       int8      `json:"gender" db:"gender"`
+	Email        string    `json:"email" db:"email"`
+	Gender       int       `json:"gender" db:"gender"`
 	Name         string    `json:"name" db:"name"`
 }
 

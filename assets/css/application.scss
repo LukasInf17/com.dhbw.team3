@@ -129,14 +129,22 @@ $darkcolor: #212529;
 }
 
 table.order-list {
+  thead {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
   tbody {
     tr {
       td {
         @media (max-width: 768px) {
           display: table-row;
+          margin-bottom: 5px;
         }
-        @media (min-width: 768px) {
-          display: table-cell;
+      }
+      td::before {
+        @media (max-width: 768px) {
+          content: attr(data-label);
         }
       }
     }

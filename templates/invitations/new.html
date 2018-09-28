@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="col-sm-4">
+          <td class="col-sm-4" data-label="Gender: ">
             <div class="form-group">
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
@@ -36,10 +36,10 @@
                 </label>
               </div>
           </td>
-          <td class="col-sm-3">
+          <td class="col-sm-3" data-label="Name: ">
             <input type="name" name="name0" class="form-control" form="invitation-form" />
           </td>
-          <td class="col-sm-4">
+          <td class="col-sm-4" data-label="E-Mail: ">
             <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" name="mail0" form="invitation-form">
           </td>
           <td class="col-sm-2"><a class="deleteRow"></a>
@@ -61,6 +61,7 @@
 
 <%= form_for(invitation, {action: invitationsPath(), method: "POST"}) { %>
 <%= partial("invitations/form.html") %>
+<input type="hidden" id="guestCount" name="guestCount" value="1"/>
 <a href="<%= invitationsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>
 

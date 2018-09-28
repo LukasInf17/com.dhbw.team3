@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"strconv"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/invitation/models"
@@ -86,7 +88,21 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(invitation); err != nil {
 		return errors.WithStack(err)
 	}
-	invitation.Mailtext = invitation.Mailtext + c.Request().FormValue("name0")
+
+	var guests []*models.Guest
+
+	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
+	for i := 0; i < guestCount; i++ {
+		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
+			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
+			guests = append(guests, &models.Guest{
+				InvitationID: invitation.ID,
+				Name:         c.Request().FormValue("name" + strconv.Itoa(i)),
+				Email:        c.Request().FormValue("mail" + strconv.Itoa(i)),
+				Gender:       gender,
+			})
+		}
+	}
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
@@ -95,6 +111,12 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 
 	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(invitation)
+	for _, guest := range guests {
+		err := tx.Create(guest)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+	}
 	if err != nil {
 		return errors.WithStack(err)
 	}
