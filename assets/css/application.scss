@@ -127,3 +127,18 @@ $darkcolor: #212529;
   }
   display: none;
 }
+
+table.order-list {
+  tbody {
+    tr {
+      td {
+        @media (max-width: 768px) {
+          display: table-row;
+        }
+        @media (min-width: 768px) {
+          display: table-cell;
+        }
+      }
+    }
+  }
+}

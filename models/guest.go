@@ -6,6 +6,7 @@ import (
 	"github.com/gobuffalo/uuid"
 )
 
+// Guest is the declaration of a guest
 type Guest struct {
 	ID           uuid.UUID `json:"id" db:"id"`
 	CreatedAt    time.Time `json:"created_at" db:"created_at"`
@@ -15,3 +16,6 @@ type Guest struct {
 	Gender       int8      `json:"gender" db:"gender"`
 	Name         string    `json:"name" db:"name"`
 }
+
+// Guests is the Guest array
+type Guests []Guest

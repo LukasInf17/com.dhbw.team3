@@ -2,16 +2,18 @@ package models
 
 import (
 	"encoding/json"
+	"strings"
+	"time"
+
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
 	"github.com/gobuffalo/validate/validators"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
-	"strings"
-	"time"
 )
 
+// User is the declaration of a user
 type User struct {
 	ID                   uuid.UUID `json:"id" db:"id"`
 	CreatedAt            time.Time `json:"created_at" db:"created_at"`
