@@ -107,11 +107,12 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
 			guests[i] = models.Guest{
-				InvitationID: invitation.ID,
-				Name:         c.Request().FormValue("name" + strconv.Itoa(i)),
-				Email:        c.Request().FormValue("mail" + strconv.Itoa(i)),
-				Gender:       gender,
-				Status:       0,
+				InvitationID:      invitation.ID,
+				Name:              c.Request().FormValue("name" + strconv.Itoa(i)),
+				Email:             c.Request().FormValue("mail" + strconv.Itoa(i)),
+				Gender:            gender,
+				Status:            0,
+				AdditionalComment: "",
 			}
 		} else {
 			break
