@@ -101,12 +101,12 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 
 	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
 
-	guests := make([]models.Guest, guestCount)
+	guests := make([]*models.Guest, guestCount)
 
 	for i := 0; i < guestCount; i++ {
 		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
-			guests[i] = models.Guest{
+			guests[i] = &models.Guest{
 				InvitationID:      invitation.ID,
 				Name:              c.Request().FormValue("name" + strconv.Itoa(i)),
 				Email:             c.Request().FormValue("mail" + strconv.Itoa(i)),
@@ -118,15 +118,15 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 			break
 		}
 	}
-	err = tx.Create(guests[0])
+	err = tx.Create(&guests[0])
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	err = tx.Create(guests[1])
+	err = tx.Create(&guests[1])
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	err = tx.Create(guests[2])
+	err = tx.Create(&guests[2])
 	if err != nil {
 		return errors.WithStack(err)
 	}
