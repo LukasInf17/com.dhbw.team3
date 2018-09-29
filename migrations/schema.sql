@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.5 (Ubuntu 10.5-0ubuntu0.18.04)
--- Dumped by pg_dump version 10.5 (Ubuntu 10.5-0ubuntu0.18.04)
+-- Dumped from database version 10.5 (Ubuntu 10.5-1.pgdg18.04+1)
+-- Dumped by pg_dump version 10.5 (Ubuntu 10.5-1.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -40,7 +40,10 @@ SET default_with_oids = false;
 CREATE TABLE public.invitations (
     id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    userid uuid NOT NULL,
+    salutation smallint NOT NULL,
+    mailtext character varying(5000)
 );
 
 
