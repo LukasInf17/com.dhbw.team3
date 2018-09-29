@@ -117,13 +117,25 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 			break
 		}
 	}
+	err = tx.Create(guests[0])
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	err = tx.Create(guests[1])
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	err = tx.Create(guests[2])
+	if err != nil {
+		return errors.WithStack(err)
+	}
 	// insert the guests
-	for _, guest := range guests {
+	/* for _, guest := range guests {
 		err := tx.Create(guest)
 		if err != nil {
 			return errors.WithStack(err)
 		}
-	}
+	} */
 	if err != nil {
 		return errors.WithStack(err)
 	}
