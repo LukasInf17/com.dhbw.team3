@@ -60,7 +60,6 @@ func (v InvitationsResource) Show(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	invitations := &models.Invitations{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
 
@@ -69,9 +68,7 @@ func (v InvitationsResource) Show(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
-	tx.Where("invitation_id = ?", c.Param("invitation_id")).Where("userid = ?", u.ID).All(invitations)
-
-	if len(*invitations) < 1 {
+	if invitation.UserID != u.ID {
 		c.Flash().Add("danger", "You are not allowed to visit this page!")
 		return c.Redirect(302, "/invitations")
 	}
