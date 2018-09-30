@@ -56,6 +56,7 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 func (v InvitationsResource) Show(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
+	u := c.Value("current_user").(*models.User)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
@@ -68,6 +69,10 @@ func (v InvitationsResource) Show(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	if i, err := tx.Where("invitation_id = ?", c.Param("invitation_id")).Where("userid = ?", u.ID).Count(&[]models.Invitation{}); i == 0 || err != nil {
+		c.Flash().Add("danger", "You are not allowed to visit this page!")
+		return c.Redirect(302, "/invitations")
+	}
 	return c.Render(200, r.Auto(c, invitation))
 }
 
@@ -153,7 +158,7 @@ func (v InvitationsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-
+	guests := &[]models.Guest{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
 
@@ -161,6 +166,8 @@ func (v InvitationsResource) Edit(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	tx.Where("invitationid = ?", invitation.ID).All(guests)
+	c.Set("guests", guests)
 	return c.Render(200, r.Auto(c, invitation))
 }
 
