@@ -23,7 +23,7 @@
   <label for="Mailtext">Text Body</label>
   <textarea class="form-control" name="Mailtext" rows="4" maxlength="4000" readonly="readonly"><%= invitation.Mailtext %></textarea>
 </div>
-<% i := 0 %>
+<% let i = 0 %>
 <h2>Guests</h2>
 
 <table id="receiver" class="table order-list">
@@ -61,7 +61,7 @@
         <input type="email" class="form-control" name="mail<%= i %>" form="invitation-form" readonly="readonly" value="<%= guest.Email %>" />
       </td>
     </tr>
-    <% } %>
+    <% i++ } %>
   </tbody>
 </table>
 
