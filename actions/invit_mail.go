@@ -26,5 +26,5 @@ func InvitMailSend(c buffalo.Context) error {
 	tx.Where("invitationid = ?", invitation.ID).All(guests)
 
 	mailers.SendInvitMail(guests)
-	return c.Redirect(302, "/invitations/"+ c.Param("invitation_id").String())
+	return c.Redirect(302, "/invitations/"+ c.Param("invitation_id"))
 	}
