@@ -3,10 +3,11 @@ package mailers
 import (
 	"github.com/gobuffalo/buffalo/mail"
 	"github.com/gobuffalo/buffalo/render"
+	"github.com/invitation/models"
 	"github.com/pkg/errors"
 )
 
-func SendInvitMail() error {
+func SendInvitMail(guests *[]models.Guest) error {
 	m := mail.NewMessage()
 
 	// fill in with your stuff:

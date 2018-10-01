@@ -7,7 +7,6 @@ import (
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/packr"
-	"github.com/pkg/errors"
 )
 
 var smtp mail.Sender
