@@ -44,7 +44,6 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	if err := q.Where("userid = ?", u.ID).All(invitations); err != nil {
 		return errors.WithStack(err)
 	}
-
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 
