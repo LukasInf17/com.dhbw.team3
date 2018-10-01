@@ -136,7 +136,12 @@ table.order-list {
   }
   tbody {
     tr {
+      border-top: 1px solid #dee2e6;
+      @media (max-width: 768px) {
+        margin-top: 5px;
+      }
       td {
+        border: none;
         @media (max-width: 768px) {
           display: table-row;
           margin-bottom: 5px;
@@ -145,6 +150,7 @@ table.order-list {
       td::before {
         @media (max-width: 768px) {
           content: attr(data-label);
+          margin-bottom: 4px;
         }
       }
     }
