@@ -5,7 +5,6 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/invitation/mailers"
 	"github.com/invitation/models"
-	"github.com/gobuffalo/buffalo/mail"
 	"github.com/pkg/errors"
 )
 
