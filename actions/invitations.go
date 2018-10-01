@@ -189,11 +189,11 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
-	guestsToDelete := &[]models.Guest{}
+	guestsToDelete := []*models.Guest{}
 
 	tx.Where("invitationid = ?", c.Param("invitation_id")).All(guestsToDelete)
 
-	for _, guest := range *guestsToDelete {
+	for _, guest := range guestsToDelete {
 		tx.Destroy(guest)
 	}
 
