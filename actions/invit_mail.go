@@ -1,12 +1,19 @@
 package actions
 
-import "github.com/gobuffalo/buffalo"
+import (
+	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/pop"
+	"github.com/invitation/mailers"
+	"github.com/invitation/models"
+	"github.com/pkg/errors"
+)
 
 // InvitMailSend default implementation.
 func InvitMailSend(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	u := c.Value("current_user").(*models.User)
+
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
