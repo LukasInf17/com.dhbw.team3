@@ -6,12 +6,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-func SendInvitMail() error {
+func SendInvitMail(guest) error {
 	m := mail.NewMessage()
 
 	// fill in with your stuff:
-	m.Subject = "Invit Mail"
-	m.From = "NORELY@invitation-factory.tk"
+	m.Subject = "Invitation"
+	m.From = "NORELAY@invitation-factory.tk"
 	m.To = []string{}
 	err := m.AddBody(r.HTML("invit_mail.html"), render.Data{})
 	if err != nil {

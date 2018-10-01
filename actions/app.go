@@ -74,6 +74,7 @@ func App() *buffalo.App {
 		app.DELETE("/signout", AuthDestroy)
 		app.Middleware.Skip(Authorize, HomeHandler, UsersNew, UsersCreate, AuthNew, AuthCreate)
 		app.Resource("/invitations", InvitationsResource{})
+		app.GET("/invit_mail/send", InvitMailSend)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
