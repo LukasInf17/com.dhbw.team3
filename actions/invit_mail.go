@@ -29,6 +29,7 @@ func InvitMailSend(c buffalo.Context) error {
 		c.Flash().Add("danger", "You are not allowed to visit this page!")
 		return c.Redirect(302, "/invitations")
 	}
+
 	guests := &[]models.Guest{}
 	tx.Where("invitationid = ?", invitation.ID).All(guests)
 
