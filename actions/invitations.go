@@ -189,6 +189,41 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	guestsToDelete := &[]models.Guest{}
+
+	tx.Where("invitationid = ?", c.Param("invitation_id")).All(guestsToDelete)
+
+	for _, guest := range *guestsToDelete {
+		tx.Destroy(guest)
+	}
+
+	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
+
+	guests := make([]*models.Guest, guestCount)
+
+	for i := 0; i < guestCount; i++ {
+		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
+			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
+			guests[i] = &models.Guest{
+				InvitationID:      invitation.ID,
+				Name:              c.Request().FormValue("name" + strconv.Itoa(i)),
+				Email:             c.Request().FormValue("mail" + strconv.Itoa(i)),
+				Gender:            gender,
+				Status:            0,
+				AdditionalComment: "",
+			}
+		} else {
+			break
+		}
+	}
+	// insert the guests
+	for _, guest := range guests {
+		err := tx.Create(guest)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+	}
+
 	// Bind Invitation to the html form elements
 	if err := c.Bind(invitation); err != nil {
 		return errors.WithStack(err)

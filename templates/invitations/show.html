@@ -39,15 +39,14 @@
       <td class="col-sm-4" data-label="Gender: ">
         <div class="form-group">
           <div class="form-check form-check-inline">
-            <label class="form-check-label">
-              <%= if (guest.Gender == 1) { %>
-              <input class="form-check-input" type="radio" name="gender<%= i %>" id="inlineRadio<%= i %>1" value="1"
-                form="invitation-form" disabled="disabled" checked="checked" />
-              <% } else { %>
-              <input class="form-check-input" type="radio" name="gender<%= i %>" id="inlineRadio<%= i %>1" value="1"
-                form="invitation-form" disabled="disabled" />
-              <% } %>
-              <label class="form-check-label" for="inlineRadio<%= i %>1">male</label>
+            <%= if (guest.Gender == 1) { %>
+            <input class="form-check-input" type="radio" name="gender<%= i %>" id="inlineRadio<%= i %>1" value="1" form="invitation-form"
+              disabled="disabled" checked="checked" />
+            <% } else { %>
+            <input class="form-check-input" type="radio" name="gender<%= i %>" id="inlineRadio<%= i %>1" value="1" form="invitation-form"
+              disabled="disabled" />
+            <% } %>
+            <label class="form-check-label" for="inlineRadio<%= i %>1">male</label>
           </div>
           <div class="form-check form-check-inline">
             <%= if (guest.Gender == 2) { %>
