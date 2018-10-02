@@ -193,7 +193,7 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 	guestsToDelete := models.Guests{}
 
 	tx.Where("invitationid = ?", invitation.ID).All(&guestsToDelete)
-	ioutil.WriteFile("./temp1.txt", []byte(strconv.Itoa(len(guestsToDelete))), 0644)
+	ioutil.WriteFile("./temp1.txt", []byte("Guests to delete: "+strconv.Itoa(len(guestsToDelete))), 0644)
 	if err := tx.Destroy(&guestsToDelete); err != nil {
 		return errors.WithStack(err)
 	}
@@ -205,14 +205,14 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 	for guestindex := 0; guestindex < guestCount; guestindex++ {
 		if c.Request().FormValue("name"+strconv.Itoa(guestindex)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(guestindex)))
-			guests[guestindex] = models.Guest{
+			guests = append(guests, models.Guest{
 				InvitationID:      invitation.ID,
 				Name:              c.Request().FormValue("name" + strconv.Itoa(guestindex)),
 				Email:             c.Request().FormValue("mail" + strconv.Itoa(guestindex)),
 				Gender:            gender,
 				Status:            0,
 				AdditionalComment: "",
-			}
+			})
 		} else {
 			break
 		}
