@@ -193,12 +193,6 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 
 	tx.Where("invitationid = ?", invitation.ID).All(guestsToDelete)
 
-	for _, guest := range guestsToDelete {
-		if err := tx.Destroy(guest); err != nil {
-			return errors.WithStack(err)
-		}
-	}
-
 	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
 
 	guests := make([]*models.Guest, guestCount)
@@ -217,11 +211,30 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 			break
 		}
 	}
+	var i = 0
 	// insert the guests
-	for _, guest := range guests {
+	for i, guest := range guests {
+		if i < len(guestsToDelete) {
+			err := tx.Update(&models.Guest{
+				ID:                guestsToDelete[i].ID,
+				Name:              guest.Name,
+				Email:             guest.Email,
+				Gender:            guest.Gender,
+				Status:            0,
+				AdditionalComment: "",
+			})
+			if err != nil {
+				return errors.WithStack(err)
+			}
+		}
 		err := tx.Create(guest)
 		if err != nil {
 			return errors.WithStack(err)
+		}
+	}
+	if len(guestsToDelete) > i+1 {
+		for j := i; j < len(guestsToDelete); j++ {
+			tx.Destroy(guestsToDelete[j])
 		}
 	}
 
