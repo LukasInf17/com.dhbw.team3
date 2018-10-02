@@ -160,7 +160,7 @@ func (v InvitationsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	guests := &[]models.Guest{}
+	guests := []*models.Guest{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
 
@@ -194,20 +194,21 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 	tx.Where("invitationid = ?", invitation.ID).All(guestsToDelete)
 
 	for _, guest := range guestsToDelete {
-		tx.Destroy(guest)
+		if err := tx.Destroy(guest); err != nil {
+			return errors.WithStack(err)
+		}
 	}
 
 	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
 
 	guests := make([]*models.Guest, guestCount)
-
-	for i := 0; i < guestCount; i++ {
-		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
-			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
-			guests[i] = &models.Guest{
+	for guestindex := 0; guestindex < guestCount; guestindex++ {
+		if c.Request().FormValue("name"+strconv.Itoa(guestindex)) != "" {
+			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(guestindex)))
+			guests[guestindex] = &models.Guest{
 				InvitationID:      invitation.ID,
-				Name:              c.Request().FormValue("name" + strconv.Itoa(i)),
-				Email:             c.Request().FormValue("mail" + strconv.Itoa(i)),
+				Name:              c.Request().FormValue("name" + strconv.Itoa(guestindex)),
+				Email:             c.Request().FormValue("mail" + strconv.Itoa(guestindex)),
 				Gender:            gender,
 				Status:            0,
 				AdditionalComment: "",
