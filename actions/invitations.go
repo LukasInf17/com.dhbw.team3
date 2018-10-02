@@ -198,7 +198,8 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 
 	guestCount, _ := strconv.Atoi(c.Request().FormValue("guestCount"))
 
-	guests := make(models.Guests, guestCount)
+	guests := models.Guests{}
+
 	for guestindex := 0; guestindex < guestCount; guestindex++ {
 		if c.Request().FormValue("name"+strconv.Itoa(guestindex)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(guestindex)))
