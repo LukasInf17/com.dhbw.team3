@@ -189,17 +189,20 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
-	guestsToDelete := []*models.Guest{}
+	guestsToDelete := models.Guests{}
 
-	tx.Where("invitationid = ?", invitation.ID).All(guestsToDelete)
+	tx.Where("invitationid = ?", invitation.ID).All(&guestsToDelete)
+	if err := tx.Destroy(&guestsToDelete); err != nil {
+		return errors.WithStack(err)
+	}
 
-	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
+	guestCount, _ := strconv.Atoi(c.Request().FormValue("guestCount"))
 
-	guests := make([]*models.Guest, guestCount)
+	guests := make(models.Guests, guestCount)
 	for guestindex := 0; guestindex < guestCount; guestindex++ {
 		if c.Request().FormValue("name"+strconv.Itoa(guestindex)) != "" {
 			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(guestindex)))
-			guests[guestindex] = &models.Guest{
+			guests[guestindex] = models.Guest{
 				InvitationID:      invitation.ID,
 				Name:              c.Request().FormValue("name" + strconv.Itoa(guestindex)),
 				Email:             c.Request().FormValue("mail" + strconv.Itoa(guestindex)),
@@ -211,33 +214,11 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 			break
 		}
 	}
-	var i = 0
-	// insert the guests
-	for i, guest := range guests {
-		if i < len(guestsToDelete) {
-			err := tx.Update(&models.Guest{
-				ID:                guestsToDelete[i].ID,
-				Name:              guest.Name,
-				Email:             guest.Email,
-				Gender:            guest.Gender,
-				Status:            0,
-				AdditionalComment: "",
-			})
-			if err != nil {
-				return errors.WithStack(err)
-			}
-		}
-		err := tx.Create(guest)
-		if err != nil {
-			return errors.WithStack(err)
-		}
-	}
-	if len(guestsToDelete) > i+1 {
-		for j := i; j < len(guestsToDelete); j++ {
-			tx.Destroy(guestsToDelete[j])
-		}
-	}
 
+	// insert the guests
+	if err := tx.Create(&guests); err != nil {
+		return errors.WithStack(err)
+	}
 	// Bind Invitation to the html form elements
 	if err := c.Bind(invitation); err != nil {
 		return errors.WithStack(err)

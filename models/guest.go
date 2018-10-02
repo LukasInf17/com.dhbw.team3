@@ -18,3 +18,5 @@ type Guest struct {
 	Status            int       `json:"status" db:"status"`
 	AdditionalComment string    `json:"additional_comment" db:"additional_comment"`
 }
+
+type Guests []Guest
