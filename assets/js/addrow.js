@@ -1,6 +1,6 @@
-    var addRowCounter = 1;
-    $(document).ready(function () {
 
+    $(document).ready(function () {
+    var addRowCounter = $("#guestCount").attr("value");
 
         $("#addrow").on("click", function () {
             var newRow = $("<tr>");
@@ -14,7 +14,7 @@
                     <label class="form-check-label" for="inlineRadio${addRowCounter}1">male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender${addRowCounter}" id="inlineRadio${counter}2" value="2" form="invitation-form">
+                    <input class="form-check-input" type="radio" name="gender${addRowCounter}" id="inlineRadio${addRowCounter}2" value="2" form="invitation-form">
                     <label class="form-check-label" for="inlineRadio${addRowCounter}2">female</label>
                 </div>
                 <div class="form-check form-check-inline">

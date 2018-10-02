@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"io/ioutil"
 	"strconv"
 
 	"github.com/gobuffalo/buffalo"
@@ -192,6 +193,7 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 	guestsToDelete := models.Guests{}
 
 	tx.Where("invitationid = ?", invitation.ID).All(&guestsToDelete)
+	ioutil.WriteFile("./temp1.txt", []byte(strconv.Itoa(len(guestsToDelete))), 0644)
 	if err := tx.Destroy(&guestsToDelete); err != nil {
 		return errors.WithStack(err)
 	}
