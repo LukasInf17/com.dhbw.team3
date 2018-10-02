@@ -160,7 +160,7 @@ func (v InvitationsResource) Edit(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	guests := []*models.Guest{}
+	guests := &[]models.Guest{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
 
