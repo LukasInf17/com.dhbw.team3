@@ -34,20 +34,20 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-	invitations := &models.Invitations{}
+	invitations := models.Invitations{}
 	u := c.Value("current_user").(*models.User)
 
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
 	// Retrieve all Invitations from the DB
-	if err := q.Where("userid = ?", u.ID).All(invitations); err != nil {
+	if err := q.Where("userid = ?", u.ID).All(&invitations); err != nil {
 		return errors.WithStack(err)
 	}
-	guests := &models.Guests{}
-	for _, invitation := range *invitations {
-		tx.Where("invitationid = ?", invitation.ID).All(guests)
-		invitation.GuestCount = len(*guests)
+	guests := models.Guests{}
+	for _, invitation := range invitations {
+		tx.Where("invitationid = ?", invitation.ID).All(&guests)
+		invitation.GuestCount = len(guests)
 	}
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
@@ -297,7 +297,7 @@ func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
 	}
 
 	guest := &models.Guest{}
-	guests := &models.Guests{}
+	guests := models.Guests{}
 
 	// To find the Invitation the parameter guest_id is used.
 	if err := tx.Find(guest, c.Param("guest_id")); err != nil {
@@ -305,9 +305,9 @@ func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
 	}
 
 	// Get guests of this email address
-	tx.Where("email = ?", guest.Email).All(guests)
+	tx.Where("email = ?", guest.Email).All(&guests)
 
-	if err := tx.Destroy(guests); err != nil {
+	if err := tx.Destroy(&guests); err != nil {
 		return errors.WithStack(err)
 	}
 
