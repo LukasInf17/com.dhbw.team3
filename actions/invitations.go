@@ -45,7 +45,7 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 	for _, invitation := range *invitations {
-		guestCount, _ := tx.Where("invitationid = ?", invitation.ID).Count(&models.Guests{})
+		guestCount, _ := tx.Where("invitationid = ?", invitation.ID).Count(&models.Guest{})
 		invitation.GuestCount = guestCount
 	}
 	// Add the paginator to the context so it can be used in the template.

@@ -1,6 +1,8 @@
 package mailers
 
 import (
+	"log"
+
 	"github.com/gobuffalo/buffalo/mail"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/invitation/models"
@@ -15,6 +17,7 @@ func SendInvitMail(guests *models.Guests) error {
 		m.From = "NOREPLAY@invitation-factory.tk"
 		m.To = []string{guest.Email}
 		err := m.AddBody(r.HTML("invit_mail.html"), render.Data{})
+		log.Println("Sending mail to " + guest.Email)
 		if err != nil {
 			return errors.WithStack(err)
 		}

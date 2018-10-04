@@ -24,12 +24,13 @@ func main() {
 	log.SetOutput(logFile)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	app := actions.App()
-
+	log.Println("Invitation-Factory started.")
 	if err := app.Serve(); err != nil {
 		log.Println(err)
 		logFile.Close()
 		return
 	}
+	log.Println("Invitation-Factory stopped.")
 	logFile.Close()
 }
 
