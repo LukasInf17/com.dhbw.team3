@@ -30,9 +30,11 @@ func InvitMailSend(c buffalo.Context) error {
 		return c.Redirect(302, "/invitations")
 	}
 
-	guests := &[]models.Guest{}
-	tx.Where("invitationid = ?", invitation.ID).All(guests)
+	guests := models.Guests{}
+	tx.Where("invitationid = ?", invitation.ID).All(&guests)
 
-	mailers.SendInvitMail(guests)
+	if err := mailers.SendInvitMail(&guests); err != nil {
+		c.Flash().Add("primary", "Mails were successfully send!")
+	}
 	return c.Redirect(302, "/invitations/"+c.Param("invitation_id"))
 }

@@ -44,6 +44,10 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	if err := q.Where("userid = ?", u.ID).All(invitations); err != nil {
 		return errors.WithStack(err)
 	}
+	for _, invitation := range *invitations {
+		guestCount, _ := tx.Where("invitationid = ?", invitation.ID).Count(&models.Guests{})
+		invitation.GuestCount = guestCount
+	}
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 
@@ -255,7 +259,8 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-
+	// Allocate the guests
+	guests := models.Guests{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
 
@@ -263,13 +268,21 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
 		return c.Error(404, err)
 	}
+	// Get guests of this invitation
+	tx.Where("invitationid = ?", invitation.ID).All(&guests)
 
+	// Deletes guests associated with invitation
+	if err := tx.Destroy(&guests); err != nil {
+		return errors.WithStack(err)
+	}
+
+	// Deletes invitation
 	if err := tx.Destroy(invitation); err != nil {
 		return errors.WithStack(err)
 	}
 
 	// If there are no errors set a flash message
-	c.Flash().Add("success", "Invitation was destroyed successfully")
+	c.Flash().Add("success", "Invitation was deleted successfully")
 
 	// Redirect to the invitations index page
 	return c.Render(200, r.Auto(c, invitation))

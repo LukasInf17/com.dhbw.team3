@@ -19,4 +19,5 @@ type Guest struct {
 	AdditionalComment string    `json:"additional_comment" db:"additional_comment"`
 }
 
+// Guests is an array of Guest
 type Guests []Guest

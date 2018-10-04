@@ -53,7 +53,7 @@ func AuthCreate(c buffalo.Context) error {
 		return bad()
 	}
 	c.Session().Set("current_user_id", u.ID)
-	c.Flash().Add("success", "Willkommen zurück!")
+	c.Flash().Add("success", "Welcome back!")
 	return c.Redirect(302, "/")
 }
 
@@ -61,6 +61,6 @@ func AuthCreate(c buffalo.Context) error {
 func AuthDestroy(c buffalo.Context) error {
 	c.Session().Clear()
 	c.Cookies().Delete("__Secure-__Host-_invitation_session")
-	c.Flash().Add("success", "Sie wurden erfolgreich abgemeldet!")
+	c.Flash().Add("success", "You were sucessfully logged out!")
 	return c.Redirect(302, "/")
 }

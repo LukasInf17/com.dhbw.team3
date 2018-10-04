@@ -1,13 +1,16 @@
 language: go
 
 go:
-  - 1.8.x
+  - "1.11"
 
 env:
   - GO_ENV=test
 
 services:
   - postgresql
+
+addons:
+  postgresql: "9.6"
 
 before_script:
   - psql -c 'create database invitation_test;' -U postgres
