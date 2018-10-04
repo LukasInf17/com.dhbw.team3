@@ -24,7 +24,7 @@ func init() {
 	smtp, err = mail.NewSMTPSender(host, port, user, password)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	r = render.New(render.Options{

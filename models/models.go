@@ -16,7 +16,7 @@ func init() {
 	env := envy.Get("GO_ENV", "development")
 	DB, err = pop.Connect(env)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 	pop.Debug = env == "development"
 }

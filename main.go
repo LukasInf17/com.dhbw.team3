@@ -2,9 +2,12 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/invitation/actions"
 )
+
+var logFile *os.File
 
 // main is the starting point to your Buffalo application.
 // you can feel free and add to this `main` method, change
@@ -13,10 +16,17 @@ import (
 // call `app.Serve()`, unless you don't want to start your
 // application that is. :)
 func main() {
+	logFile, _ := os.OpenFile("/var/log/invitation-factory.log", os.O_WRONLY|os.O_APPEND, 0644)
+	log.SetOutput(logFile)
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	app := actions.App()
+
 	if err := app.Serve(); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		logFile.Close()
+		return
 	}
+	logFile.Close()
 }
 
 /*
