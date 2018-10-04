@@ -1,32 +1,46 @@
 [[scenario]]
-name = "lots of widgets"
+name = "Test data"
 
   [[scenario.table]]
-    name = "widgets"
+    name = "invitations"
 
     [[scenario.table.row]]
-      id = "<%= uuidNamed("widget") %>"
-      name = "This is widget #1"
-      body = "some widget body"
-      created_at = "<%= now() %>"
-      updated_at = "<%= now() %>"
+    id = "<%= uuidNamed('invitation1') %>"
+    created_at = "<%= now() %>"
+    updated_at = "<%= now() %>"
+    userid = "<%= uuidNamed('sonja') %>"
+    salutation = 1
+    mailtext = "Sie sind herzlich eingeladen! Grüße"
+    senttoguests = 0
 
     [[scenario.table.row]]
-      id = "<%= uuid() %>"
-      name = "This is widget #2"
-      body = "some widget body"
-      created_at = "<%= now() %>"
-      updated_at = "<%= now() %>"
+    id = "<%= uuid() %>"
+    created_at = "<%= now() %>"
+    updated_at = "<%= now() %>"
+    userid = "<%= uuidNamed('sonja') %>"
+    salutation = 3
+    mailtext = "Sie sind herzlich eingeladen! Grüße"
+    senttoguests = 0
 
   [[scenario.table]]
     name = "users"
 
     [[scenario.table.row]]
-      id = "<%= uuid() %>"
-      name = "Mark Bates"
-      admin = true
-      age = 41
-      widget_id = "<%= uuidNamed("widget") %>"
+      id = "<%= uuidNamed('sonja') %>"
+      email = "sonja@example.com"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
 
+  [[scenario.table]]
+    name = "guests"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      email = "mario@example.com"
+      invitationid = "<%= uuidNamed('invitation1') %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      gender = 1
+      name = "Mario"
+      status = 0
+      additional_comment = ""
