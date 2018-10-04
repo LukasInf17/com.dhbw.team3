@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -16,7 +17,10 @@ var logFile *os.File
 // call `app.Serve()`, unless you don't want to start your
 // application that is. :)
 func main() {
-	logFile, _ := os.OpenFile("/var/log/invitation-factory.log", os.O_WRONLY|os.O_APPEND, 0644)
+	logFile, err := os.OpenFile("/var/log/invitation-factory.log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
 	log.SetOutput(logFile)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	app := actions.App()
