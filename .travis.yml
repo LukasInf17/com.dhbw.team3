@@ -10,7 +10,7 @@ services:
   - postgresql
 
 addons:
-  postgresql: "9.4"
+  postgresql: "9.6"
 
 before_script:
   - psql -c 'create database invitation_test;' -U postgres
