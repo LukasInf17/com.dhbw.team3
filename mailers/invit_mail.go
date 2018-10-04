@@ -20,6 +20,9 @@ func SendInvitMail(guests *models.Guests) error {
 		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{}); err != nil {
 			log.Println(errors.WithStack(err))
 		}
+		if err := m.AddBody(r.Plain("invit_mail.txt", "layout.txt"), render.Data{}); err != nil {
+			log.Println(errors.WithStack(err))
+		}
 		log.Println("Sending mail to " + guest.Email)
 		if err := smtp.Send(m); err != nil {
 			log.Println(errors.WithStack(err))
