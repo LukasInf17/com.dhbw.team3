@@ -16,12 +16,13 @@ func SendInvitMail(guests *models.Guests) error {
 		m.Subject = "Invitation"
 		m.From = "NOREPLAY@invitation-factory.tk"
 		m.To = []string{guest.Email}
-		err := m.AddBody(r.HTML("invit_mail.html"), render.Data{})
-		log.Println("Sending mail to " + guest.Email)
-		if err != nil {
-			return errors.WithStack(err)
+		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{}); err != nil {
+			log.Println(errors.WithStack(err))
 		}
-		return smtp.Send(m)
+		log.Println("Sending mail to " + guest.Email)
+		if err := smtp.Send(m); err != nil {
+			log.Println(errors.WithStack(err))
+		}
 	}
 	return nil
 }
