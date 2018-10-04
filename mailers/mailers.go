@@ -15,10 +15,10 @@ var r *render.Engine
 func init() {
 
 	// Pulling config from the env.
-	port := envy.Get("SMTP_PORT", "1025")
+	port := envy.Get("SMTP_PORT", "25")
 	host := envy.Get("SMTP_HOST", "localhost")
-	user := envy.Get("SMTP_USER", "")
-	password := envy.Get("SMTP_PASSWORD", "")
+	user := envy.Get("SMTP_USER", "NOREPLAY")
+	password := envy.Get("SMTP_PASSWORD", "ybZGveyWv8x3vKvbYpy3")
 
 	var err error
 	smtp, err = mail.NewSMTPSender(host, port, user, password)
