@@ -14,8 +14,9 @@ func SendInvitMail(guests *models.Guests) error {
 	for _, guest := range *guests {
 		m := mail.NewMessage()
 		m.Subject = "Invitation"
-		m.From = "NOREPLAY@invitation-factory.tk"
+		m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"
 		m.To = []string{guest.Email}
+		m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/invitations/delete_guest/"+guest.ID.String()+">")
 		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{}); err != nil {
 			log.Println(errors.WithStack(err))
 		}

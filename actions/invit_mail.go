@@ -35,8 +35,7 @@ func InvitMailSend(c buffalo.Context) error {
 
 	if err := mailers.SendInvitMail(&guests); err != nil {
 		return errors.WithStack(err)
-	} else {
-		c.Flash().Add("primary", "Mails were successfully sent!")
 	}
+	c.Flash().Add("primary", "Mails were successfully sent!")
 	return c.Redirect(302, "/invitations/"+c.Param("invitation_id"))
 }

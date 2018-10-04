@@ -75,6 +75,7 @@ func App() *buffalo.App {
 		app.Middleware.Skip(Authorize, HomeHandler, UsersNew, UsersCreate, AuthNew, AuthCreate)
 		app.Resource("/invitations", InvitationsResource{})
 		app.GET("/invitations/{invitation_id}/send", InvitMailSend)
+		app.GET("/invitations/delete_guest/{guest_id}", DeleteGuestFromUnsubscribe)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

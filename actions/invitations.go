@@ -44,9 +44,10 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	if err := q.Where("userid = ?", u.ID).All(invitations); err != nil {
 		return errors.WithStack(err)
 	}
+	guests := &models.Guests{}
 	for _, invitation := range *invitations {
-		guestCount, _ := tx.Where("invitationid = ?", invitation.ID).Count(&models.Guest{})
-		invitation.GuestCount = guestCount
+		tx.Where("invitationid = ?", invitation.ID).All(guests)
+		invitation.GuestCount = len(*guests)
 	}
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
@@ -286,4 +287,30 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 
 	// Redirect to the invitations index page
 	return c.Render(200, r.Auto(c, invitation))
+}
+
+// DeleteGuestFromUnsubscribe deletes a guest when he unsubscribes
+func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
+	tx, ok := c.Value("tx").(*pop.Connection)
+	if !ok {
+		return errors.WithStack(errors.New("no transaction found"))
+	}
+
+	guest := &models.Guest{}
+	guests := &models.Guests{}
+
+	// To find the Invitation the parameter guest_id is used.
+	if err := tx.Find(guest, c.Param("guest_id")); err != nil {
+		return c.Error(404, err)
+	}
+
+	// Get guests of this email address
+	tx.Where("email = ?", guest.Email).All(guests)
+
+	if err := tx.Destroy(guests); err != nil {
+		return errors.WithStack(err)
+	}
+
+	// If there are no errors set a flash message
+	return c.Render(200, r.String("Your e-mail was deleted successfully"))
 }

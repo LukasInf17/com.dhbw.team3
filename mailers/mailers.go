@@ -17,7 +17,7 @@ func init() {
 	// Pulling config from the env.
 	port := envy.Get("SMTP_PORT", "25")
 	host := envy.Get("SMTP_HOST", "localhost")
-	user := envy.Get("SMTP_USER", "NOREPLAY")
+	user := envy.Get("SMTP_USER", "NOREPLY")
 	password := envy.Get("SMTP_PASSWORD", "ybZGveyWv8x3vKvbYpy3")
 
 	var err error
