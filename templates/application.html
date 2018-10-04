@@ -9,17 +9,17 @@
 	<%= javascriptTag("hammer.min.js") %>
 	<meta name="csrf-param" content="authenticity_token" />
 	<meta name="csrf-token" content="<%= authenticity_token %>" />
-	<link rel="icon" href="<%= assetPath('images/favicon.ico') %>">
+	<link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
 </head>
 
 <body>
 	<nav class="navbar navbar-dark bg-dark navbar-expand-lg sticky-top">
 
 		<button class="navbar-toggler" type="button" id="sidebarCollapse" aria-controls="sidebar" aria-expanded="false"
-		 aria-label="Toggle sidebar"><img src="<%= assetPath('images/menu.png') %>" height="30" width="30" /></a>
+		 aria-label="Toggle sidebar"><img src="<%= assetPath("images/menu.png") %>" height="30" width="30" /></a>
 
 		</button>
-		<a class="navbar-brand d-none d-md-block" href="/"><img src="<%= assetPath('images/favicon.ico') %>"/></a>
+		<a class="navbar-brand d-none d-md-block" href="/"><img src="<%= assetPath("images/favicon.ico") %>"/></a>
 
 		<%= if (current_user) { %>
 		<ul class="navbar-nav navbar-custom ml-auto">
