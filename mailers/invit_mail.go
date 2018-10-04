@@ -7,16 +7,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-func SendInvitMail(guests *[]models.Guest) error {
-	m := mail.NewMessage()
-
-	// fill in with your stuff:
-	m.Subject = "Invitation"
-	m.From = "NOREPLAY@invitation-factory.tk"
-	m.To = []string{}
-	err := m.AddBody(r.HTML("invit_mail.html"), render.Data{})
-	if err != nil {
-		return errors.WithStack(err)
+// SendInvitMail sends a mail to all guests of the invitation
+func SendInvitMail(guests *models.Guests) error {
+	for _, guest := range *guests {
+		m := mail.NewMessage()
+		m.Subject = "Invitation"
+		m.From = "NOREPLAY@invitation-factory.tk"
+		m.To = []string{guest.Email}
+		err := m.AddBody(r.HTML("invit_mail.html"), render.Data{})
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		return smtp.Send(m)
 	}
-	return smtp.Send(m)
+	return nil
 }

@@ -18,6 +18,7 @@ type Invitation struct {
 	Salutation   int       `json:"salutation" db:"salutation"`
 	Mailtext     string    `json:"mailtext" db:"mailtext"`
 	SentToGuests bool      `json:"senttoguests" db:"senttoguests"`
+	GuestCount   int       `json:"-" db:"-"`
 }
 
 // String is not required by pop and may be deleted

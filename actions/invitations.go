@@ -44,6 +44,10 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	if err := q.Where("userid = ?", u.ID).All(invitations); err != nil {
 		return errors.WithStack(err)
 	}
+	for _, invitation := range *invitations {
+		guestCount, _ := tx.Where("invitationid = ?", invitation.ID).Count(&models.Guests{})
+		invitation.GuestCount = guestCount
+	}
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 
@@ -255,6 +259,7 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
+	// Allocate the guests
 	guests := models.Guests{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}

@@ -61,7 +61,7 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 func Authorize(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		if uid := c.Session().Get("current_user_id"); uid == nil {
-			c.Flash().Add("danger", "Sie müssen angemeldet sein, um diese Seite besuchen zu können!")
+			c.Flash().Add("danger", "You have to be logged in to see this page!")
 			return c.Redirect(302, "/")
 		}
 		return next(c)
