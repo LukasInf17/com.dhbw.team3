@@ -9,6 +9,16 @@ env:
 services:
   - postgresql
 
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+env:
+  global:
+  - PGPORT=5433
+
 before_script:
   - psql -c 'create database invitation_test;' -U postgres
   - mkdir -p $TRAVIS_BUILD_DIR/public/assets
