@@ -255,7 +255,7 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
-
+	guests := models.Guests{}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}
 
@@ -263,13 +263,21 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
 		return c.Error(404, err)
 	}
+	// Get guests of this invitation
+	tx.Where("invitationid = ?", invitation.ID).All(&guests)
 
+	// Deletes guests associated with invitation
+	if err := tx.Destroy(&guests); err != nil {
+		return errors.WithStack(err)
+	}
+
+	// Deletes invitation
 	if err := tx.Destroy(invitation); err != nil {
 		return errors.WithStack(err)
 	}
 
 	// If there are no errors set a flash message
-	c.Flash().Add("success", "Invitation was destroyed successfully")
+	c.Flash().Add("success", "Invitation was deleted successfully")
 
 	// Redirect to the invitations index page
 	return c.Render(200, r.Auto(c, invitation))
