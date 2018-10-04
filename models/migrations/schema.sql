@@ -59,7 +59,11 @@ ALTER TABLE public.guests OWNER TO postgres;
 CREATE TABLE public.invitations (
     id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    userid uuid NOT NULL,
+    salutation smallint NOT NULL,
+    mailtext character varying(5000),
+    senttoguests boolean NOT NULL
 );
 
 
@@ -86,7 +90,7 @@ CREATE TABLE public.users (
     password_hash character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    verified boolean DEFAULT false NOT NULL
+    verified boolean NOT NULL
 );
 
 
