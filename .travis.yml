@@ -20,6 +20,7 @@ go_import_path: github.com/invitation
 
 install:
   - go get github.com/gobuffalo/buffalo/buffalo
+  - go get github.com/gobuffalo/suite
   - go get $(go list ./... | grep -v /vendor/)
 
 script: buffalo test
