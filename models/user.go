@@ -22,7 +22,7 @@ type User struct {
 	PasswordHash         string    `json:"password_hash" db:"password_hash"`
 	Password             string    `json:"-" db:"-"`
 	PasswordConfirmation string    `json:"-" db:"-"`
-	Verified	     bool
+	Verified             bool      `json:"verified" db:"verified"`
 }
 
 // String is not required by pop and may be deleted
