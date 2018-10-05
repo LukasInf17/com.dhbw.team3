@@ -5,10 +5,10 @@ name = "Test data"
     name = "invitations"
 
     [[scenario.table.row]]
-    id = "<%= uuidNamed('invitation1') %>"
+    id = "<%= uuidNamed(`invitation1`) %>"
     created_at = "<%= now() %>"
     updated_at = "<%= now() %>"
-    userid = "<%= uuidNamed('sonja') %>"
+    userid = "<%= uuidNamed(`sonja`) %>"
     salutation = 1
     mailtext = "Sie sind herzlich eingeladen! Grüße"
     senttoguests = 0
@@ -17,7 +17,7 @@ name = "Test data"
     id = "<%= uuid() %>"
     created_at = "<%= now() %>"
     updated_at = "<%= now() %>"
-    userid = "<%= uuidNamed('sonja') %>"
+    userid = "<%= uuidNamed(`sonja`) %>"
     salutation = 3
     mailtext = "Sie sind herzlich eingeladen! Grüße"
     senttoguests = 0
@@ -26,7 +26,7 @@ name = "Test data"
     name = "users"
 
     [[scenario.table.row]]
-      id = "<%= uuidNamed('sonja') %>"
+      id = "<%= uuidNamed(`sonja`) %>"
       email = "sonja@example.com"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
@@ -37,7 +37,7 @@ name = "Test data"
     [[scenario.table.row]]
       id = "<%= uuid() %>"
       email = "mario@example.com"
-      invitationid = "<%= uuidNamed('invitation1') %>"
+      invitationid = "<%= uuidNamed(`invitation1`) %>"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
       gender = 1

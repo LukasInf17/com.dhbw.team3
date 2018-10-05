@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"log"
 	"strconv"
 
 	"github.com/gobuffalo/buffalo"
@@ -43,18 +42,9 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
 	// Retrieve all Invitations from the DB
-	if err := q.Where("userid = ?", u.ID).All(&invitations); err != nil {
+	if err := q.Eager().Where("userid = ?", u.ID).All(&invitations); err != nil {
 		return errors.WithStack(err)
 	}
-
-	guests := models.Guests{}
-	for _, invitation := range invitations {
-		tx.Where("invitationid = ?", invitation.ID).All(&guests)
-		invitation.GuestCount, _ = tx.Where("invitationid = ?", invitation.ID).Count(&models.Guest{})
-	}
-
-	// DEBUG
-	log.Println("invitation " + invitations[0].ID.String() + ": " + strconv.Itoa(invitations[0].GuestCount))
 
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
