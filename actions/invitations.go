@@ -37,7 +37,6 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 
 	invitations := models.Invitations{}
 	u := c.Value("current_user").(*models.User)
-
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
@@ -65,7 +64,7 @@ func (v InvitationsResource) Show(c buffalo.Context) error {
 	invitation := &models.Invitation{}
 
 	// To find the Invitation the parameter invitation_id is used.
-	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
+	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
 		return c.Error(404, err)
 	}
 
@@ -73,9 +72,7 @@ func (v InvitationsResource) Show(c buffalo.Context) error {
 		c.Flash().Add("danger", "You are not allowed to visit this page!")
 		return c.Redirect(302, "/invitations")
 	}
-	guests := &[]models.Guest{}
-	tx.Where("invitationid = ?", invitation.ID).All(guests)
-	c.Set("guests", guests)
+	c.Set("guests", invitation.Guests)
 
 	return c.Render(200, r.Auto(c, invitation))
 }

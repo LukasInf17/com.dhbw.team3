@@ -13,18 +13,19 @@ func (as *ActionSuite) Test_HomeHandler_LoggedIn() {
 		Email:                "mark@example.com",
 		Password:             "password",
 		PasswordConfirmation: "password",
+		Verified:             true,
 	}
 	verrs, err := u.Create(as.DB)
 	as.NoError(err)
 	as.False(verrs.HasAny())
-	as.Session.Set("current_user_id", u.ID)
 
+	as.Session.Set("current_user_id", u.ID)
 	res := as.HTML("/").Get()
 	as.Equal(200, res.Code)
-	as.Contains(res.Body.String(), "Sign Out")
+	as.Contains(res.Body.String(), "Log out")
 
 	as.Session.Clear()
 	res = as.HTML("/").Get()
 	as.Equal(200, res.Code)
-	as.Contains(res.Body.String(), "Sign In")
+	as.Contains(res.Body.String(), "Log in")
 }
