@@ -48,7 +48,7 @@ Yours sincerely,
 
 The Invitation Factory team`
 
-	if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{"userid": u.ID}); err != nil {
+	if err := m.AddBody(r.HTML("verify_mail.html"), render.Data{"userid": u.ID}); err != nil {
 		log.Println(errors.WithStack(err))
 	}
 	if err := m.AddBody(r.String(textbody), render.Data{}); err != nil {
