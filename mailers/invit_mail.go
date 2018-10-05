@@ -32,7 +32,7 @@ func SendInvitMail(guests *models.Guests) error {
 }
 
 // SendVerifyMail sends an email where the User verifies his email address
-func SendVerifyMail(u models.User) error {
+func SendVerifyMail(u *models.User) error {
 	m := mail.NewMessage()
 	m.Subject = "Verify your email address to gain access to the Invitation Factory"
 	m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"

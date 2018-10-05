@@ -52,10 +52,13 @@ func AuthCreate(c buffalo.Context) error {
 	if err != nil {
 		return bad()
 	}
+
 	if u.Verified == false {
+		c.Set("user", models.User{})
 		c.Flash().Add("danger", "Your email address is not verified! Please click the link in the mail you've got to verify your address.")
 		return c.Render(422, r.HTML("auth/new.html"))
 	}
+
 	c.Session().Set("current_user_id", u.ID)
 	c.Flash().Add("success", "Welcome back!")
 	return c.Redirect(302, "/")

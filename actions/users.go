@@ -3,6 +3,8 @@ package actions
 import (
 	"log"
 
+	"github.com/invitation/mailers"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/invitation/models"
@@ -36,8 +38,8 @@ func UsersCreate(c buffalo.Context) error {
 	}
 
 	//c.Session().Set("current_user_id", u.ID)
-	c.Flash().Add("success", "Welcome to the invitation factory! Please verify your Email!")
-
+	c.Flash().Add("success", "Welcome to the invitation factory! Please verify your mail address")
+	mailers.SendVerifyMail(u)
 	return c.Redirect(302, "/")
 }
 
