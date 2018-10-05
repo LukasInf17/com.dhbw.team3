@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/gobuffalo/buffalo"
@@ -48,6 +49,10 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	for _, invitation := range invitations {
 		tx.Where("invitationid = ?", invitation.ID).All(&guests)
 		invitation.GuestCount = len(guests)
+		guestcount2, _ := tx.Where("invitationid = ?", invitation.ID).Count(&models.Guest{})
+
+		// DEBUG
+		log.Println("For invitation " + invitation.ID.String() + ": " + strconv.Itoa(invitation.GuestCount) + " guests (" + strconv.Itoa(guestcount2) + ")")
 	}
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)

@@ -15,6 +15,7 @@ func (as *ActionSuite) Test_Auth_Create() {
 		Email:                "mark@example.com",
 		Password:             "password",
 		PasswordConfirmation: "password",
+		Verified:             true,
 	}
 	verrs, err := u.Create(as.DB)
 	as.NoError(err)
@@ -29,6 +30,7 @@ func (as *ActionSuite) Test_Auth_Create_UnknownUser() {
 	u := &models.User{
 		Email:    "mark@example.com",
 		Password: "password",
+		Verified: true,
 	}
 	res := as.HTML("/signin").Post(u)
 	as.Equal(422, res.Code)
@@ -40,6 +42,7 @@ func (as *ActionSuite) Test_Auth_Create_BadPassword() {
 		Email:                "mark@example.com",
 		Password:             "password",
 		PasswordConfirmation: "password",
+		Verified:             true,
 	}
 	verrs, err := u.Create(as.DB)
 	as.NoError(err)
@@ -49,4 +52,20 @@ func (as *ActionSuite) Test_Auth_Create_BadPassword() {
 	res := as.HTML("/signin").Post(u)
 	as.Equal(422, res.Code)
 	as.Contains(res.Body.String(), "invalid email/password")
+}
+
+func (as *ActionSuite) Test_Auth_Create_NotVerified() {
+	u := &models.User{
+		Email:                "mark@example.com",
+		Password:             "password",
+		PasswordConfirmation: "password",
+		Verified:             false,
+	}
+	verrs, err := u.Create(as.DB)
+	as.NoError(err)
+	as.False(verrs.HasAny())
+
+	res := as.HTML("/signin").Post(u)
+	as.Equal(422, res.Code)
+	as.Contains(res.Body.String(), "Your email address is not verified!")
 }
