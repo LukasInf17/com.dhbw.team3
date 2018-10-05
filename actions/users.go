@@ -92,5 +92,5 @@ func VerifyUser(c buffalo.Context) error {
 	tx.Update(u)
 
 	c.Flash().Add("success", "Successfully verified! You can now log in.")
-	return c.Redirect(302, "/login")
+	return c.Redirect(302, "/signin")
 }
