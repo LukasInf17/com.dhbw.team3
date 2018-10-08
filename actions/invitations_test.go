@@ -3,6 +3,7 @@ package actions
 import "github.com/invitation/models"
 
 func (as *ActionSuite) Test_InvitationsResource_List() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
@@ -14,6 +15,7 @@ func (as *ActionSuite) Test_InvitationsResource_List() {
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Show() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
@@ -26,6 +28,7 @@ func (as *ActionSuite) Test_InvitationsResource_Show() {
 }
 
 func (as *ActionSuite) Test_InvitationsResource_New() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
@@ -52,6 +55,7 @@ type invitationTest struct {
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Create() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
@@ -76,7 +80,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	as.Contains(res.Body.String(), "Invitation was created successfully")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 1)
+	as.Equal(count, 3)
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
@@ -84,6 +88,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Edit() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
@@ -91,6 +96,7 @@ func (as *ActionSuite) Test_InvitationsResource_Edit() {
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Update() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
@@ -98,6 +104,7 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Destroy() {
+	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
