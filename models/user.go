@@ -15,14 +15,15 @@ import (
 
 // User is the declaration of a user
 type User struct {
-	ID                   uuid.UUID `json:"id" db:"id"`
-	CreatedAt            time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt            time.Time `json:"updated_at" db:"updated_at"`
-	Email                string    `json:"email" db:"email"`
-	PasswordHash         string    `json:"password_hash" db:"password_hash"`
-	Password             string    `json:"-" db:"-"`
-	PasswordConfirmation string    `json:"-" db:"-"`
-	Verified             bool      `json:"verified" db:"verified"`
+	ID                   uuid.UUID   `json:"id" db:"id"`
+	CreatedAt            time.Time   `json:"created_at" db:"created_at"`
+	UpdatedAt            time.Time   `json:"updated_at" db:"updated_at"`
+	Email                string      `json:"email" db:"email"`
+	PasswordHash         string      `json:"password_hash" db:"password_hash"`
+	Password             string      `json:"-" db:"-"`
+	PasswordConfirmation string      `json:"-" db:"-"`
+	Verified             bool        `json:"verified" db:"verified"`
+	Invitations          Invitations `has_many:"invitations" fk_id:"userid"`
 }
 
 // String is not required by pop and may be deleted
