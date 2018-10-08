@@ -62,7 +62,8 @@ CREATE TABLE public.invitations (
     updated_at timestamp without time zone NOT NULL,
     mailtext character varying(5000) NOT NULL,
     senttoguests boolean,
-    userid uuid NOT NULL
+    userid uuid NOT NULL,
+    salutation integer
 );
 
 
@@ -90,7 +91,6 @@ CREATE TABLE public.users (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     verified boolean DEFAULT false NOT NULL,
-    salutation integer
 );
 
 
