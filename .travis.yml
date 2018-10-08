@@ -6,8 +6,8 @@ go:
   - "1.11"
 
 git:
-  - depth: 3
-  - quiet: true
+  depth: 3
+  quiet: true
 
 env:
   - GO_ENV=test
