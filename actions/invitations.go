@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/gobuffalo/buffalo"
@@ -92,13 +93,16 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	invitation.UserID = u.ID
 	// Bind invitation to the html form elements
 	if err := c.Bind(invitation); err != nil {
-		return errors.WithStack(err)
+		log.Println(err)
+		c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
+		return c.Render(422, r.Auto(c, invitation))
 	}
 
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		c.Flash().Add("danger", "Error while creating the invitation")
+		return c.Render(422, r.Auto(c, invitation))
 	}
 
 	// Validate the data from the html form
@@ -128,11 +132,15 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	for _, guest := range guests {
 		err := tx.Create(guest)
 		if err != nil {
-			return errors.WithStack(err)
+			log.Println(errors.WithStack(err))
+			c.Flash().Add("danger", "Error while creating the invitation")
+			return c.Render(422, r.Auto(c, invitation))
 		}
 	}
 	if err != nil {
-		return errors.WithStack(err)
+		log.Println(errors.WithStack(err))
+		c.Flash().Add("danger", "Error while creating the invitation")
+		return c.Render(422, r.Auto(c, invitation))
 	}
 
 	if verrs.HasAny() {
