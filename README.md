@@ -1,5 +1,7 @@
 # Welcome to Invitation Factory
 
+[![Build Status](https://travis-ci.com/stuttgart-dhbw/com.dhbw.team3.svg?branch=master)](https://travis-ci.com/stuttgart-dhbw/com.dhbw.team3)
+
 ## Visit us on our Homepage
 
 [http://invitation-factory.tk](http://invitation-factory.tk)

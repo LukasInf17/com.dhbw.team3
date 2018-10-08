@@ -30,7 +30,8 @@ var T *i18n.Translator
 // application.
 func App() *buffalo.App {
 	if app == nil {
-		store = sessions.NewCookieStore([]byte("123456"))
+		var hashKey = []byte("wjdpqjwdwqnbdpqwjdpqwupoqwjdqwbdoibqwiodjpoqwudpqwze98123e9z1wpdjpoqdnj1bediu1dh")
+		store = sessions.NewCookieStore(hashKey)
 		store.Options = &sessions.Options{
 			HttpOnly: true,
 			MaxAge:   86400 * 7,
