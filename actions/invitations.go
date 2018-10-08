@@ -93,10 +93,9 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	invitation.UserID = u.ID
 	// Bind invitation to the html form elements
 	if err := c.Bind(invitation); err != nil || invitation.Mailtext == "" {
-		return errors.WithStack(err)
-		// log.Println(err)
-		// c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
-		// return c.Render(422, r.Auto(c, invitation))
+		log.Println(err)
+		c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
+		return c.Render(422, r.Auto(c, invitation))
 	}
 
 	// Get the DB connection from the context

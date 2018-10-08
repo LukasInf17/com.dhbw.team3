@@ -61,7 +61,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 
-	i := invitationTest{
+	i := &invitationTest{
 		mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
 		salutation: 2,
 		guestCount: 3,
