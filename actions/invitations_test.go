@@ -84,7 +84,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
-	as.Equal(count, 3)
+	as.Equal(count, 5)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Edit() {
