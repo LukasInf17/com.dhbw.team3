@@ -15,8 +15,8 @@ var r *render.Engine
 func init() {
 
 	// Pulling config from the env.
-	port := envy.Get("SMTP_PORT", "25")
-	host := envy.Get("SMTP_HOST", "localhost")
+	port := envy.Get("SMTP_PORT", "465")
+	host := envy.Get("SMTP_HOST", "invitation-factory.tk")
 	user := envy.Get("SMTP_USER", "NOREPLY")
 	password := envy.Get("SMTP_PASSWORD", "ybZGveyWv8x3vKvbYpy3")
 
