@@ -220,7 +220,8 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 				AdditionalComment: "",
 			})
 		} else {
-			break
+			guestCount++
+			continue
 		}
 	}
 
