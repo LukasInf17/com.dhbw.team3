@@ -92,7 +92,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	u := c.Value("current_user").(*models.User)
 	invitation.UserID = u.ID
 	// Bind invitation to the html form elements
-	if err := c.Bind(invitation); err != nil {
+	if err := c.Bind(invitation); err != nil || invitation.Mailtext == "" {
 		log.Println(err)
 		c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
 		return c.Render(422, r.Auto(c, invitation))
@@ -132,13 +132,13 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	for _, guest := range guests {
 		err := tx.Create(guest)
 		if err != nil {
-			log.Println(errors.WithStack(err))
+			log.Println(err)
 			c.Flash().Add("danger", "Error while creating the invitation")
 			return c.Render(422, r.Auto(c, invitation))
 		}
 	}
 	if err != nil {
-		log.Println(errors.WithStack(err))
+		log.Println(err)
 		c.Flash().Add("danger", "Error while creating the invitation")
 		return c.Render(422, r.Auto(c, invitation))
 	}

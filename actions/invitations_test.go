@@ -45,7 +45,7 @@ type invitationTest struct {
 	name0      string
 	gender0    int
 	mail0      string
-	guestcount int
+	guestCount int
 	mail1      string
 	name1      string
 	gender1    int
@@ -64,7 +64,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	i := invitationTest{
 		mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
 		salutation: 2,
-		guestcount: 3,
+		guestCount: 3,
 		name0:      "Alfred",
 		name1:      "Harald",
 		name2:      "Alex",
