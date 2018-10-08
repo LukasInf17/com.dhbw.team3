@@ -31,7 +31,7 @@ name = "Test data"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
       verified = true
-      password_hash = "$2b$10$C1xHlPuYDRSV1TCeePlTluVISU.iJv/11HF0BW20OYgrywYjZWmdK"
+      password_hash = "<%= hash(`123456`) %>"
 
   [[scenario.table]]
     name = "guests"
