@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/gobuffalo/envy"
+
 	"github.com/invitation/actions"
 )
 
@@ -21,7 +23,11 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	log.SetOutput(logFile)
+	if envy.Get("GO_ENV", "development") == "test" {
+		log.SetOutput(os.Stdout)
+	} else {
+		log.SetOutput(logFile)
+	}
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	app := actions.App()
 	log.Println("Invitation-Factory started.")

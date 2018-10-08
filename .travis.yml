@@ -30,6 +30,3 @@ install:
   - go get $(go list ./... | grep -v /vendor/)
 
 script: buffalo test
-
-after_script:
-  - cat /var/log/invitation-factory.log
