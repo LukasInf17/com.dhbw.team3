@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// InvitMailSend default implementation.
+// InvitMailSend sends the invitation mails to all guests.
 func InvitMailSend(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
@@ -36,6 +36,7 @@ func InvitMailSend(c buffalo.Context) error {
 	if err := mailers.SendInvitMail(&guests); err != nil {
 		return errors.WithStack(err)
 	}
+
 	c.Flash().Add("primary", "Mails were successfully sent!")
 	return c.Redirect(302, "/invitations/"+c.Param("invitation_id"))
 }

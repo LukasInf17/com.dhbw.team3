@@ -60,8 +60,8 @@ CREATE TABLE public.invitations (
     id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    mailtext varying(5000) NOT NULL,
-    senttoguests boolean,
+    mailtext character varying(5000) NOT NULL,
+    senttoguests boolean
 );
 
 
