@@ -61,7 +61,8 @@ CREATE TABLE public.invitations (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     mailtext character varying(5000) NOT NULL,
-    senttoguests boolean
+    senttoguests boolean,
+    userid uuid NOT NULL
 );
 
 
