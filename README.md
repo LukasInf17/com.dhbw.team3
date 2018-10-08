@@ -19,5 +19,8 @@
 
 - [PostgreSQL](https://wiki.ubuntuusers.de/PostgreSQL/)
 - [GO](https://golang.org/doc/install?download=go1.11.linux-amd64.tar.gz)
+
+### Credits
+
 - [Buffalo](https://gobuffalo.io/en/docs/installation)
 - [Authentication](https://github.com/gobuffalo/buffalo-auth)
