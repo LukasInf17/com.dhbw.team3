@@ -40,18 +40,18 @@ func (as *ActionSuite) Test_InvitationsResource_New() {
 }
 
 type invitationTest struct {
-	mailtext   string
-	salutation int
-	name0      string
-	gender0    int
-	mail0      string
-	guestCount int
-	mail1      string
-	name1      string
-	gender1    int
-	mail2      string
-	name2      string
-	gender2    int
+	Mailtext   string
+	Salutation int
+	Name0      string
+	Gender0    int
+	Mail0      string
+	GuestCount int
+	Mail1      string
+	Name1      string
+	Gender1    int
+	Mail2      string
+	Name2      string
+	Gender2    int
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Create() {
@@ -62,18 +62,18 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	as.NoError(err)
 
 	i := &invitationTest{
-		mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
-		salutation: 2,
-		guestCount: 3,
-		name0:      "Alfred",
-		name1:      "Harald",
-		name2:      "Alex",
-		gender0:    1,
-		gender1:    2,
-		gender2:    3,
-		mail0:      "alfred@example.com",
-		mail1:      "harald@example.com",
-		mail2:      "alex@example.com",
+		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
+		Salutation: 2,
+		GuestCount: 3,
+		Name0:      "Alfred",
+		Name1:      "Harald",
+		Name2:      "Alex",
+		Gender0:    1,
+		Gender1:    2,
+		Gender2:    3,
+		Mail0:      "alfred@example.com",
+		Mail1:      "harald@example.com",
+		Mail2:      "alex@example.com",
 	}
 
 	res := as.HTML("/invitations").Post(i)
