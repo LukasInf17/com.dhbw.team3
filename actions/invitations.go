@@ -110,12 +110,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	verrs, err := tx.ValidateAndCreate(invitation)
 	// Getting the guests data
 	guestCount, err := strconv.Atoi(c.Request().FormValue("Guestcount"))
-	if err != nil {
-		return errors.WithStack(err)
-		// log.Println(err)
-		// c.Flash().Add("danger", "Error while creating the invitation")
-		// return c.Render(422, r.Auto(c, invitation))
-	}
+
 	guests := make([]*models.Guest, guestCount)
 
 	for i := 0; i < guestCount; i++ {
