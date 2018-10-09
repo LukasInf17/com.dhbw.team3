@@ -30,3 +30,6 @@ install:
   - go get $(go list ./... | grep -v /vendor/)
 
 script: buffalo test -coverprofile=c.out ./...
+
+after_script:
+  - go tool cover -func=c.out
