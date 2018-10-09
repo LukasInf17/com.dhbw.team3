@@ -95,6 +95,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(invitation); err != nil || invitation.Mailtext == "" {
 		log.Println(err)
 		c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
+		c.Flash().Add("danger", err.Error())
 		return c.Render(422, r.Auto(c, invitation))
 	}
 
