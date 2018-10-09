@@ -88,6 +88,7 @@ func (v InvitationsResource) New(c buffalo.Context) error {
 // path POST /invitations
 func (v InvitationsResource) Create(c buffalo.Context) error {
 	// Allocate an empty Invitation
+	log.Println("Create invitation")
 	invitation := &models.Invitation{}
 	u := c.Value("current_user").(*models.User)
 	invitation.UserID = u.ID
@@ -110,12 +111,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	verrs, err := tx.ValidateAndCreate(invitation)
 	// Getting the guests data
 	guestCount, err := strconv.Atoi(c.Request().FormValue("Guestcount"))
-	if err != nil {
-		return errors.WithStack(err)
-		// log.Println(err)
-		// c.Flash().Add("danger", "Error while creating the invitation")
-		// return c.Render(422, r.Auto(c, invitation))
-	}
+
 	guests := make([]*models.Guest, guestCount)
 
 	for i := 0; i < guestCount; i++ {
@@ -161,7 +157,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 
 	// If there are no errors set a success message
 	c.Flash().Add("success", "Invitation was created successfully")
-
+	log.Println("Created invitation")
 	// and redirect to the invitations index page
 	return c.Render(201, r.Auto(c, invitation))
 }
