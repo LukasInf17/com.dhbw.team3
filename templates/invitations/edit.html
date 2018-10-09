@@ -74,6 +74,6 @@
 </form>
 <%= form_for(invitation, {action: invitationPath({ invitation_id: invitation.ID }), method: "PUT"}) { %>
 <%= partial("invitations/form.html") %>
-<input type="hidden" id="guestCount" name="guestCount" value="<%= len(guests) %>"/>
+<input type="hidden" id="guestcount" name="guestcount" value="<%= len(guests) %>"/>
 <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>

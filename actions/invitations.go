@@ -109,7 +109,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	verrs, err := tx.ValidateAndCreate(invitation)
 	// Getting the guests data
 
-	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
+	guestCount, err := strconv.Atoi(c.Request().FormValue("guestcount"))
 
 	guests := make([]*models.Guest, guestCount)
 

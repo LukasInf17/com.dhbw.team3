@@ -56,7 +56,7 @@
 
 <%= form_for(invitation, {action: invitationsPath(), method: "POST"}) { %>
 <%= partial("invitations/form.html") %>
-<input type="hidden" id="guestCount" name="guestCount" value="1"/>
+<input type="hidden" id="guestcount" name="guestcount" value="1"/>
 <a href="<%= invitationsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>
 
