@@ -7,7 +7,7 @@ import (
 func (as *ActionSuite) Test_Auth_New() {
 	res := as.HTML("/signin").Get()
 	as.Equal(200, res.Code)
-	as.Contains(res.Body.String(), "Sign In")
+	as.Contains(res.Body.String(), "<h1>Sign In</h1>")
 }
 
 func (as *ActionSuite) Test_Auth_Create() {
