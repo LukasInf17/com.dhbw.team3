@@ -134,17 +134,16 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	for _, guest := range guests {
 		err := tx.Create(guest)
 		if err != nil {
-			return errors.WithStack(err)
-			// log.Println(err)
-			// c.Flash().Add("danger", "Error while creating the invitation")
-			// return c.Render(422, r.Auto(c, invitation))
+			// return errors.WithStack(err)
+			log.Println(err.Error())
+			c.Flash().Add("danger", "Error while creating the invitation")
+			return c.Render(422, r.Auto(c, invitation))
 		}
 	}
 	if err != nil {
-		return errors.WithStack(err)
-		// log.Println(err)
-		// c.Flash().Add("danger", "Error while creating the invitation")
-		// return c.Render(422, r.Auto(c, invitation))
+		log.Println(err.Error())
+		c.Flash().Add("danger", "Error while creating the invitation")
+		return c.Render(422, r.Auto(c, invitation))
 	}
 
 	if verrs.HasAny() {
