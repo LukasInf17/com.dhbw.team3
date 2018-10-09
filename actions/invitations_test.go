@@ -78,7 +78,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 
 	res := as.HTML("/invitations").Post(i)
 	as.Equal(302, res.Code)
-	as.Equal(res.Header().Get("Location"), "https://invitation-factory.tk/invitations")
+	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
 	as.Equal(count, 3)
