@@ -10,23 +10,23 @@
         <td data-label="Gender: ">
             <div class="form-group">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Gender${addRowCounter}" id="inlineRadio${addRowCounter}1" value="1" form="invitation-form">
+                    <input class="form-check-input" type="radio" name="gender${addRowCounter}" id="inlineRadio${addRowCounter}1" value="1" form="invitation-form">
                     <label class="form-check-label" for="inlineRadio${addRowCounter}1">male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Gender${addRowCounter}" id="inlineRadio${addRowCounter}2" value="2" form="invitation-form">
+                    <input class="form-check-input" type="radio" name="gender${addRowCounter}" id="inlineRadio${addRowCounter}2" value="2" form="invitation-form">
                     <label class="form-check-label" for="inlineRadio${addRowCounter}2">female</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Gender${addRowCounter}" id="inlineRadio${addRowCounter}3" value="3" form="invitation-form" checked="checked" />
+                    <input class="form-check-input" type="radio" name="gender${addRowCounter}" id="inlineRadio${addRowCounter}3" value="3" form="invitation-form" checked="checked" />
                     <label class="form-check-label" for="inlineRadio${addRowCounter}3">diverse</label>
             </div>
         </td>
         <td data-label="Name: ">
-            <input type="name" name="Name${addRowCounter}" class="form-control" form="invitation-form"/>
+            <input type="name" name="name${addRowCounter}" class="form-control" form="invitation-form"/>
         </td>
         <td data-label="E-Mail: ">
-            <input type="email" class="form-control" placeholder="name@example.com" name="Mail${addRowCounter}" form="invitation-form">
+            <input type="email" class="form-control" placeholder="name@example.com" name="mail${addRowCounter}" form="invitation-form">
         </td>
         <td>
             <input type="button" class="ibtnDel btn btn-md btn-danger" value="Delete">
