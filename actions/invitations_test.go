@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"os/exec"
+
 	"github.com/invitation/models"
 )
 
@@ -186,6 +188,44 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.Equal(count, 6)
 }
 
+func (as *ActionSuite) Test_InvitationsResource_Update_WrongID() {
+	as.LoadFixture("Test data")
+	u := &models.User{}
+	wrongID, err1 := exec.Command("uuidgen").Output()
+	err2 := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
+	as.Session.Set("current_user_id", u.ID)
+	as.NoError(err1, err2)
+
+	i := &updateInvitationTest{
+		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
+		Salutation: 2,
+		Guestcount: "4",
+		Name0:      "Alfred",
+		Name1:      "Harald",
+		Name2:      "Alex",
+		Name3:      "Manfred",
+		Gender0:    3,
+		Gender1:    2,
+		Gender2:    3,
+		Gender3:    1,
+		Mail0:      "alfred@example.com",
+		Mail1:      "harald@example.com",
+		Mail2:      "alex@example.com",
+		Mail3:      "manfred@example.com",
+	}
+
+	res := as.HTML("/invitations/" + string(wrongID)).Put(i)
+	as.Equal(404, res.Code)
+	as.Contains(res.Header().Get("Location"), "/invitations/")
+	count, err := as.DB.Count("invitations")
+	as.NoError(err)
+	as.Equal(count, 2)
+
+	count, err = as.DB.Count("guests")
+	as.NoError(err)
+	as.Equal(count, 2)
+}
+
 func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
@@ -210,5 +250,3 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy_WrongID() {
 	res := as.HTML("/invitations/" + "abcdefgh").Delete()
 	as.Equal(404, res.Code)
 }
-
-
