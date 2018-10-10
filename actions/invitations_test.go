@@ -1,8 +1,6 @@
 package actions
 
 import (
-	"strconv"
-
 	"github.com/invitation/models"
 )
 
@@ -65,8 +63,6 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 
-	as.T().Log("Create: " + strconv.Itoa(len(u.Invitations)))
-
 	i := &invitationTest{
 		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
 		Salutation: 2,
@@ -92,6 +88,39 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
 	as.Equal(count, 5)
+}
+
+func (as *ActionSuite) Test_InvitationsResource_Create_NoMailtext() {
+	as.LoadFixture("Test data")
+	u := &models.User{}
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
+	as.Session.Set("current_user_id", u.ID)
+	as.NoError(err)
+
+	i := &invitationTest{
+		Mailtext:   "",
+		Salutation: 2,
+		Guestcount: "3",
+		Name0:      "Alfred",
+		Name1:      "Harald",
+		Name2:      "Alex",
+		Gender0:    1,
+		Gender1:    2,
+		Gender2:    3,
+		Mail0:      "alfred@example.com",
+		Mail1:      "harald@example.com",
+		Mail2:      "alex@example.com",
+	}
+
+	res := as.HTML("/invitations").Post(i)
+	as.Equal(422, res.Code)
+	count, err := as.DB.Count("invitations")
+	as.NoError(err)
+	as.Equal(count, 2)
+
+	count, err = as.DB.Count("guests")
+	as.NoError(err)
+	as.Equal(count, 2)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Edit() {
