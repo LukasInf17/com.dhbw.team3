@@ -9,7 +9,7 @@ import (
 func (as *ActionSuite) Test_InvitationsResource_List() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
-	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 
@@ -34,7 +34,7 @@ func (as *ActionSuite) Test_InvitationsResource_Show() {
 func (as *ActionSuite) Test_InvitationsResource_New() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
-	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 
@@ -61,7 +61,7 @@ type invitationTest struct {
 func (as *ActionSuite) Test_InvitationsResource_Create() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
-	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 
@@ -97,7 +97,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 func (as *ActionSuite) Test_InvitationsResource_Edit() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
-	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 }
@@ -123,7 +123,7 @@ type updateInvitationTest struct {
 func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
-	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
 
@@ -160,12 +160,9 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
-	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
-
-	as.T().Log("Destroy: " + strconv.Itoa(len(u.Invitations)))
-
 	i := u.Invitations[0].ID
 	res := as.HTML("/invitations/" + i.String()).Delete()
 	as.Equal(302, res.Code)
