@@ -206,24 +206,24 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	guestCount, _ := strconv.Atoi(c.Request().FormValue("guestCount"))
+	guestCount, _ := strconv.Atoi(getFormValue(c, "guestcount"))
 
 	guests := models.Guests{}
 
 	for guestindex := 0; guestindex < guestCount; guestindex++ {
-		if c.Request().FormValue("name"+strconv.Itoa(guestindex)) != "" {
-			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(guestindex)))
+		if getFormValue(c, "name"+strconv.Itoa(guestindex)) != "" {
+			gender, _ := strconv.Atoi(getFormValue(c, "gender"+strconv.Itoa(guestindex)))
 			guests = append(guests, models.Guest{
 				InvitationID:      invitation.ID,
-				Name:              c.Request().FormValue("name" + strconv.Itoa(guestindex)),
-				Email:             c.Request().FormValue("mail" + strconv.Itoa(guestindex)),
+				Name:              getFormValue(c, "name"+strconv.Itoa(guestindex)),
+				Email:             getFormValue(c, "mail"+strconv.Itoa(guestindex)),
 				Gender:            gender,
 				Status:            0,
 				AdditionalComment: "",
 			})
 		} else {
-			guestCount++
-			continue
+			// TODO Creating logic for updating guests when one guest in the middle
+			break
 		}
 	}
 
