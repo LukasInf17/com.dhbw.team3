@@ -216,7 +216,6 @@ func (as *ActionSuite) Test_InvitationsResource_Update_WrongID() {
 
 	res := as.HTML("/invitations/" + string(wrongID)).Put(i)
 	as.Equal(404, res.Code)
-	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
 	as.Equal(count, 2)
