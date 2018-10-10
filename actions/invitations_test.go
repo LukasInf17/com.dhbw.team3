@@ -165,5 +165,5 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	as.Equal(302, res.Code)
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(count, 1)
 }
