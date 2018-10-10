@@ -159,4 +159,11 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
+
+	i := u.Invitations[0].ID
+	res := as.HTML("/invitations/" + i.String()).Delete()
+	as.Equal(302, res.Code)
+	count, err := as.DB.Count("invitations")
+	as.NoError(err)
+	as.Equal(count, 2)
 }
