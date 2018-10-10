@@ -183,9 +183,9 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.NoError(err)
 	as.Equal(count, 2)
 
-	count, err = as.DB.Count("guests")
+	count, err = as.DB.Where("invitationid in guests", u.Invitations[0]).Count("guests")
 	as.NoError(err)
-	as.Equal(count, 6)
+	as.Equal(count, 4)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Update_WrongID() {
