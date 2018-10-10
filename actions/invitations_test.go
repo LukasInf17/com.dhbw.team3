@@ -146,7 +146,7 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 3)
+	as.Equal(count, 2)
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
