@@ -199,3 +199,16 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	as.NoError(err)
 	as.Equal(count, 1)
 }
+
+func (as *ActionSuite) Test_InvitationsResource_Destroy_WrongID() {
+	as.LoadFixture("Test data")
+	u := &models.User{}
+	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
+	as.Session.Set("current_user_id", u.ID)
+	as.NoError(err)
+
+	res := as.HTML("/invitations/" + "abcdefgh").Delete()
+	as.Equal(404, res.Code)
+}
+
+
