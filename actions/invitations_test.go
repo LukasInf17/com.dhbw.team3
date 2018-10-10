@@ -131,6 +131,11 @@ func (as *ActionSuite) Test_InvitationsResource_Edit() {
 	err := as.DB.Eager().Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
+	//i := u.Invitations[0].ID
+
+	res := as.HTML("/invitations/" + i.String() + /edit).Get()
+	as.Equal(res.Code, 200)
+	as.Contains(res.Body.String(), "Edit")
 }
 
 type updateInvitationTest struct {
