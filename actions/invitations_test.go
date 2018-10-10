@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"strconv"
+
 	"github.com/invitation/models"
 )
 
@@ -62,6 +64,8 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
+
+	as.T().Log("Create: " + strconv.Itoa(len(u.Invitations)))
 
 	i := &invitationTest{
 		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
@@ -146,7 +150,7 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(count, 3)
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
@@ -159,6 +163,8 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
+
+	as.T().Log("Destroy: " + strconv.Itoa(len(u.Invitations)))
 
 	i := u.Invitations[0].ID
 	res := as.HTML("/invitations/" + i.String()).Delete()
