@@ -1,6 +1,8 @@
 package actions
 
-import "github.com/invitation/models"
+import (
+	"github.com/invitation/models"
+)
 
 func (as *ActionSuite) Test_InvitationsResource_List() {
 	as.LoadFixture("Test data")
@@ -96,12 +98,59 @@ func (as *ActionSuite) Test_InvitationsResource_Edit() {
 	as.NoError(err)
 }
 
+type updateInvitationTest struct {
+	Mailtext   string
+	Salutation int
+	Name0      string
+	Gender0    int
+	Mail0      string
+	GuestCount string
+	Mail1      string
+	Name1      string
+	Gender1    int
+	Mail2      string
+	Name2      string
+	Gender2    int
+	Mail3      string
+	Name3      string
+	Gender3    int
+}
+
 func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.LoadFixture("Test data")
 	u := &models.User{}
 	err := as.DB.Where("email = ?", "sonja@example.com").First(u)
 	as.Session.Set("current_user_id", u.ID)
 	as.NoError(err)
+
+	i := &updateInvitationTest{
+		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
+		Salutation: 2,
+		GuestCount: "4",
+		Name0:      "Alfred",
+		Name1:      "Harald",
+		Name2:      "Alex",
+		Name3:      "Manfred",
+		Gender0:    3,
+		Gender1:    2,
+		Gender2:    3,
+		Gender3:    1,
+		Mail0:      "alfred@example.com",
+		Mail1:      "harald@example.com",
+		Mail2:      "alex@example.com",
+		Mail3:      "manfred@example.com",
+	}
+
+	res := as.HTML("/invitations/" + u.Invitations[0].ID.String()).Post(i)
+	as.Equal(302, res.Code)
+	as.Contains(res.Header().Get("Location"), "/invitations/")
+	count, err := as.DB.Count("invitations")
+	as.NoError(err)
+	as.Equal(count, 3)
+
+	count, err = as.DB.Count("guests")
+	as.NoError(err)
+	as.Equal(count, 6)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Destroy() {
