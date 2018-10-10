@@ -142,7 +142,8 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	}
 
 	res := as.HTML("/invitations/" + u.Invitations[0].ID.String()).Post(i)
-	as.Contains(res.Body.String(), "Invitation was updated successfully")
+	as.Equal(302, res.Code)
+	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
 	as.Equal(count, 4)
