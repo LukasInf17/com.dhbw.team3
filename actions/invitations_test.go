@@ -104,7 +104,7 @@ type updateInvitationTest struct {
 	Name0      string
 	Gender0    int
 	Mail0      string
-	GuestCount string
+	Guestcount string
 	Mail1      string
 	Name1      string
 	Gender1    int
@@ -126,7 +126,7 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	i := &updateInvitationTest{
 		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
 		Salutation: 2,
-		GuestCount: "4",
+		Guestcount: "4",
 		Name0:      "Alfred",
 		Name1:      "Harald",
 		Name2:      "Alex",
