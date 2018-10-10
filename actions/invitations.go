@@ -3,6 +3,7 @@ package actions
 import (
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -95,6 +96,7 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	if err := c.Bind(invitation); err != nil || invitation.Mailtext == "" {
 		log.Println(err)
 		c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
+		c.Flash().Add("danger", err.Error())
 		return c.Render(422, r.Auto(c, invitation))
 	}
 
@@ -109,17 +111,17 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	verrs, err := tx.ValidateAndCreate(invitation)
 	// Getting the guests data
 
-	guestCount, err := strconv.Atoi(c.Request().FormValue("guestCount"))
+	guestCount, err := strconv.Atoi(getFormValue(c, "guestcount"))
 
 	guests := make([]*models.Guest, guestCount)
 
 	for i := 0; i < guestCount; i++ {
-		if c.Request().FormValue("name"+strconv.Itoa(i)) != "" {
-			gender, _ := strconv.Atoi(c.Request().FormValue("gender" + strconv.Itoa(i)))
+		if getFormValue(c, "name"+strconv.Itoa(i)) != "" {
+			gender, _ := strconv.Atoi(getFormValue(c, "gender"+strconv.Itoa(i)))
 			guests[i] = &models.Guest{
 				InvitationID:      invitation.ID,
-				Name:              c.Request().FormValue("name" + strconv.Itoa(i)),
-				Email:             c.Request().FormValue("mail" + strconv.Itoa(i)),
+				Name:              getFormValue(c, "name"+strconv.Itoa(i)),
+				Email:             getFormValue(c, "mail"+strconv.Itoa(i)),
 				Gender:            gender,
 				Status:            0,
 				AdditionalComment: "",
@@ -132,17 +134,16 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	for _, guest := range guests {
 		err := tx.Create(guest)
 		if err != nil {
-			return errors.WithStack(err)
-			// log.Println(err)
-			// c.Flash().Add("danger", "Error while creating the invitation")
-			// return c.Render(422, r.Auto(c, invitation))
+			// return errors.WithStack(err)
+			log.Println(err.Error())
+			c.Flash().Add("danger", "Error while creating the invitation")
+			return c.Render(422, r.Auto(c, invitation))
 		}
 	}
 	if err != nil {
-		return errors.WithStack(err)
-		// log.Println(err)
-		// c.Flash().Add("danger", "Error while creating the invitation")
-		// return c.Render(422, r.Auto(c, invitation))
+		log.Println(err.Error())
+		c.Flash().Add("danger", "Error while creating the invitation")
+		return c.Render(422, r.Auto(c, invitation))
 	}
 
 	if verrs.HasAny() {
@@ -318,4 +319,14 @@ func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
 
 	// If there are no errors set a flash message
 	return c.Render(200, r.String("Your e-mail was deleted successfully"))
+}
+
+func getFormValue(c buffalo.Context, s string) string {
+	s1 := strings.ToLower(s)
+	sret := c.Request().FormValue(s1)
+	if sret == "" {
+		s1 = strings.Join([]string{strings.ToUpper(string(s1[0])), s1[1:len(s1)]}, "")
+		sret = c.Request().FormValue(s1)
+	}
+	return sret
 }

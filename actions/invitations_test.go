@@ -47,7 +47,7 @@ type invitationTest struct {
 	Name0      string
 	Gender0    int
 	Mail0      string
-	GuestCount string
+	Guestcount string
 	Mail1      string
 	Name1      string
 	Gender1    int
@@ -66,7 +66,7 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	i := &invitationTest{
 		Mailtext:   "Sie sind herzlich eingeladen! Mit freundlichen Gruessen",
 		Salutation: 2,
-		GuestCount: "3",
+		Guestcount: "3",
 		Name0:      "Alfred",
 		Name1:      "Harald",
 		Name2:      "Alex",
@@ -78,8 +78,9 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 		Mail2:      "alex@example.com",
 	}
 
-	res := as.HTML("/invitations/").Post(i)
-	as.Contains(res.Body.String(), "Invitation was created successfully")
+	res := as.HTML("/invitations").Post(i)
+	as.Equal(302, res.Code)
+	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
 	as.Equal(count, 3)

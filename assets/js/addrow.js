@@ -1,6 +1,6 @@
 
     $(document).ready(function () {
-    var addRowCounter = $("#guestCount").attr("value");
+    var addRowCounter = $("#guestcount").attr("value");
 
         $("#addrow").on("click", function () {
             var newRow = $("<tr>");
@@ -34,7 +34,7 @@
             newRow.append(cols);
             $("table.order-list").append(newRow);
             addRowCounter++;
-            $("#guestCount").attr("value", addRowCounter);
+            $("#guestcount").attr("value", addRowCounter);
         });
 
 
@@ -42,7 +42,7 @@
         $("table.order-list").on("click", ".ibtnDel", function (event) {
             $(this).closest("tr").remove();
             addRowCounter--;
-            $("#guestCount").attr("value", addRowCounter);
+            $("#guestcount").attr("value", addRowCounter);
         });
 
 
