@@ -178,7 +178,7 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 
 	count, err := as.DB.Where("invitationid = ?", u.Invitations[0].ID).Count("guests")
 	as.NoError(err)
-	as.Equal(1, count)
+	as.Equal(2, count)
 
 	res := as.HTML("/invitations/" + u.Invitations[0].ID.String()).Put(i)
 	as.Equal(302, res.Code)
