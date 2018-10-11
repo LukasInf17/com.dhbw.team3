@@ -34,7 +34,8 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println("Error while getting data from the database")
+		c.Flash().Add("danger", "Error while getting data from the database")
 	}
 
 	invitations := models.Invitations{}
@@ -44,7 +45,8 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 	q := tx.PaginateFromParams(c.Params())
 	// Retrieve all Invitations from the DB
 	if err := q.Eager().Where("userid = ?", u.ID).All(&invitations); err != nil {
-		return errors.WithStack(err)
+		log.Println(err)
+		c.Flash().Add("danger", "Error while getting data from the database")
 	}
 
 	// Add the paginator to the context so it can be used in the template.
@@ -60,7 +62,8 @@ func (v InvitationsResource) Show(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	u := c.Value("current_user").(*models.User)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println("Error while getting data from the database")
+		c.Flash().Add("danger", "Error while getting data from the database")
 	}
 	// Allocate an empty Invitation
 	invitation := &models.Invitation{}

@@ -14,7 +14,7 @@ func (as *ActionSuite) Test_InvitationsResource_List() {
 	as.NoError(err)
 
 	res := as.HTML("/invitations").Get()
-	as.Equal(res.Code, 200)
+	as.Equal(200, res.Code)
 	as.Contains(res.Body.String(), "Show")
 }
 
@@ -27,8 +27,23 @@ func (as *ActionSuite) Test_InvitationsResource_Show() {
 	i := u.Invitations[0].ID
 
 	res := as.HTML("/invitations/" + i.String()).Get()
-	as.Equal(res.Code, 200)
+	as.Equal(200, res.Code)
 	as.Contains(res.Body.String(), "Sie sind herzlich eingeladen!")
+}
+
+func (as *ActionSuite) Test_InvitationsResource_Show_WrongUser() {
+	as.LoadFixture("Test data")
+	u1 := &models.User{}
+	u2 := &models.User{}
+	err := as.DB.Eager().Where("email = ?", "marco@example.com").First(u1)
+	err = as.DB.Eager().Where("email = ?", "sonja@example.com").First(u2)
+	as.Session.Set("current_user_id", u1.ID)
+	as.NoError(err)
+	i := u2.Invitations[0].ID
+
+	res := as.HTML("/invitations/" + i.String()).Get()
+	as.Equal(302, res.Code)
+	as.Contains(res.Header().Get("Location"), "/invitations")
 }
 
 func (as *ActionSuite) Test_InvitationsResource_New() {
@@ -39,7 +54,7 @@ func (as *ActionSuite) Test_InvitationsResource_New() {
 	as.NoError(err)
 
 	res := as.HTML("/invitations/new").Get()
-	as.Equal(res.Code, 200)
+	as.Equal(200, res.Code)
 	as.Contains(res.Body.String(), "Salutation")
 }
 
@@ -85,11 +100,11 @@ func (as *ActionSuite) Test_InvitationsResource_Create() {
 	as.Contains(res.Header().Get("Location"), "/invitations/")
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 3)
+	as.Equal(3, count)
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
-	as.Equal(count, 5)
+	as.Equal(5, count)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Create_NoMailtext() {
@@ -118,11 +133,11 @@ func (as *ActionSuite) Test_InvitationsResource_Create_NoMailtext() {
 	as.Equal(422, res.Code)
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(2, count)
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(2, count)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Edit() {
