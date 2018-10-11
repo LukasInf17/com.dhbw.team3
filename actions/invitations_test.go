@@ -240,7 +240,7 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy() {
 	as.Equal(302, res.Code)
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 1)
+	as.Equal(1, count)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Destroy_WrongID() {
@@ -252,4 +252,7 @@ func (as *ActionSuite) Test_InvitationsResource_Destroy_WrongID() {
 
 	res := as.HTML("/invitations/" + "abcdefgh").Delete()
 	as.Equal(404, res.Code)
+	count, err := as.DB.Count("invitations")
+	as.NoError(err)
+	as.Equal(2, count)
 }
