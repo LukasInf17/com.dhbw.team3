@@ -67,5 +67,5 @@ func (as *ActionSuite) Test_Auth_Create_NotVerified() {
 
 	res := as.HTML("/signin").Post(u)
 	as.Equal(422, res.Code)
-	as.Contains(res.Body.String(), "Your email address is not verified!")
+	as.Contains(res.Body.String(), "Your email address has not been verified yet!")
 }
