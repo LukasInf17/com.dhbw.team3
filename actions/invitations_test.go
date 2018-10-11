@@ -183,7 +183,7 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 	as.NoError(err)
 	as.Equal(count, 2)
 
-	count, err = as.DB.Count("guests")
+	count, err = as.DB.Where("invitaionid = ?", u.Invitations[0].ID).Count("guests")
 	as.NoError(err)
 	as.Equal(count, 5)
 }
