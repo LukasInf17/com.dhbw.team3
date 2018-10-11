@@ -176,16 +176,20 @@ func (as *ActionSuite) Test_InvitationsResource_Update() {
 		Mail3:      "manfred@example.com",
 	}
 
+	count, err := as.DB.Where("invitationid = ?", u.Invitations[0].ID).Count("guests")
+	as.NoError(err)
+	as.Equal(1, count)
+
 	res := as.HTML("/invitations/" + u.Invitations[0].ID.String()).Put(i)
 	as.Equal(302, res.Code)
 	as.Contains(res.Header().Get("Location"), "/invitations/")
-	count, err := as.DB.Count("invitations")
+	count, err = as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(2, count)
 
 	count, err = as.DB.Where("invitationid = ?", u.Invitations[0].ID).Count("guests")
 	as.NoError(err)
-	as.Equal(count, 4)
+	as.Equal(4, count)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Update_WrongID() {
@@ -218,11 +222,11 @@ func (as *ActionSuite) Test_InvitationsResource_Update_WrongID() {
 	as.Equal(404, res.Code)
 	count, err := as.DB.Count("invitations")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(2, count)
 
 	count, err = as.DB.Count("guests")
 	as.NoError(err)
-	as.Equal(count, 2)
+	as.Equal(2, count)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_Destroy() {
