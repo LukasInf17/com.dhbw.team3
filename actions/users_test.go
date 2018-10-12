@@ -27,3 +27,22 @@ func (as *ActionSuite) Test_Users_Create() {
 	as.NoError(err)
 	as.Equal(1, count)
 }
+
+func (as *ActionSuite) Test_Users_Create_NotMatching() {
+	count, err := as.DB.Count("users")
+	as.NoError(err)
+	as.Equal(0, count)
+
+	u := &models.User{
+		Email:                "mark@example.com",
+		Password:             "password",
+		PasswordConfirmation: "password2",
+	}
+
+	res := as.HTML("/users").Post(u)
+	as.Equal(422, res.Code)
+
+	count, err = as.DB.Count("users")
+	as.NoError(err)
+	as.Equal(0, count)
+}

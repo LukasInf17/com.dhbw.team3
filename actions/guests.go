@@ -32,3 +32,8 @@ func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
 	// If there are no errors set a flash message
 	return c.Render(200, r.String("Your e-mail was deleted successfully"))
 }
+
+// StatusResponse serves the page where the guest can response to the invitation.
+func StatusResponse(c buffalo.Context) error {
+	return c.Render(200, r.HTML("guests/response.html"))
+}
