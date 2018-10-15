@@ -7,7 +7,7 @@
             var cols = "";
 
             cols += `
-        <td data-label="Gender: ">
+        <td class="col-sm-4 gender-radio-buttons" data-label="Gender: ">
             <div class="form-group">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gender${addRowCounter}" id="inlineRadio${addRowCounter}1" value="1" form="invitation-form">
@@ -22,14 +22,14 @@
                     <label class="form-check-label" for="inlineRadio${addRowCounter}3">diverse</label>
             </div>
         </td>
-        <td data-label="Name: ">
+        <td class="col-sm-3" data-label="Name: ">
             <input type="name" name="name${addRowCounter}" class="form-control" form="invitation-form"/>
         </td>
-        <td data-label="E-Mail: ">
+        <td class="col-sm-4" data-label="E-Mail: ">
             <input type="email" class="form-control" placeholder="name@example.com" name="mail${addRowCounter}" form="invitation-form">
         </td>
         <td>
-            <input type="button" class="ibtnDel btn btn-md btn-danger" value="Delete">
+            <input class="col-sm-2" type="button" class="ibtnDel btn btn-md btn-danger" value="Delete">
         </td>`;
             newRow.append(cols);
             $("table.order-list").append(newRow);

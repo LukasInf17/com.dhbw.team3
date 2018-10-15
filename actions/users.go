@@ -22,7 +22,7 @@ func UsersNew(c buffalo.Context) error {
 func UsersCreate(c buffalo.Context) error {
 	u := &models.User{}
 	if err := c.Bind(u); err != nil {
-		return errors.WithStack(err)
+		return c.Error(500, err)
 	}
 	u.Verified = false
 	tx := c.Value("tx").(*pop.Connection)
@@ -34,7 +34,7 @@ func UsersCreate(c buffalo.Context) error {
 	if verrs.HasAny() {
 		c.Set("user", u)
 		c.Set("errors", verrs)
-		return c.Render(200, r.HTML("users/new.html"))
+		return c.Render(422, r.HTML("users/new.html"))
 	}
 
 	//c.Session().Set("current_user_id", u.ID)
@@ -50,7 +50,7 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 		if uid := c.Session().Get("current_user_id"); uid != nil {
 			u := &models.User{}
 			tx := c.Value("tx").(*pop.Connection)
-			err := tx.Find(u, uid)
+			err := tx.Eager().Find(u, uid)
 			if err != nil || u.Verified == false {
 				c.Session().Clear()
 				return c.Redirect(302, "/")

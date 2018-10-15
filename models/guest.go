@@ -3,6 +3,11 @@ package models
 import (
 	"time"
 
+	"github.com/gobuffalo/validate/validators"
+
+	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/validate"
+
 	"github.com/gobuffalo/uuid"
 )
 
@@ -21,3 +26,13 @@ type Guest struct {
 
 // Guests is an array of Guest
 type Guests []Guest
+
+// Validate checks if a guest is correctly entered
+func (g *Guest) Validate(tx *pop.Connection) (*validate.Errors, error) {
+	var err error
+	return validate.Validate(
+		&validators.EmailIsPresent{Field: g.Email, Name: "Email"},
+		&validators.StringIsPresent{Field: g.Name, Name: "Name"},
+		&validators.IntIsGreaterThan{Field: g.Gender, Compared: 0, Name: "Gender"},
+		&validators.IntIsLessThan{Field: g.Gender, Compared: 4, Name: "Gender"}), err
+}
