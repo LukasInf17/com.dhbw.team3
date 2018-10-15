@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"log"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/invitation/mailers"
@@ -13,11 +15,11 @@ func InvitMailSend(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	u := c.Value("current_user").(*models.User)
-
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println(errors.WithStack(errors.New("no transaction found")).Error())
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
-	// Allocate an empty Invitation
+
 	invitation := &models.Invitation{}
 
 	// To find the Invitation the parameter invitation_id is used.
@@ -33,7 +35,7 @@ func InvitMailSend(c buffalo.Context) error {
 	guests := models.Guests{}
 	tx.Where("invitationid = ?", invitation.ID).All(&guests)
 
-	if err := mailers.SendInvitMail(&guests); err != nil {
+	if err := mailers.SendInvitMail(*invitation); err != nil {
 		return errors.WithStack(err)
 	}
 

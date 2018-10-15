@@ -31,20 +31,10 @@ type InvitationsResource struct {
 // List gets all Invitations and list them.
 // This function is mapped to the path GET /invitations
 func (v InvitationsResource) List(c buffalo.Context) error {
-	// tx, ok := c.Value("tx").(*pop.Connection)
-	// if !ok {
-	// 	log.Println("Error while getting data from the database")
-	// 	return c.Error(500, errors.New("Internal Server Error"))
-	// }
 	u := c.Value("current_user").(*models.User)
 
 	invitations := u.Invitations
 	c.Set("invitations", invitations)
-	// // Retrieve all Invitations from the DB
-	// if err := tx.Where("userid = ?", u.ID).All(&invitations); err != nil {
-	// 	log.Println("Error while getting data from the database")
-	// 	return c.Error(500, errors.New("Internal Server Error"))
-	// }
 
 	return c.Render(200, r.Auto(c, invitations))
 }
@@ -143,6 +133,7 @@ func (v InvitationsResource) Edit(c buffalo.Context) error {
 		log.Println("Error while getting data from the database")
 		return c.Error(500, errors.New("Internal Server Error"))
 	}
+
 	u := c.Value("current_user").(*models.User)
 
 	invitation := &models.Invitation{}
@@ -216,13 +207,12 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		// Add validation errors as flash messages
 		for _, values := range verrs.Errors {
 			for _, value := range values {
 				c.Flash().Add("danger", value)
 			}
 		}
-		// Make the errors available inside the html template
+
 		c.Set("errors", verrs)
 
 		// Render again the new.html template that the user can
@@ -278,26 +268,20 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	return c.Render(200, r.Auto(c, invitation))
 }
 
-// formParser parses the invitation form and the guests
+// formParser parses the invitation form and the guests and returns the parsed invitation.
 func formParser(m map[string][]string) (*models.Invitation, error) {
 	invitation := &models.Invitation{}
-	length := 0
-	for key := range m {
-		lowerkey := strings.ToLower(key)
-		if strings.Contains(lowerkey, "gender") {
-			l, _ := strconv.Atoi(lowerkey[6:])
-			if l > length {
-				length = l
-			}
-		}
-	}
+	length := getLastIndexOfGuests(m)
+
 	if length >= 100 {
 		return &models.Invitation{}, errors.New("Too much guests or last index too high")
 	}
+
 	invitation.Guests = make(models.Guests, length+1)
 	for i := 0; i < cap(invitation.Guests); i++ {
 		invitation.Guests[i] = models.Guest{}
 	}
+
 	for key, values := range m {
 		lowerkey := strings.ToLower(key)
 		switch {
@@ -320,22 +304,28 @@ func formParser(m map[string][]string) (*models.Invitation, error) {
 			invitation.Guests[i].Gender = i2
 		}
 	}
+
 	guests2 := models.Guests{}
 	for _, guest := range invitation.Guests {
 		if guest.Email != "" {
 			guests2 = append(guests2, guest)
 		}
 	}
+
 	invitation.Guests = guests2
 	return invitation, nil
 }
 
-func getFormValue(c buffalo.Context, s string) string {
-	s1 := strings.ToLower(s)
-	sret := c.Request().FormValue(s1)
-	if sret == "" {
-		s1 = strings.Join([]string{strings.ToUpper(string(s1[0])), s1[1:len(s1)]}, "")
-		sret = c.Request().FormValue(s1)
+func getLastIndexOfGuests(m map[string][]string) int {
+	length := 0
+	for key := range m {
+		lowerkey := strings.ToLower(key)
+		if strings.Contains(lowerkey, "gender") {
+			l, _ := strconv.Atoi(lowerkey[6:])
+			if l > length {
+				length = l
+			}
+		}
 	}
-	return sret
+	return length
 }

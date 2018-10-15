@@ -72,7 +72,7 @@ func Authorize(next buffalo.Handler) buffalo.Handler {
 	}
 }
 
-// VerifyUser verifies a user when he clicked on the link in his E-Mail.
+// VerifyUser verifies a user when he clicked on the link in verify mail.
 func VerifyUser(c buffalo.Context) error {
 	u := &models.User{}
 	tx, ok := c.Value("tx").(*pop.Connection)

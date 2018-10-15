@@ -1,3 +1,1 @@
-You have got an invitation!
-
 <%= yield %>
