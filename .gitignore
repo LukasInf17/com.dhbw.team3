@@ -15,3 +15,5 @@ invitation
 *.fizz
 a/
 buffalo_build_*.*
+*.pem
+letsencrypt/accounts/*
