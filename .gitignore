@@ -18,3 +18,5 @@ buffalo_build_*.*
 *.pem
 letsencrypt/accounts/*
 c.out
+pgadmin4/web/pgadmin/*
+
