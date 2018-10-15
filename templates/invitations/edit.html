@@ -16,7 +16,7 @@
       <% let index = 0 %>
       <%= for (i, guest) in guests { %>
       <tr>
-        <td class="col-sm-4" data-label="Gender: ">
+        <td class="col-sm-4 gender-radio-buttons" data-label="Gender: ">
           <div class="form-group">
             <div class="form-check form-check-inline">
               <%= if (guest.Gender == 1) { %>

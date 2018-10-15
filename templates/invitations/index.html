@@ -2,7 +2,7 @@
   <h1>Invitations</h1>
 </div>
 <ul class="list-unstyled list-inline">
-  <li><a href="<%= newInvitationsPath() %>" class="btn btn-primary">Create new invitation</a></li>
+  <li><a href="<%= newInvitationsPath() %>" class="btn btn-primary">New invitation</a></li>
 </ul>
 
 <table class="table table-striped">
@@ -14,14 +14,18 @@
     <tr>
       <td>
         <div>
-          Invitation: <%= invitation.CreatedAt %> (<%= len(invitation.Guests) %> guests)
+          Invitation: <%= invitation.CreatedAt %> (<%= len(invitation.Guests) %> guests), Status: <%= if (invitation.SentToGuests) { "already sent to guests" } else { "open" } %>
         </div>
       </td>
       <td>
         <div class="pull-right">
           <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-info">Show</a>
+          <%= if (!invitation.SentToGuests) { %>
           <a href="<%= editInvitationPath({ invitation_id: invitation.ID }) %>" class="btn btn-warning">Edit</a>
-          <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Are you sure?"
+          <% } else { %>
+          <a href="#" class="btn btn-warning disabled">Edit</a>
+          <% } %>
+          <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Are you sure to delete the invitation?"
             class="btn btn-danger">Delete</a>
         </div>
       </td>
@@ -29,7 +33,3 @@
     <% } %>
   </tbody>
 </table>
-
-<div class="text-center">
-  <%= paginator(pagination) %>
-</div>

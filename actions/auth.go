@@ -55,7 +55,7 @@ func AuthCreate(c buffalo.Context) error {
 
 	if u.Verified == false {
 		c.Set("user", models.User{})
-		c.Flash().Add("danger", "Your email address has not been verified yes! Please check your mailbox for new Mails and hit the verification link. If you did not get a mail, check your spam folder and try registration again.")
+		c.Flash().Add("danger", "Your email address has not been verified yet! Please check your mailbox for new Mails and hit the verification link. If you did not get a mail, check your spam folder and try registration again.")
 		return c.Render(422, r.HTML("auth/new.html"))
 	}
 

@@ -28,27 +28,23 @@ type InvitationsResource struct {
 	buffalo.Resource
 }
 
-// List gets all Invitations. This function is mapped to the path
-// GET /invitations
+// List gets all Invitations and list them.
+// This function is mapped to the path GET /invitations
 func (v InvitationsResource) List(c buffalo.Context) error {
-	// Get the DB connection from the context
-	tx, ok := c.Value("tx").(*pop.Connection)
-	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
-	}
-
-	invitations := models.Invitations{}
+	// tx, ok := c.Value("tx").(*pop.Connection)
+	// if !ok {
+	// 	log.Println("Error while getting data from the database")
+	// 	return c.Error(500, errors.New("Internal Server Error"))
+	// }
 	u := c.Value("current_user").(*models.User)
-	// Paginate results. Params "page" and "per_page" control pagination.
-	// Default values are "page=1" and "per_page=20".
-	q := tx.PaginateFromParams(c.Params())
-	// Retrieve all Invitations from the DB
-	if err := q.Eager().Where("userid = ?", u.ID).All(&invitations); err != nil {
-		return errors.WithStack(err)
-	}
 
-	// Add the paginator to the context so it can be used in the template.
-	c.Set("pagination", q.Paginator)
+	invitations := u.Invitations
+	c.Set("invitations", invitations)
+	// // Retrieve all Invitations from the DB
+	// if err := tx.Where("userid = ?", u.ID).All(&invitations); err != nil {
+	// 	log.Println("Error while getting data from the database")
+	// 	return c.Error(500, errors.New("Internal Server Error"))
+	// }
 
 	return c.Render(200, r.Auto(c, invitations))
 }
@@ -58,22 +54,24 @@ func (v InvitationsResource) List(c buffalo.Context) error {
 func (v InvitationsResource) Show(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
-	u := c.Value("current_user").(*models.User)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
-	// Allocate an empty Invitation
+
+	u := c.Value("current_user").(*models.User)
+
 	invitation := &models.Invitation{}
 
 	// To find the Invitation the parameter invitation_id is used.
 	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
-		return c.Error(404, err)
+		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
 
 	if invitation.UserID != u.ID {
-		c.Flash().Add("danger", "You are not allowed to visit this page!")
-		return c.Redirect(302, "/invitations")
+		return c.Error(403, errors.New("You are not allowed to visit this page"))
 	}
+
 	c.Set("guests", invitation.Guests)
 
 	return c.Render(200, r.Auto(c, invitation))
@@ -88,77 +86,52 @@ func (v InvitationsResource) New(c buffalo.Context) error {
 // Create adds a Invitation to the DB. This function is mapped to the
 // path POST /invitations
 func (v InvitationsResource) Create(c buffalo.Context) error {
-	// Allocate an empty Invitation
-	invitation := &models.Invitation{}
-	u := c.Value("current_user").(*models.User)
-	invitation.UserID = u.ID
-	// Bind invitation to the html form elements
-	if err := c.Bind(invitation); err != nil || invitation.Mailtext == "" {
-		log.Println(err)
-		c.Flash().Add("danger", "Please fill in the Text body and at least one guest")
-		return c.Render(422, r.Auto(c, invitation))
-	}
-
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		c.Flash().Add("danger", "Error while creating the invitation")
-		return c.Render(422, r.Auto(c, invitation))
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
-	// Validate the data from the html form
-	verrs, err := tx.ValidateAndCreate(invitation)
-	// Getting the guests data
+	u := c.Value("current_user").(*models.User)
 
-	guestCount, err := strconv.Atoi(getFormValue(c, "guestcount"))
+	c.Request().ParseForm()
+	inv, err := formParser(c.Request().Form)
 
-	guests := make([]*models.Guest, guestCount)
-
-	for i := 0; i < guestCount; i++ {
-		if getFormValue(c, "name"+strconv.Itoa(i)) != "" {
-			gender, _ := strconv.Atoi(getFormValue(c, "gender"+strconv.Itoa(i)))
-			guests[i] = &models.Guest{
-				InvitationID:      invitation.ID,
-				Name:              getFormValue(c, "name"+strconv.Itoa(i)),
-				Email:             getFormValue(c, "mail"+strconv.Itoa(i)),
-				Gender:            gender,
-				Status:            0,
-				AdditionalComment: "",
-			}
-		} else {
-			break
-		}
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Render(422, r.Auto(c, inv))
 	}
-	// insert the guests
-	for _, guest := range guests {
-		err := tx.Create(guest)
-		if err != nil {
-			// return errors.WithStack(err)
-			log.Println(err.Error())
-			c.Flash().Add("danger", "Error while creating the invitation")
-			return c.Render(422, r.Auto(c, invitation))
-		}
-	}
+
+	inv.UserID = u.ID
+	verrs, err := tx.Eager().ValidateAndCreate(inv)
+
 	if err != nil {
 		log.Println(err.Error())
 		c.Flash().Add("danger", "Error while creating the invitation")
-		return c.Render(422, r.Auto(c, invitation))
+		return c.Render(422, r.Auto(c, inv))
 	}
 
 	if verrs.HasAny() {
+		// Add validation errors as flash messages
+		for _, values := range verrs.Errors {
+			for _, value := range values {
+				c.Flash().Add("danger", value)
+			}
+		}
 		// Make the errors available inside the html template
 		c.Set("errors", verrs)
 
 		// Render again the new.html template that the user can
 		// correct the input.
-		return c.Render(422, r.Auto(c, invitation))
+		return c.Render(422, r.Auto(c, inv))
 	}
 
 	// If there are no errors set a success message
 	c.Flash().Add("success", "Invitation was created successfully")
 
 	// and redirect to the invitations index page
-	return c.Render(201, r.Auto(c, invitation))
+	return c.Render(201, r.Auto(c, inv))
 }
 
 // Edit renders a edit form for a Invitation. This function is
@@ -167,18 +140,22 @@ func (v InvitationsResource) Edit(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
-	guests := &[]models.Guest{}
-	// Allocate an empty Invitation
+	u := c.Value("current_user").(*models.User)
+
 	invitation := &models.Invitation{}
 
-	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
-		return c.Error(404, err)
+	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
 
-	tx.Where("invitationid = ?", invitation.ID).All(guests)
-	c.Set("guests", guests)
+	if invitation.UserID != u.ID {
+		return c.Error(403, errors.New("You are not allowed to visit this page"))
+	}
+
+	c.Set("guests", invitation.Guests)
 	return c.Render(200, r.Auto(c, invitation))
 }
 
@@ -188,73 +165,76 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
-	// Allocate an empty Invitation
+	u := c.Value("current_user").(*models.User)
+
 	invitation := &models.Invitation{}
 
-	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
-		return c.Error(404, err)
+	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
 
-	guestsToDelete := models.Guests{}
-
-	tx.Where("invitationid = ?", invitation.ID).All(&guestsToDelete)
-
-	if err := tx.Destroy(&guestsToDelete); err != nil {
-		return errors.WithStack(err)
+	if invitation.UserID != u.ID {
+		return c.Error(403, errors.New("You are not allowed to visit this page"))
 	}
 
-	guestCount, _ := strconv.Atoi(getFormValue(c, "guestcount"))
-
-	guests := models.Guests{}
-
-	for guestindex := 0; guestindex < guestCount; guestindex++ {
-		if getFormValue(c, "name"+strconv.Itoa(guestindex)) != "" {
-			gender, _ := strconv.Atoi(getFormValue(c, "gender"+strconv.Itoa(guestindex)))
-			guests = append(guests, models.Guest{
-				InvitationID:      invitation.ID,
-				Name:              getFormValue(c, "name"+strconv.Itoa(guestindex)),
-				Email:             getFormValue(c, "mail"+strconv.Itoa(guestindex)),
-				Gender:            gender,
-				Status:            0,
-				AdditionalComment: "",
-			})
-		} else {
-			// TODO Creating logic for updating guests when one guest in the middle
-			break
-		}
+	if invitation.SentToGuests == true {
+		return c.Error(403, errors.New("After sending the invitation editing is not allowed anymore"))
 	}
 
-	// insert the guests
-	if err := tx.Create(&guests); err != nil {
-		return errors.WithStack(err)
-	}
-	// Bind Invitation to the html form elements
-	if err := c.Bind(invitation); err != nil {
-		return errors.WithStack(err)
+	invID := invitation.ID
+
+	if err := tx.Destroy(&invitation.Guests); err != nil {
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
-	verrs, err := tx.ValidateAndUpdate(invitation)
+	if err := tx.Destroy(invitation); err != nil {
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
+	}
+
+	c.Request().ParseForm()
+	inv, err := formParser(c.Request().Form)
+
 	if err != nil {
-		return errors.WithStack(err)
+		c.Flash().Add("danger", err.Error())
+		return c.Render(422, r.Auto(c, inv))
+	}
+
+	inv.UserID = u.ID
+	inv.ID = invID
+	verrs, err := tx.Eager().ValidateAndCreate(inv)
+
+	if err != nil {
+		log.Println(err.Error())
+		c.Flash().Add("danger", "Error while creating the invitation")
+		return c.Render(422, r.Auto(c, inv))
 	}
 
 	if verrs.HasAny() {
+		// Add validation errors as flash messages
+		for _, values := range verrs.Errors {
+			for _, value := range values {
+				c.Flash().Add("danger", value)
+			}
+		}
 		// Make the errors available inside the html template
 		c.Set("errors", verrs)
 
-		// Render again the edit.html template that the user can
+		// Render again the new.html template that the user can
 		// correct the input.
-		return c.Render(422, r.Auto(c, invitation))
+		return c.Render(422, r.Auto(c, inv))
 	}
 
 	// If there are no errors set a success message
 	c.Flash().Add("success", "Invitation was updated successfully")
 
 	// and redirect to the invitations index page
-	return c.Render(200, r.Auto(c, invitation))
+	return c.Render(201, r.Auto(c, inv))
 }
 
 // Destroy deletes a Invitation from the DB. This function is mapped
@@ -263,28 +243,32 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
-	// Allocate the guests
-	guests := models.Guests{}
-	// Allocate an empty Invitation
+
+	u := c.Value("current_user").(*models.User)
+
 	invitation := &models.Invitation{}
 
-	// To find the Invitation the parameter invitation_id is used.
-	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
-		return c.Error(404, err)
+	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
-	// Get guests of this invitation
-	tx.Where("invitationid = ?", invitation.ID).All(&guests)
+
+	if invitation.UserID != u.ID {
+		return c.Error(403, errors.New("You are not allowed to visit this page"))
+	}
 
 	// Deletes guests associated with invitation
-	if err := tx.Destroy(&guests); err != nil {
-		return errors.WithStack(err)
+	if err := tx.Destroy(&invitation.Guests); err != nil {
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
 	// Deletes invitation
 	if err := tx.Destroy(invitation); err != nil {
-		return errors.WithStack(err)
+		log.Println("Error while getting data from the database")
+		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
 	// If there are no errors set a flash message
@@ -294,30 +278,56 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 	return c.Render(200, r.Auto(c, invitation))
 }
 
-// DeleteGuestFromUnsubscribe deletes a guest when he unsubscribes
-func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
-	tx, ok := c.Value("tx").(*pop.Connection)
-	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+// formParser parses the invitation form and the guests
+func formParser(m map[string][]string) (*models.Invitation, error) {
+	invitation := &models.Invitation{}
+	length := 0
+	for key := range m {
+		lowerkey := strings.ToLower(key)
+		if strings.Contains(lowerkey, "gender") {
+			l, _ := strconv.Atoi(lowerkey[6:])
+			if l > length {
+				length = l
+			}
+		}
 	}
-
-	guest := &models.Guest{}
-	guests := models.Guests{}
-
-	// To find the Invitation the parameter guest_id is used.
-	if err := tx.Find(guest, c.Param("guest_id")); err != nil {
-		return c.Error(404, err)
+	if length >= 100 {
+		return &models.Invitation{}, errors.New("Too much guests or last index too high")
 	}
-
-	// Get guests of this email address
-	tx.Where("email = ?", guest.Email).All(&guests)
-
-	if err := tx.Destroy(&guests); err != nil {
-		return errors.WithStack(err)
+	invitation.Guests = make(models.Guests, length+1)
+	for i := 0; i < cap(invitation.Guests); i++ {
+		invitation.Guests[i] = models.Guest{}
 	}
-
-	// If there are no errors set a flash message
-	return c.Render(200, r.String("Your e-mail was deleted successfully"))
+	for key, values := range m {
+		lowerkey := strings.ToLower(key)
+		switch {
+		case lowerkey == "mailtext":
+			if values[0] == "" {
+				return &models.Invitation{}, errors.New("Please fill in a body text")
+			}
+			invitation.Mailtext = values[0]
+		case lowerkey == "salutation":
+			invitation.Salutation, _ = strconv.Atoi(values[0])
+		case strings.Contains(lowerkey, "name"):
+			i, _ := strconv.Atoi(lowerkey[4:])
+			invitation.Guests[i].Name = values[0]
+		case strings.Contains(lowerkey, "mail"):
+			i, _ := strconv.Atoi(lowerkey[4:])
+			invitation.Guests[i].Email = values[0]
+		case strings.Contains(lowerkey, "gender"):
+			i, _ := strconv.Atoi(lowerkey[6:])
+			i2, _ := strconv.Atoi(values[0])
+			invitation.Guests[i].Gender = i2
+		}
+	}
+	guests2 := models.Guests{}
+	for _, guest := range invitation.Guests {
+		if guest.Email != "" {
+			guests2 = append(guests2, guest)
+		}
+	}
+	invitation.Guests = guests2
+	return invitation, nil
 }
 
 func getFormValue(c buffalo.Context, s string) string {

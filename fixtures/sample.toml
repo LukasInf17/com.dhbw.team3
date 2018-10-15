@@ -33,6 +33,14 @@ name = "Test data"
       verified = true
       password_hash = "<%= hash(`123456`) %>"
 
+    [[scenario.table.row]]
+      id = "<%= uuidNamed(`marco`) %>"
+      email = "marco@example.com"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      verified = true
+      password_hash = "<%= hash(`12345678`) %>"
+
   [[scenario.table]]
     name = "guests"
 
