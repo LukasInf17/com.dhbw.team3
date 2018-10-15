@@ -16,7 +16,7 @@ func SendInvitMail(guests *models.Guests) error {
 		m.Subject = "Invitation"
 		m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"
 		m.To = []string{guest.Email}
-		m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/invitations/delete_guest/"+guest.ID.String()+">")
+		m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/guests/"+guest.ID.String()+"/delete>")
 		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{}); err != nil {
 			log.Println(errors.WithStack(err))
 		}
@@ -37,7 +37,7 @@ func SendVerifyMail(u *models.User) error {
 	m.Subject = "Verify your email address to gain access to the Invitation Factory"
 	m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"
 	m.To = []string{u.Email}
-	m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/invitations/delete_guest/"+u.ID.String()+">")
+	m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/guests/"+u.ID.String()+"/delete>")
 	textbody := `Welcome to the Invitation Factory!
 
 It seems that someone with the email address ` + u.Email + ` tried to register to the Invitation Factory.
