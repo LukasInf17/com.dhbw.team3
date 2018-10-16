@@ -1,6 +1,9 @@
 package actions
 
 import (
+	"strconv"
+	"strings"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/invitation/models"
@@ -37,6 +40,29 @@ func StatusResponse(c buffalo.Context) error {
 
 // SetStatusResponse puts the guest response data into the database.
 func SetStatusResponse(c buffalo.Context) error {
+	tx, ok := c.Value("tx").(*pop.Connection)
+	if !ok {
+		return errors.WithStack(errors.New("no transaction found"))
+	}
+
+	guest := &models.Guest{}
+
+	if err := tx.Find(guest, c.Param("guest_id")); err != nil {
+		return c.Error(404, err)
+	}
+
+	guest.Status = strconv.Atoi(getFormValue(c, "status"))
+	guest.AdditionalComment = getFormValue(c, "additional_comment")
 
 	return c.Redirect(302, "/")
+}
+
+func getFormValue(c buffalo.Context, s string) string {
+	s1 := strings.ToLower(s)
+	sret := c.Request().FormValue(s1)
+	if sret == "" {
+		s1 = strings.Join([]string{strings.ToUpper(string(s1[0])), s1[1:len(s1)]}, "")
+		sret = c.Request().FormValue(s1)
+	}
+	return sret
 }

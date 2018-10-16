@@ -14,7 +14,7 @@
     <tr>
       <td>
         <div>
-          Invitation: <%= invitation.CreatedAt %> (<%= len(invitation.Guests) %> guests), Status: <%= if (invitation.SentToGuests) { "already sent to guests" } else { "open" } %>
+          Invitation: <%= invitation.CreatedAt %> (<%= len(invitation.Guests) %> guests), Status: <%= if (invitation.SentToGuests == true) { "already sent to guests" } else { "open" } %>
         </div>
       </td>
       <td>

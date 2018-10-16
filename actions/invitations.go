@@ -88,6 +88,8 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	c.Request().ParseForm()
 	inv, err := formParser(c.Request().Form)
 
+	inv.SentToGuests = false
+
 	if err != nil {
 		c.Flash().Add("danger", err.Error())
 		return c.Render(422, r.Auto(c, inv))
