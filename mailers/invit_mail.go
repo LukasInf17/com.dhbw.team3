@@ -10,7 +10,7 @@ import (
 )
 
 // SendInvitMail sends a mail to all guests of the invitation
-func SendInvitMail(invitation models.Invitation) error {
+func SendInvitMail(invitation *models.Invitation) error {
 	for _, guest := range invitation.Guests {
 		m := mail.NewMessage()
 		m.Subject = "Invitation"
