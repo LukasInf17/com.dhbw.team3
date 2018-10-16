@@ -35,6 +35,19 @@ func DeleteGuestFromUnsubscribe(c buffalo.Context) error {
 
 // StatusResponse serves the page where the guest can response to the invitation.
 func StatusResponse(c buffalo.Context) error {
+	tx, ok := c.Value("tx").(*pop.Connection)
+	if !ok {
+		return errors.WithStack(errors.New("no transaction found"))
+	}
+
+	guest := &models.Guest{}
+
+	if err := tx.Find(guest, c.Param("guest_id")); err != nil {
+		return c.Error(404, err)
+	}
+
+	c.Set("action_url", "/invitations/"+guest.InvitationID.String()+"/guests/"+guest.ID.String())
+
 	return c.Render(200, r.HTML("guests/response.html"))
 }
 
@@ -53,7 +66,6 @@ func SetStatusResponse(c buffalo.Context) error {
 
 	guest.Status, _ = strconv.Atoi(getFormValue(c, "status"))
 	guest.AdditionalComment = getFormValue(c, "additional_comment")
-
 	return c.Redirect(302, "/")
 }
 
