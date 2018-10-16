@@ -4,6 +4,7 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/json"
+	"log"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -47,6 +48,7 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 				hash := sha384.Sum(nil)
 				k1 := strings.Replace(k, ".", "_", -1)
 				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash))
+				log.Println("Set " + k1 + ": " + "sha384-" + base64.StdEncoding.EncodeToString(hash))
 			}
 		}
 		return next(c)
