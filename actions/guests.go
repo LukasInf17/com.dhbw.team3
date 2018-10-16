@@ -51,7 +51,7 @@ func SetStatusResponse(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
-	guest.Status = strconv.Atoi(getFormValue(c, "status"))
+	guest.Status, _ = strconv.Atoi(getFormValue(c, "status"))
 	guest.AdditionalComment = getFormValue(c, "additional_comment")
 
 	return c.Redirect(302, "/")
