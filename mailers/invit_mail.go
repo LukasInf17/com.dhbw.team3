@@ -20,6 +20,7 @@ func SendInvitMail(invitation *models.Invitation) error {
 		responseURL := "https://invitation-factory.tk/invitations/" + invitation.ID.String() + "/guests/" + guest.ID.String()
 		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL}); err != nil {
 			log.Println(errors.WithStack(err))
+			return errors.WithStack(err)
 		}
 		if err := m.AddBody(r.Plain("invit_mail.txt"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL}); err != nil {
 			log.Println(errors.WithStack(err))
@@ -27,6 +28,7 @@ func SendInvitMail(invitation *models.Invitation) error {
 		log.Println("Sending mail to " + guest.Email)
 		if err := smtp.Send(m); err != nil {
 			log.Println(errors.WithStack(err))
+			return errors.WithStack(err)
 		}
 	}
 	return nil

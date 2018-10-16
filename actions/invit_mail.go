@@ -23,7 +23,7 @@ func InvitMailSend(c buffalo.Context) error {
 	invitation := &models.Invitation{}
 
 	// To find the Invitation the parameter invitation_id is used.
-	if err := tx.Find(invitation, c.Param("invitation_id")); err != nil {
+	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
 		return c.Error(404, err)
 	}
 
@@ -31,9 +31,6 @@ func InvitMailSend(c buffalo.Context) error {
 		c.Flash().Add("danger", "You are not allowed to visit this page!")
 		return c.Redirect(302, "/invitations")
 	}
-
-	guests := models.Guests{}
-	tx.Where("invitationid = ?", invitation.ID).All(&guests)
 
 	if err := mailers.SendInvitMail(invitation); err != nil {
 		return errors.WithStack(err)
