@@ -21,4 +21,5 @@ c.out
 pgadmin4/web/pgadmin/*
 pgadmin4/web/regression/*
 pgadmin4/web/migrations/*
+pgadmin4/web/*.js
 
