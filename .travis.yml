@@ -25,9 +25,9 @@ before_script:
 go_import_path: github.com/invitation
 
 install:
-  - go get github.com/gobuffalo/buffalo/buffalo
-  - go get github.com/gobuffalo/suite
-  - go get $(go list ./... | grep -v /vendor/)
+  - go get -v github.com/gobuffalo/buffalo/buffalo
+  - go get -v github.com/gobuffalo/suite github.com/gobuffalo/mw-paramlogger github.com/gobuffalo/mw-forcessl github.com/gobuffalo/buffalo-pop github.com/gobuffalo/mw-csrf github.com/gobuffalo/mw-i18n golang.org/x/crypto/bcrypt
+  - go get -v $(go list ./... | grep -v /vendor/)
 
 script: buffalo test -v -coverprofile=c.out ./...
 
