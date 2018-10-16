@@ -54,6 +54,7 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 				fmt.Fprintln(logfile, "Set "+k1+": "+"sha384-"+base64.StdEncoding.EncodeToString(hash))
 			}
 		}
+		logfile.Close()
 		return next(c)
 	}
 }
