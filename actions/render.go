@@ -4,11 +4,13 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/json"
-	"log"
+	"fmt"
+	"os"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/packr"
 )
 
@@ -36,6 +38,7 @@ func init() {
 // SRIHandler adds support for Subresource integrity
 func SRIHandler(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
+		logfile, _ := os.OpenFile(envy.GoPath()+"/log/invitation-factory.log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 		jsonstring := r.AssetsBox.Bytes("assets/manifest.json")
 		var m map[string][]interface{}
 		json.Unmarshal(jsonstring, m)
@@ -48,7 +51,7 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 				hash := sha384.Sum(nil)
 				k1 := strings.Replace(k, ".", "_", -1)
 				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash))
-				log.Println("Set " + k1 + ": " + "sha384-" + base64.StdEncoding.EncodeToString(hash))
+				fmt.Fprintln(logfile, "Set "+k1+": "+"sha384-"+base64.StdEncoding.EncodeToString(hash))
 			}
 		}
 		return next(c)
