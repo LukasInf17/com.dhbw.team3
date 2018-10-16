@@ -50,7 +50,7 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 		if uid := c.Session().Get("current_user_id"); uid != nil {
 			u := &models.User{}
 			tx := c.Value("tx").(*pop.Connection)
-			err := tx.Eager().Find(u, uid)
+			err := tx.Eager("Invitations.Guests").Find(u, uid)
 			if err != nil || u.Verified == false {
 				c.Session().Clear()
 				return c.Redirect(302, "/")
@@ -72,7 +72,7 @@ func Authorize(next buffalo.Handler) buffalo.Handler {
 	}
 }
 
-// VerifyUser verifies a user when he clicked on the link in his E-Mail.
+// VerifyUser verifies a user when he clicked on the link in verify mail.
 func VerifyUser(c buffalo.Context) error {
 	u := &models.User{}
 	tx, ok := c.Value("tx").(*pop.Connection)

@@ -10,17 +10,18 @@ import (
 )
 
 // SendInvitMail sends a mail to all guests of the invitation
-func SendInvitMail(guests *models.Guests) error {
-	for _, guest := range *guests {
+func SendInvitMail(invitation models.Invitation) error {
+	for _, guest := range invitation.Guests {
 		m := mail.NewMessage()
 		m.Subject = "Invitation"
 		m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"
 		m.To = []string{guest.Email}
 		m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/guests/"+guest.ID.String()+"/delete>")
-		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{}); err != nil {
+		responseURL := "https://invitation-factory.tk/invitations/" + invitation.ID.String() + "/guests/" + guest.ID.String()
+		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL}); err != nil {
 			log.Println(errors.WithStack(err))
 		}
-		if err := m.AddBody(r.Plain("invit_mail.txt", "layout.txt"), render.Data{}); err != nil {
+		if err := m.AddBody(r.Plain("invit_mail.txt"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL}); err != nil {
 			log.Println(errors.WithStack(err))
 		}
 		log.Println("Sending mail to " + guest.Email)
@@ -37,7 +38,6 @@ func SendVerifyMail(u *models.User) error {
 	m.Subject = "Verify your email address to gain access to the Invitation Factory"
 	m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"
 	m.To = []string{u.Email}
-	m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/guests/"+u.ID.String()+"/delete>")
 	textbody := `Welcome to the Invitation Factory!
 
 It seems that someone with the email address ` + u.Email + ` tried to register to the Invitation Factory.
