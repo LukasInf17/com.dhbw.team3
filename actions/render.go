@@ -40,10 +40,8 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 		json.Unmarshal(jsonstring, &m)
 		for k, v := range m {
 			if strings.Contains(k, ".css") || strings.Contains(k, ".js") {
-				filename := v
-				file := r.AssetsBox.Bytes("assets/" + filename)
 				sha384 := sha512.New384()
-				sha384.Write(file)
+				sha384.Write(r.AssetsBox.Bytes("assets/" + v))
 				hash := sha384.Sum(nil)
 				k1 := strings.Replace(k, ".", "_", -1)
 				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash))
