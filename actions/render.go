@@ -1,6 +1,12 @@
 package actions
 
 import (
+	"crypto/sha512"
+	"encoding/base64"
+	"encoding/json"
+	"strings"
+
+	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr"
 )
@@ -24,4 +30,23 @@ func init() {
 			// "form_for": plush.FormForHelper,
 		},
 	})
+}
+
+// SRIHandler adds support for Subresource integrity
+func SRIHandler(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		jsonstring := r.AssetsBox.Bytes("assets/manifest.json")
+		var m map[string]string
+		json.Unmarshal(jsonstring, &m)
+		for k, v := range m {
+			if strings.Contains(k, ".css") || strings.Contains(k, ".js") {
+				sha384 := sha512.New384()
+				sha384.Write(r.AssetsBox.Bytes("assets/" + v))
+				hash := sha384.Sum(nil)
+				k1 := strings.Replace(k, ".", "_", -1)
+				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash))
+			}
+		}
+		return next(c)
+	}
 }

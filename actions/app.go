@@ -64,6 +64,8 @@ func App() *buffalo.App {
 		// Setup and use translations:
 		app.Use(translations())
 
+		app.Use(SRIHandler)
+
 		app.GET("/", HomeHandler)
 
 		app.Use(SetCurrentUser)
