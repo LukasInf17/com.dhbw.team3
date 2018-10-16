@@ -41,6 +41,7 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 		logfile, _ := os.OpenFile(envy.GoPath()+"/log/invitation-factory.log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 		jsonstring := r.AssetsBox.Bytes("assets/manifest.json")
 		var m map[string][]interface{}
+		fmt.Fprintln(logfile, m)
 		json.Unmarshal(jsonstring, m)
 		for k, v := range m {
 			if strings.Contains(k, ".css") || strings.Contains(k, ".js") {
