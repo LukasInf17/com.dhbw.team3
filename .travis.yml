@@ -33,3 +33,4 @@ script: buffalo test -v -coverprofile=c.out ./...
 
 after_script:
   - go tool cover -func=c.out
+  - cat ${TRAVIS_HOME}/gopath/log/invitation-factory.log

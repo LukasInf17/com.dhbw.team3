@@ -24,10 +24,9 @@ func main() {
 		fmt.Println(err)
 	}
 	if envy.Get("GO_ENV", "development") == "test" {
-		log.SetOutput(os.Stdout)
-	} else {
-		log.SetOutput(logFile)
+		logFile, _ = os.OpenFile(envy.GoPath()+"/log/invitation-factory.log", os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)
 	}
+	log.SetOutput(logFile)
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	app := actions.App()
 	log.Println("Invitation-Factory started.")
