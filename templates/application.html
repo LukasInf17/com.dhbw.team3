@@ -5,8 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
 	<title>Infact</title>
-	<%= stylesheetTag("application.css", {crossorigin: "anonymous", integrity: application_css}) %>
-	<%= javascriptTag("hammer.min.js", {crossorigin: "anonymous", integrity: hammer_min_js}) %>
+	<%= stylesheetTag("application.css", {crossorigin: "anonymous", integrity: application_css, nonce: nonce}) %>
+	<%= javascriptTag("hammer.min.js", {crossorigin: "anonymous", integrity: hammer_min_js, nonce: nonce}) %>
 	<meta name="csrf-param" content="authenticity_token" />
 	<meta name="csrf-token" content="<%= authenticity_token %>" />
 	<link rel="icon" href="<%= assetPath(`images/favicon.ico`) %>">
@@ -73,7 +73,7 @@
 	</div>
 	<% } %>
 
-	<%= javascriptTag("application.js", {crossorigin: "anonymous", integrity: application_js}) %>
+	<%= javascriptTag("application.js", {crossorigin: "anonymous", integrity: application_js, nonce: nonce}) %>
 </body>
 
 </html>
