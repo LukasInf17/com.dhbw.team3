@@ -67,6 +67,8 @@ func App() *buffalo.App {
 
 		app.Use(SRIHandler)
 
+		app.Use(SetSecurityHeaders)
+
 		app.GET("/", HomeHandler)
 
 		app.Use(SetCurrentUser)
