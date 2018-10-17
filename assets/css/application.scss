@@ -163,3 +163,15 @@ table.order-list {
     width: 100%;
   }
 }
+
+.status-ok {
+  color: lime;
+}
+
+.status-fail {
+  color: red;
+}
+
+.status-unknown {
+  color: grey;
+}

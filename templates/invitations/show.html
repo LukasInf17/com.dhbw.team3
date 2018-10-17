@@ -31,6 +31,10 @@
       <td>Gender</td>
       <td>Name</td>
       <td>Email</td>
+      <%= if (invitation.SentToGuests) { %>
+      <td>Status</td>
+      <td>Additional Comment</td>
+      <%= } %>
     </tr>
   </thead>
   <tbody>
@@ -75,6 +79,20 @@
       <td class="col-sm-4" data-label="E-Mail: ">
         <input type="email" class="form-control" name="mail<%= i %>" form="invitation-form" readonly="readonly" value="<%= guest.Email %>" />
       </td>
+      <%= if (invitation.SentToGuests) { %>
+      <td>
+        <% if (guest.Status == 0) { %>
+        <div class="status-unknown" title="not responded">⚫</div>
+        <% } else if (guest.Status == 1) { %>
+        <div class="status-ok" title="invitation accepted">⚫</div>
+        <% } else if (guest.Status == 2) { %>
+        <div class="status-fail" title="invitation declined">⚫</div>
+        <% } %>
+      </td>
+      <td>
+        <div><%= guest.AdditionalComment %></div>
+      </td>
+      <% } %>
     </tr>
     <% } %>
   </tbody>

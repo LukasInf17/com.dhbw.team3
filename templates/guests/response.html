@@ -4,11 +4,11 @@
     <input type="hidden" name="authenticity_token" value="<%= authenticity_token %>" />
     <div class="form-group">
         <div class="form-check form-check-inline">
-            <input id="status1" type="radio" name="status" value="1" />
+            <input id="status1" class="form-check-input btn-login" type="radio" name="status" value="1" />
             <label for="status1">Accept invitation</label>
         </div>
         <div class="form-check form-check-inline">
-            <input id="status2" type="radio" name="status" value="2" />
+            <input id="status2" class="form-check-input btn-login" type="radio" name="status" value="2" />
             <label for="status2">Decline invitation</label>
         </div>
     </div>
@@ -17,7 +17,7 @@
     </div>
     <ul class="list-unstyled list-inline">
         <li class="list-inline-item">
-          <input type="submit" class="btn btn-info">Send response</a>
+          <input type="submit" class="btn btn-info">Send response</input>
         </li>
       </ul>
 </form>
