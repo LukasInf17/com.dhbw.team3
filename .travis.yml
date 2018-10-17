@@ -5,6 +5,9 @@ sudo: required
 go:
   - "1.11"
 
+nodejs:
+  - "8"
+
 git:
   depth: 3
   quiet: true
@@ -28,6 +31,7 @@ install:
   - go get -v github.com/gobuffalo/buffalo/buffalo
   - go get -v github.com/gobuffalo/suite github.com/gobuffalo/mw-paramlogger github.com/gobuffalo/mw-forcessl github.com/gobuffalo/buffalo-pop github.com/gobuffalo/mw-csrf github.com/gobuffalo/mw-i18n golang.org/x/crypto/bcrypt
   - go get -v $(go list ./... | grep -v /vendor/)
+  - yarn
   - buffalo build
 
 script: buffalo test -v -coverprofile=c.out ./...
