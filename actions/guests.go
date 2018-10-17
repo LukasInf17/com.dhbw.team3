@@ -46,6 +46,11 @@ func StatusResponse(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	if guest.Status > 0 {
+		c.Flash().Add("danger", "You already responded to this invitation!")
+		return c.Redirect(302, "/")
+	}
+
 	c.Set("action_url", "/invitations/"+guest.InvitationID.String()+"/guests/"+guest.ID.String())
 
 	return c.Render(200, r.HTML("guests/response.html"))
@@ -67,6 +72,7 @@ func SetStatusResponse(c buffalo.Context) error {
 	guest.Status, _ = strconv.Atoi(getFormValue(c, "status"))
 	guest.AdditionalComment = getFormValue(c, "additional_comment")
 
+	c.Flash().Add("success", "Your response was successfully transmitted!")
 	tx.Update(guest)
 
 	return c.Redirect(302, "/")
