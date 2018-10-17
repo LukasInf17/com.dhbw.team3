@@ -32,7 +32,9 @@ install:
   - go get -v github.com/gobuffalo/suite github.com/gobuffalo/mw-paramlogger github.com/gobuffalo/mw-forcessl github.com/gobuffalo/buffalo-pop github.com/gobuffalo/mw-csrf github.com/gobuffalo/mw-i18n golang.org/x/crypto/bcrypt
   - go get -v $(go list ./... | grep -v /vendor/)
   - yarn
+  - GO_ENV=development
   - buffalo build --environment development
+  - GO_ENV=test
 
 script: buffalo test -v -coverprofile=c.out ./...
 
