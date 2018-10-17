@@ -32,8 +32,6 @@ func init() {
 	})
 }
 
-var contentHashes map[string][]string
-
 // SRIHandler adds support for Subresource integrity
 func SRIHandler(next buffalo.Handler) buffalo.Handler {
 	contentHashes := map[string][]string{}
@@ -59,6 +57,7 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash)+" sha512-"+base64.StdEncoding.EncodeToString(hash2))
 			}
 		}
+		c.Set("contentHashes", contentHashes)
 		return next(c)
 	}
 }
@@ -66,6 +65,7 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 // SetSecurityHeaders sets security headers
 func SetSecurityHeaders(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
+		contentHashes := c.Value("contentHashes").(map[string][]string)
 		scriptstring := ""
 		stylestring := ""
 		for k, v := range contentHashes {
@@ -78,7 +78,7 @@ func SetSecurityHeaders(next buffalo.Handler) buffalo.Handler {
 				}
 			}
 		}
-		c.Response().Header().Add("Content-Security-Policy", "default-src 'none'; script-src 'strict-dynamic' "+scriptstring+"'self'; img-src 'self'; style-src 'self' "+stylestring+"; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none';")
+		c.Response().Header().Set("Content-Security-Policy", "default-src 'none'; script-src 'strict-dynamic' "+scriptstring+"'self'; img-src 'self'; style-src 'self' "+stylestring+"; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none';")
 		return next(c)
 	}
 }
