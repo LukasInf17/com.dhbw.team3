@@ -31,7 +31,7 @@
         <td class="col-sm-2">
             <input type="button" class="btn btn-md btn-danger" value="Delete" id="delete${addRowCounter}" />
         </td>`;
-            $(`delete${addRowCounter}`).on("click", (event) => {
+            $(`#delete${addRowCounter}`).on("click", (event) => {
                 $(this).parent().parent().remove();
                 addRowCounter--;
                 $("#guestcount").attr("value", addRowCounter);
