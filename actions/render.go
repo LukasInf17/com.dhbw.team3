@@ -41,10 +41,13 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 		for k, v := range m {
 			if strings.Contains(k, ".css") || strings.Contains(k, ".js") {
 				sha384 := sha512.New384()
+				sha5 := sha512.New()
 				sha384.Write(r.AssetsBox.Bytes("assets/" + v))
+				sha5.Write(r.AssetsBox.Bytes("assets/" + v))
 				hash := sha384.Sum(nil)
+				hash2 := sha5.Sum(nil)
 				k1 := strings.Replace(k, ".", "_", -1)
-				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash))
+				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash)+" sha512-"+base64.StdEncoding.EncodeToString(hash2))
 			}
 		}
 		return next(c)
