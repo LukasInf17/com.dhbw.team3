@@ -81,7 +81,7 @@
       </td>
       <%= if (invitation.SentToGuests == true) { %>
       <td>
-        <% if (guest.Status == 0) { %>
+        <%= if (guest.Status == 0) { %>
         <div class="status-unknown" title="not responded">⚫</div>
         <% } else if (guest.Status == 1) { %>
         <div class="status-ok" title="invitation accepted">⚫</div>
