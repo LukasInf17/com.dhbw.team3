@@ -47,14 +47,13 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 				sha384.Write(r.AssetsBox.Bytes("assets/" + v))
 				sha5.Write(r.AssetsBox.Bytes("assets/" + v))
 				hash := sha384.Sum(nil)
-				hash2 := sha5.Sum(nil)
 				if strings.Contains(k, ".css") {
-					contentHashes["style"] = append(contentHashes["style"], "sha512-"+base64.StdEncoding.EncodeToString(hash2))
+					contentHashes["style"] = append(contentHashes["style"], "sha384-"+base64.StdEncoding.EncodeToString(hash))
 				} else {
-					contentHashes["script"] = append(contentHashes["script"], "sha512-"+base64.StdEncoding.EncodeToString(hash2))
+					contentHashes["script"] = append(contentHashes["script"], "sha384-"+base64.StdEncoding.EncodeToString(hash))
 				}
 				k1 := strings.Replace(k, ".", "_", -1)
-				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash)+" sha512-"+base64.StdEncoding.EncodeToString(hash2))
+				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash))
 			}
 		}
 		c.Set("contentHashes", contentHashes)
