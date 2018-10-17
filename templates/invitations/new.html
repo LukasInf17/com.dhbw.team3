@@ -1,5 +1,5 @@
 <%= if (current_user) { %>
-<%= javascriptTag("addrow.js", {crossorigin: "anonymous", integrity: addrow_js}) %>
+<%= javascriptTag("addrow.js", {crossorigin: "anonymous", integrity: addrow_js, nonce: nonce}) %>
 <div class="new-invitation-header">
   <h1>New Invitation</h1>
 </div>

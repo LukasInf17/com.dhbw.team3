@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"crypto/rand"
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/json"
@@ -34,7 +35,6 @@ func init() {
 
 // SRIHandler adds support for Subresource integrity
 func SRIHandler(next buffalo.Handler) buffalo.Handler {
-	contentHashes := map[string][]string{}
 	return func(c buffalo.Context) error {
 		jsonstring := r.AssetsBox.Bytes("assets/manifest.json")
 		var m map[string]string
@@ -48,18 +48,10 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 				sha5.Write(r.AssetsBox.Bytes("assets/" + v))
 				hash := sha384.Sum(nil)
 				hash2 := sha5.Sum(nil)
-				if strings.Contains(k, ".css") {
-					contentHashes["style"] = append(contentHashes["style"], "sha512-"+base64.StdEncoding.EncodeToString(hash2))
-					contentHashes["style"] = append(contentHashes["style"], "sha384-"+base64.StdEncoding.EncodeToString(hash))
-				} else {
-					contentHashes["script"] = append(contentHashes["script"], "sha512-"+base64.StdEncoding.EncodeToString(hash2))
-					contentHashes["script"] = append(contentHashes["script"], "sha384-"+base64.StdEncoding.EncodeToString(hash))
-				}
 				k1 := strings.Replace(k, ".", "_", -1)
 				c.Set(k1, "sha384-"+base64.StdEncoding.EncodeToString(hash)+" sha512-"+base64.StdEncoding.EncodeToString(hash2))
 			}
 		}
-		c.Set("contentHashes", contentHashes)
 		return next(c)
 	}
 }
@@ -67,20 +59,15 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 // SetSecurityHeaders sets security headers
 func SetSecurityHeaders(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
-		contentHashes := c.Value("contentHashes").(map[string][]string)
-		scriptstring := ""
-		stylestring := ""
-		for k, v := range contentHashes {
-			for _, vl := range v {
-				switch k {
-				case "style":
-					stylestring = stylestring + "'" + vl + "' "
-				case "script":
-					scriptstring = scriptstring + "'" + vl + "' "
-				}
-			}
+		number := 32
+		b := make([]byte, number)
+		_, err := rand.Read(b)
+		if err != nil {
+			b = []byte("poidewjdewpnwefpoewi0pfiwüdkß§ik")
 		}
-		c.Response().Header().Set("Content-Security-Policy", "default-src 'none'; script-src 'strict-dynamic' "+scriptstring+"'self'; img-src 'self'; style-src 'self' "+stylestring+"; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none';")
+		nonce := base64.StdEncoding.EncodeToString(b)
+		c.Set("nonce", nonce)
+		c.Response().Header().Set("Content-Security-Policy", "default-src 'none'; script-src 'strict-dynamic' 'nonce-"+nonce+"' 'self'; img-src 'self'; style-src 'self' 'nonce-"+nonce+"'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none';")
 		return next(c)
 	}
 }
