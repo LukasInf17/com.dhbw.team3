@@ -5,6 +5,7 @@ import "github.com/invitation/models"
 func (as *ActionSuite) Test_HomeHandler() {
 	res := as.HTML("/").Get()
 	as.Equal(200, res.Code)
+	as.Equal("1", res.Header().Get("Test-Header"))
 	as.Contains(res.Body.String(), "Log in")
 }
 
