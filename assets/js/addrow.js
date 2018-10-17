@@ -1,6 +1,6 @@
 
     $(document).ready(function () {
-    var addRowCounter = $("#guestcount").attr("value");
+    var addRowCounter = parseInt($("#guestcount").attr("value"));
 
         $("#addrow").on("click", function () {
             var newRow = $("<tr>");
@@ -29,21 +29,16 @@
             <input type="email" class="form-control" placeholder="name@example.com" name="mail${addRowCounter}" form="invitation-form">
         </td>
         <td>
-            <input class="col-sm-2" type="button" class="ibtnDel btn btn-md btn-danger" value="Delete">
+            <input class="col-sm-2" type="button" class="btn btn-md btn-danger" value="Delete" id="delete${addRowCounter}" />
         </td>`;
+            $("delete"+addRowCounter).on("click", (event) => {
+                $(this).parent().parent().remove();
+                addRowCounter--;
+                $("#guestcount").attr("value", addRowCounter);
+            });
             newRow.append(cols);
             $("table.order-list").append(newRow);
             addRowCounter++;
             $("#guestcount").attr("value", addRowCounter);
         });
-
-
-
-        $("table.order-list").on("click", ".ibtnDel", function (event) {
-            $(this).closest("tr").remove();
-            addRowCounter--;
-            $("#guestcount").attr("value", addRowCounter);
-        });
-
-
     });
