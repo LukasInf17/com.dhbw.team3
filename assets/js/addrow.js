@@ -28,10 +28,10 @@
         <td class="col-sm-4" data-label="E-Mail: ">
             <input type="email" class="form-control" placeholder="name@example.com" name="mail${addRowCounter}" form="invitation-form">
         </td>
-        <td>
-            <input class="col-sm-2" type="button" class="btn btn-md btn-danger" value="Delete" id="delete${addRowCounter}" />
+        <td class="col-sm-2">
+            <input type="button" class="btn btn-md btn-danger" value="Delete" id="delete${addRowCounter}" />
         </td>`;
-            $("delete"+addRowCounter).on("click", (event) => {
+            $(`delete${addRowCounter}`).on("click", (event) => {
                 $(this).parent().parent().remove();
                 addRowCounter--;
                 $("#guestcount").attr("value", addRowCounter);
