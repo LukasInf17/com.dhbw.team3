@@ -1,12 +1,11 @@
-
-    $(document).ready(function () {
+$(document).ready(function () {
     var addRowCounter = parseInt($("#guestcount").attr("value"));
 
-        $("#addrow").on("click", function () {
-            var newRow = $("<tr>");
-            var cols = "";
+    $("#addrow").on("click", function () {
+        var newRow = $("<tr>");
+        var cols = "";
 
-            cols += `
+        cols += `
         <td class="col-sm-4 gender-radio-buttons" data-label="Gender: ">
             <div class="form-group">
                 <div class="form-check form-check-inline">
@@ -31,14 +30,14 @@
         <td class="col-sm-2">
             <input type="button" class="btn btn-md btn-danger" value="Delete" id="delete${addRowCounter}" />
         </td>`;
-            $(`#delete${addRowCounter}`).on("click", (event) => {
-                $(this).parent().parent().remove();
-                addRowCounter--;
-                $("#guestcount").attr("value", addRowCounter);
-            });
-            newRow.append(cols);
-            $("table.order-list").append(newRow);
-            addRowCounter++;
+        newRow.append(cols);
+        $("table.order-list").append(newRow);
+        $(`#delete${addRowCounter}`).on("click", (event) => {
+            $(this).parent().parent().remove();
+            addRowCounter--;
             $("#guestcount").attr("value", addRowCounter);
         });
+        addRowCounter++;
+        $("#guestcount").attr("value", addRowCounter);
     });
+});
