@@ -32,13 +32,8 @@ $(document).ready(function () {
         </td>`;
         newRow.append(cols);
         $("table.order-list").append(newRow);
-        $(`#delete${addRowCounter}`).on("click", (event) => {
-            console.log(this);
-            if (this.id.indexOf('delete') > 0) {
-                $(this).parent().parent().remove();
-                addRowCounter--;
-                $("#guestcount").attr("value", addRowCounter);
-            }
+        document.getElementById(`delete${addRowCounter}`).addEventListener("click", (ev) => {
+            console.log(ev.srcElement);
         });
         addRowCounter++;
         $("#guestcount").attr("value", addRowCounter);
