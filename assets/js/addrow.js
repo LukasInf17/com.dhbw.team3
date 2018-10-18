@@ -30,14 +30,13 @@ $(document).ready(function () {
         <td class="col-sm-2">
             <input type="button" class="btn btn-md btn-danger" value="Delete" id="delete${addRowCounter}" />
         </td>`;
+        newRow.append(cols);
+        $("table.order-list").append(newRow);
         $(`#delete${addRowCounter}`).on("click", (event) => {
-            console.log(this.id + "pressed");
             $(this).parent().parent().remove();
             addRowCounter--;
             $("#guestcount").attr("value", addRowCounter);
         });
-        newRow.append(cols);
-        $("table.order-list").append(newRow);
         addRowCounter++;
         $("#guestcount").attr("value", addRowCounter);
     });
