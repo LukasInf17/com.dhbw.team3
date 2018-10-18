@@ -33,9 +33,12 @@ $(document).ready(function () {
         newRow.append(cols);
         $("table.order-list").append(newRow);
         $(`#delete${addRowCounter}`).on("click", (event) => {
-            $(this).parent().parent().remove();
-            addRowCounter--;
-            $("#guestcount").attr("value", addRowCounter);
+            console.log(this);
+            if (this.id.indexOf('delete') > 0) {
+                $(this).parent().parent().remove();
+                addRowCounter--;
+                $("#guestcount").attr("value", addRowCounter);
+            }
         });
         addRowCounter++;
         $("#guestcount").attr("value", addRowCounter);
