@@ -39,7 +39,7 @@ $(document).ready(function () {
         $("#guestcount").attr("value", addRowCounter);
     });
 
-    for (i = 0; i < addRowCounter; i++) {
+    for (var i = 0; i < addRowCounter; i++) {
         document.getElementById(`delete${i}`).addEventListener("click", (ev) => {
             ev.target.parentElement.parentElement.remove();
         });
