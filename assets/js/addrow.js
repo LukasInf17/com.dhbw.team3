@@ -33,7 +33,7 @@ $(document).ready(function () {
         newRow.append(cols);
         $("table.order-list").append(newRow);
         document.getElementById(`delete${addRowCounter}`).addEventListener("click", (ev) => {
-            console.log(ev.target);
+            ev.target.parentElement.parentElement.remove();
         });
         addRowCounter++;
         $("#guestcount").attr("value", addRowCounter);
