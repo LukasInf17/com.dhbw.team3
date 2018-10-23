@@ -20,6 +20,8 @@
         Moin <%= guest.Name %>,
     <% } %>
 
+    You have got an invitation from <%= sender %>!
+
     <%= htmlEscape(invitation.Mailtext) %>
 
     To accept or decline the invitation, click on this link: <%= response_url %>

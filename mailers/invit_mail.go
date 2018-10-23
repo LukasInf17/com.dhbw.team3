@@ -10,19 +10,20 @@ import (
 )
 
 // SendInvitMail sends a mail to all guests of the invitation
-func SendInvitMail(invitation *models.Invitation) error {
+func SendInvitMail(invitation *models.Invitation, user *models.User) error {
 	for _, guest := range invitation.Guests {
 		m := mail.NewMessage()
 		m.Subject = "Invitation"
 		m.From = "Invitation Factory <NOREPLY@invitation-factory.tk>"
 		m.To = []string{guest.Email}
+		m.SetHeader("Reply-To", user.Email)
 		m.SetHeader("List-Unsubscribe", "<https://invitation-factory.tk/guests/"+guest.ID.String()+"/delete>")
 		responseURL := "https://invitation-factory.tk/invitations/" + invitation.ID.String() + "/guests/" + guest.ID.String()
-		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL}); err != nil {
+		if err := m.AddBody(r.HTML("invit_mail.html"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL, "sender": user.Email}); err != nil {
 			log.Println(errors.WithStack(err))
 			return errors.WithStack(err)
 		}
-		if err := m.AddBody(r.Plain("invit_mail.txt"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL}); err != nil {
+		if err := m.AddBody(r.Plain("invit_mail.txt"), render.Data{"guest": guest, "invitation": invitation, "response_url": responseURL, "sender": user.Email}); err != nil {
 			log.Println(errors.WithStack(err))
 		}
 		log.Println("Sending mail to " + guest.Email)
