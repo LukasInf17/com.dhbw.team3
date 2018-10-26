@@ -18,8 +18,8 @@ buffalo_build_*.*
 *.pem
 letsencrypt/accounts/*
 c.out
-**/*.aux
-**/conference_poster_4.pdf
+poster/conference_poster_4.aux
+poster/conference_poster_4.pdf
 **/*.bbl
 **/*.bcf
 **/*.blg
@@ -31,3 +31,6 @@ pgadmin4/web/pgadmin/*
 pgadmin4/web/regression/*
 pgadmin4/web/migrations/*
 pgadmin4/web/*.js
+
+
+
