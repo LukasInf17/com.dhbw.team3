@@ -20,6 +20,7 @@ letsencrypt/accounts/*
 c.out
 poster/conference_poster_4.aux
 poster/conference_poster_4.pdf
+poster/conference_poster_4.synctex.gz
 **/*.bbl
 **/*.bcf
 **/*.blg
