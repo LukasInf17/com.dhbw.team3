@@ -32,7 +32,7 @@ func InvitMailSend(c buffalo.Context) error {
 		return c.Redirect(302, "/invitations")
 	}
 
-	if err := mailers.SendInvitMail(invitation); err != nil {
+	if err := mailers.SendInvitMail(invitation, u); err != nil {
 		return errors.WithStack(err)
 	}
 

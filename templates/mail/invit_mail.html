@@ -22,6 +22,8 @@
         <p>Moin <%= guest.Name %>,</p>
     <% } %>
 
+    <p>You have got an invitation from <%= sender %>!</p>
+
     <p><%= htmlEscape(invitation.Mailtext) %></p>
 
     <p>To accept or decline the invitation, click on <a href="<%= response_url %>">this link</a>.</p>
