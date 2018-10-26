@@ -157,8 +157,9 @@ table.order-list {
   }
 }
 
-.gender-radio-buttons {
+.gender-radio-buttons, .col-sm-4, .col-sm-3 {
   width: 33%;
+  max-width: 33%;
   @media (max-width: 768px) {
     width: 250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px250px;
   }
