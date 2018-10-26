@@ -18,3 +18,12 @@ buffalo_build_*.*
 *.pem
 letsencrypt/accounts/*
 c.out
+**/*.aux
+**/conference_poster_4.pdf
+**/*.bbl
+**/*.bcf
+**/*.blg
+**/*-blx.aux
+**/*-blx.bib
+**/*.run.xml
+**/__latexindent_temp*.*
