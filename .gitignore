@@ -27,3 +27,7 @@ c.out
 **/*-blx.bib
 **/*.run.xml
 **/__latexindent_temp*.*
+pgadmin4/web/pgadmin/*
+pgadmin4/web/regression/*
+pgadmin4/web/migrations/*
+pgadmin4/web/*.js
