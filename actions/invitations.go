@@ -267,7 +267,7 @@ func getLastIndexOfGuests(m map[string][]string) int {
 	return length
 }
 
-// getInvitationFromID returnd an invitation from the given user with the given ID, nil when the user doesn't have an invitation with that ID
+// getInvitationFromID returns an invitation from the given user with the given ID, nil when the user doesn't have an invitation with that ID
 func getInvitationFromID(u *models.User, id uuid.UUID) *models.Invitation {
 	for _, invitation := range u.Invitations {
 		if invitation.ID == id {
