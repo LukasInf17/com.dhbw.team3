@@ -17,19 +17,10 @@ var assetsBox = packr.NewBox("../public")
 
 func init() {
 	r = render.New(render.Options{
-		// HTML layout to be used for all HTML requests:
-		HTMLLayout: "application.html",
-
-		// Box containing all of the templates:
+		HTMLLayout:   "application.html",
 		TemplatesBox: packr.NewBox("../templates"),
 		AssetsBox:    assetsBox,
-
-		// Add template helpers here:
-		Helpers: render.Helpers{
-			// uncomment for non-Bootstrap form helpers:
-			// "form":     plush.FormHelper,
-			// "form_for": plush.FormForHelper,
-		},
+		Helpers:      render.Helpers{},
 	})
 }
 
@@ -56,15 +47,12 @@ func SRIHandler(next buffalo.Handler) buffalo.Handler {
 	}
 }
 
-// SetSecurityHeaders sets security headers
+// SetSecurityHeaders sets the Content-Security-Policy headers and creates the nonces.
 func SetSecurityHeaders(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		number := 32
 		b := make([]byte, number)
-		_, err := rand.Read(b)
-		if err != nil {
-			b = []byte("poidewjdewpnwefpoewi0pfiwüdkß§ik")
-		}
+		rand.Read(b)
 		nonce := base64.StdEncoding.EncodeToString(b)
 		c.Set("nonce", nonce)
 		c.Response().Header().Set("Content-Security-Policy", "default-src 'none'; script-src 'strict-dynamic' 'nonce-"+nonce+"' 'self'; img-src 'self'; style-src 'self' 'nonce-"+nonce+"'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; base-uri 'none';")

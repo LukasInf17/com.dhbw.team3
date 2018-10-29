@@ -54,7 +54,7 @@ func (as *ActionSuite) Test_InvitationsResource_Show_WrongUser() {
 	i := u2.Invitations[0].ID
 
 	res := as.HTML("/invitations/" + i.String()).Get()
-	as.Equal(403, res.Code)
+	as.Equal(404, res.Code)
 }
 
 func (as *ActionSuite) Test_InvitationsResource_New() {
