@@ -22,7 +22,7 @@ type Invitation struct {
 	Guests       Guests    `has_many:"guests" fk_id:"invitationid"`
 }
 
-// Invitations is not required by pop and may be deleted
+// Invitations is the invitation slice.
 type Invitations []Invitation
 
 // ContainsGuests is a validator which checks if an invitation has at least one guest.

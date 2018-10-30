@@ -7,6 +7,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/uuid"
 	"github.com/invitation/models"
 	"github.com/pkg/errors"
 )
@@ -32,38 +33,20 @@ type InvitationsResource struct {
 // This function is mapped to the path GET /invitations
 func (v InvitationsResource) List(c buffalo.Context) error {
 	u := c.Value("current_user").(*models.User)
-
-	invitations := u.Invitations
-	c.Set("invitations", invitations)
-
-	return c.Render(200, r.Auto(c, invitations))
+	c.Set("invitations", u.Invitations)
+	return c.Render(200, r.Auto(c, u.Invitations))
 }
 
 // Show gets the data for one Invitation. This function is mapped to
 // the path GET /invitations/{invitation_id}
 func (v InvitationsResource) Show(c buffalo.Context) error {
-	// Get the DB connection from the context
-	tx, ok := c.Value("tx").(*pop.Connection)
-	if !ok {
-		log.Println("Error while getting data from the database")
-		return c.Error(500, errors.New("Internal Server Error"))
-	}
-
 	u := c.Value("current_user").(*models.User)
-
-	invitation := &models.Invitation{}
-
-	// To find the Invitation the parameter invitation_id is used.
-	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+	invitation := getInvitationFromID(u, uuid.FromStringOrNil(c.Param("invitation_id")))
+	if invitation == nil {
 		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
 
-	if invitation.UserID != u.ID {
-		return c.Error(403, errors.New("You are not allowed to visit this page"))
-	}
-
 	c.Set("guests", invitation.Guests)
-
 	return c.Render(200, r.Auto(c, invitation))
 }
 
@@ -82,14 +65,10 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 		log.Println("Error while getting data from the database")
 		return c.Error(500, errors.New("Internal Server Error"))
 	}
-
 	u := c.Value("current_user").(*models.User)
 
 	c.Request().ParseForm()
 	inv, err := formParser(c.Request().Form)
-
-	inv.SentToGuests = false
-
 	if err != nil {
 		c.Flash().Add("danger", err.Error())
 		return c.Render(422, r.Auto(c, inv))
@@ -105,49 +84,27 @@ func (v InvitationsResource) Create(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		// Add validation errors as flash messages
 		for _, values := range verrs.Errors {
 			for _, value := range values {
 				c.Flash().Add("danger", value)
 			}
 		}
-		// Make the errors available inside the html template
 		c.Set("errors", verrs)
-
-		// Render again the new.html template that the user can
-		// correct the input.
 		return c.Render(422, r.Auto(c, inv))
 	}
-
-	// If there are no errors set a success message
 	c.Flash().Add("success", "Invitation was created successfully")
-
-	// and redirect to the invitations index page
 	return c.Render(201, r.Auto(c, inv))
 }
 
 // Edit renders a edit form for a Invitation. This function is
 // mapped to the path GET /invitations/{invitation_id}/edit
 func (v InvitationsResource) Edit(c buffalo.Context) error {
-	// Get the DB connection from the context
-	tx, ok := c.Value("tx").(*pop.Connection)
-	if !ok {
-		log.Println("Error while getting data from the database")
-		return c.Error(500, errors.New("Internal Server Error"))
-	}
-
 	u := c.Value("current_user").(*models.User)
 
-	invitation := &models.Invitation{}
-
-	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+	invitation := getInvitationFromID(u, uuid.FromStringOrNil(c.Param("invitation_id")))
+	if invitation == nil {
 		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
-
-	if invitation.UserID != u.ID {
-		return c.Error(403, errors.New("You are not allowed to visit this page"))
-	}
-
 	c.Set("guests", invitation.Guests)
 	return c.Render(200, r.Auto(c, invitation))
 }
@@ -164,16 +121,10 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 
 	u := c.Value("current_user").(*models.User)
 
-	invitation := &models.Invitation{}
-
-	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+	invitation := getInvitationFromID(u, uuid.FromStringOrNil(c.Param("invitation_id")))
+	if invitation == nil {
 		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
-
-	if invitation.UserID != u.ID {
-		return c.Error(403, errors.New("You are not allowed to visit this page"))
-	}
-
 	if invitation.SentToGuests == true {
 		return c.Error(403, errors.New("After sending the invitation editing is not allowed anymore"))
 	}
@@ -216,23 +167,16 @@ func (v InvitationsResource) Update(c buffalo.Context) error {
 		}
 
 		c.Set("errors", verrs)
-
-		// Render again the new.html template that the user can
-		// correct the input.
 		return c.Render(422, r.Auto(c, inv))
 	}
 
-	// If there are no errors set a success message
 	c.Flash().Add("success", "Invitation was updated successfully")
-
-	// and redirect to the invitations index page
 	return c.Render(201, r.Auto(c, inv))
 }
 
 // Destroy deletes a Invitation from the DB. This function is mapped
 // to the path DELETE /invitations/{invitation_id}
 func (v InvitationsResource) Destroy(c buffalo.Context) error {
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		log.Println("Error while getting data from the database")
@@ -241,32 +185,23 @@ func (v InvitationsResource) Destroy(c buffalo.Context) error {
 
 	u := c.Value("current_user").(*models.User)
 
-	invitation := &models.Invitation{}
+	invitation := getInvitationFromID(u, uuid.FromStringOrNil(c.Param("invitation_id")))
 
-	if err := tx.Eager().Find(invitation, c.Param("invitation_id")); err != nil {
+	if invitation == nil {
 		return c.Error(404, errors.New("This invitation ID does not exist"))
 	}
 
-	if invitation.UserID != u.ID {
-		return c.Error(403, errors.New("You are not allowed to visit this page"))
-	}
-
-	// Deletes guests associated with invitation
 	if err := tx.Destroy(&invitation.Guests); err != nil {
 		log.Println("Error while getting data from the database")
 		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
-	// Deletes invitation
 	if err := tx.Destroy(invitation); err != nil {
 		log.Println("Error while getting data from the database")
 		return c.Error(500, errors.New("Internal Server Error"))
 	}
 
-	// If there are no errors set a flash message
 	c.Flash().Add("success", "Invitation was deleted successfully")
-
-	// Redirect to the invitations index page
 	return c.Render(200, r.Auto(c, invitation))
 }
 
@@ -330,4 +265,14 @@ func getLastIndexOfGuests(m map[string][]string) int {
 		}
 	}
 	return length
+}
+
+// getInvitationFromID returns an invitation from the given user with the given ID, nil when the user doesn't have an invitation with that ID
+func getInvitationFromID(u *models.User, id uuid.UUID) *models.Invitation {
+	for _, invitation := range u.Invitations {
+		if invitation.ID == id {
+			return &invitation
+		}
+	}
+	return nil
 }
