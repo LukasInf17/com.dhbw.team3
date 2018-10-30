@@ -6,6 +6,7 @@ server {
         
 	location / {
         root /var/www/html;
+	index conference_poster_4.pdf;	
 	}
     	ssl_certificate /etc/letsencrypt/live/invitation-factory.tk/fullchain.pem;
     	ssl_certificate_key /etc/letsencrypt/live/invitation-factory.tk/privkey.pem;
