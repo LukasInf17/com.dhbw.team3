@@ -10,6 +10,5 @@ if [[ "${reslog}" != "" ]] ; then
 	buffalo build
 	cd poster
 	pdflatex conference_poster_4.tex
-	cp index.html /var/www/html/
 	cp conference_poster_4.pdf /var/www/html/
 fi
