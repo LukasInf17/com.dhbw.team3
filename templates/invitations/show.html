@@ -110,7 +110,11 @@
     <% } %>
   </li>
   <li class="list-inline-item">
+    <%= if (!invitation.SentToGuests) { %>
     <a href="<%= `/invitations/`+invitation.ID+`/send` %>" class="btn btn-info">Send mails to guests</a>
+    <% } else { %>
+    <a href="#" class="btn btn-info disabled">Send mails to guests</a>
+    <% } %>
   </li>
   <li class="list-inline-item">
     <a href="<%= invitationPath({ invitation_id: invitation.ID }) %>" data-method="DELETE" data-confirm="Are you sure to delete the invitation?"

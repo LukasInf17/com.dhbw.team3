@@ -21,11 +21,11 @@ func (ms *ModelSuite) Test_Guests_Validate_Correct() {
 	ms.Equal(false, verrs.HasAny())
 }
 
-func (ms *ModelSuite) Test_Guests_Validate_WrongMail() {
+func (ms *ModelSuite) Test_Guests_Validate_WrongGender() {
 	g := models.Guest{
 		AdditionalComment: "",
-		Email:             "testberber.de",
-		Gender:            1,
+		Email:             "test@berber.de",
+		Gender:            12,
 		ID:                uuid.Must(uuid.NewV4()),
 		InvitationID:      uuid.Must(uuid.NewV4()),
 		Name:              "Sylvia",
@@ -51,11 +51,11 @@ func (ms *ModelSuite) Test_Guests_Validate_NoName() {
 	ms.Equal(true, verrs.HasAny())
 }
 
-func (ms *ModelSuite) Test_Guests_Validate_WrongGender() {
+func (ms *ModelSuite) Test_Guests_Validate_WrongMail() {
 	g := models.Guest{
 		AdditionalComment: "",
-		Email:             "test@berber.de",
-		Gender:            12,
+		Email:             "testberber.de",
+		Gender:            1,
 		ID:                uuid.Must(uuid.NewV4()),
 		InvitationID:      uuid.Must(uuid.NewV4()),
 		Name:              "Sylvia",
