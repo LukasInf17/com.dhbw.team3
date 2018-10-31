@@ -42,16 +42,19 @@ func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 			Name:    "Email",
 			Message: "%s is already taken",
 			Fn: func() bool {
-				var b bool
-				q := tx.Where("email = ?", u.Email)
-				if u.ID != uuid.Nil {
-					q = q.Where("id != ?", u.ID)
+				if tx.Dialect != nil {
+					var b bool
+					q := tx.Where("email = ?", u.Email)
+					if u.ID != uuid.Nil {
+						q = q.Where("id != ?", u.ID)
+					}
+					b, err = q.Exists(u)
+					if err != nil {
+						return false
+					}
+					return !b
 				}
-				b, err = q.Exists(u)
-				if err != nil {
-					return false
-				}
-				return !b
+				return true
 			},
 		},
 	), err
@@ -67,12 +70,6 @@ func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirmation, Message: "Password does not match confirmation"},
 	), err
 
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
 }
 
 // Create wraps up the pattern of encrypting the password and

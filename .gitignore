@@ -20,7 +20,7 @@ letsencrypt/accounts/*
 c.out
 poster/conference_poster_4.aux
 poster/conference_poster_4.pdf
-poster/conference_poster_4.synctex.gz
+poster/*.synctex.gz
 **/*.bbl
 **/*.bcf
 **/*.blg
@@ -28,10 +28,9 @@ poster/conference_poster_4.synctex.gz
 **/*-blx.bib
 **/*.run.xml
 **/__latexindent_temp*.*
+**/*.fls
+**/*.fdb_latexmk
 pgadmin4/web/pgadmin/*
 pgadmin4/web/regression/*
 pgadmin4/web/migrations/*
 pgadmin4/web/*.js
-
-
-

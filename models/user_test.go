@@ -1,8 +1,23 @@
 package models_test
 
 import (
+	"github.com/gobuffalo/pop"
 	"github.com/invitation/models"
+	"golang.org/x/crypto/bcrypt"
 )
+
+func (ms *ModelSuite) Test_User_Validate_Correct() {
+	hash, _ := bcrypt.GenerateFromPassword([]byte("password"), 10)
+	u := &models.User{
+		Email:                "mark@example.com",
+		Password:             "password",
+		PasswordConfirmation: "password",
+		PasswordHash:         string(hash),
+	}
+	verrs, err := u.Validate(&pop.Connection{Dialect: nil})
+	ms.Equal(false, verrs.HasAny())
+	ms.NoError(err)
+}
 
 func (ms *ModelSuite) Test_User_Create() {
 	count, err := ms.DB.Count("users")
