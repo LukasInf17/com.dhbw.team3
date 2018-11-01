@@ -9,13 +9,34 @@ import (
 func (ms *ModelSuite) Test_User_Validate_Correct() {
 	hash, _ := bcrypt.GenerateFromPassword([]byte("password"), 10)
 	u := &models.User{
-		Email:                "mark@example.com",
-		Password:             "password",
-		PasswordConfirmation: "password",
-		PasswordHash:         string(hash),
+		Email:        "mark@example.com",
+		Password:     "password",
+		PasswordHash: string(hash),
 	}
 	verrs, err := u.Validate(&pop.Connection{Dialect: nil})
 	ms.Equal(false, verrs.HasAny())
+	ms.NoError(err)
+}
+
+func (ms *ModelSuite) Test_User_Validate_NoHash() {
+	u := &models.User{
+		Email:    "mark@example.com",
+		Password: "password",
+	}
+	verrs, err := u.Validate(&pop.Connection{Dialect: nil})
+	ms.Equal(true, verrs.HasAny())
+	ms.NoError(err)
+}
+
+func (ms *ModelSuite) Test_User_Validate_WrongEmail() {
+	hash, _ := bcrypt.GenerateFromPassword([]byte("password"), 10)
+	u := &models.User{
+		Email:        "sapodj",
+		Password:     "password",
+		PasswordHash: string(hash),
+	}
+	verrs, err := u.Validate(&pop.Connection{Dialect: nil})
+	ms.Equal(true, verrs.HasAny())
 	ms.NoError(err)
 }
 
