@@ -101,7 +101,7 @@ Im Rahmen eines Modules sollte ein Programm entworfen und ausgearbeitet werden. 
 %	Sicherheitserwägung
 %----------------------------------------------------------------------------------------
 
-\headerbox{Sicherheitserwägungen}{name=introduction,column=3,row=0,span=1}{
+\headerbox{Sicherheitserwägungen}{name=introduction,column=3,row=0,span=1,above=bottom}{
 
 Folgende Maßnahmen wurden ergriffen um die Sicherheit des Anwendungsservers, des Webservers, des Mailservers und der Datenbank für die Benutzer und Administratoren auf eine möglichst hohe Ebene zu heben.\\ 
 Es wurde ein NGINX Server Installiert welcher als Erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf. weiterleitet. Er ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als zu gerecht wird. Hierfür wurden sehr strenge Sicherheitsvorkehrungen implementiert.\\ Genaueres kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
@@ -191,12 +191,51 @@ Die Anmeldung auf dem Server ist ausschließlich mit über SSH und RSA pubic/pri
 %\end{description}
 %}
 
+
+
+%----------------------------------------------------------------------------------------
+%	Projektverlauf
+%----------------------------------------------------------------------------------------
+
+\headerbox{Projektverlauf }{name=method,column=0,below=objectives,span=2,aligned=references}{ % This block's bottom aligns with the bottom of the conclusion block
+
+Bei diesem Projekt wurde viel Wert auf die agile Projektentwicklung gelegt. Bei diesem System handelt es sich um Scrum.
+\begin{center}
+	\includegraphics[width=0.7\linewidth]{Scrum_Board_GitHub2.PNG}
+	\captionof{figure}{Scrumboard auf GitHub}
+\end{center}
+
+Das Projekt beläuft sich auf einen Zeitraum von 2 Monaten. Dieser Zeitraum wurde in 3 Sprints eingeteilt. Dabei wurde vom Product Owner und dem Entwicklerteam für jeden Sprint User Stories, also Aufgaben ausgearbeitet und verteilt.\\
+Das nachfolgende Diagramm soll den Zeitraum mit den Sprints und ihreren jeweiligen Aufgaben zeigen.
+\begin{center}
+	\includegraphics[width=0.7\linewidth]{GanttDiagramm.PNG}
+	\captionof{figure}{GanttDiagramm}
+\end{center}
+
+}
+
+
 %----------------------------------------------------------------------------------------
 %	CONCLUSION
 %----------------------------------------------------------------------------------------
 
-\headerbox{Conclusion}{name=conclusion,column=0,span=2,row=1,above=bottom}
-{}
+\headerbox{Ergebnis}{name=conclusion,column=0,span=3,row=1,below=method,above=bottom}
+{
+	\begin{multicols}{3}
+		Das Ergebnis dieses Projekts ist mehr als zufriedenstellen. Unsere Webseite \url{invitation-factory.tk} bietet dem Anwender genau das was sie wollen. Es bietet ihnen die Möglichkeit Freunde,Familie oder Kollegen eine Einladung zu verschicken ohne großen Aufwand. Nach einer erfolgreichen Registrierung ist es dem Anwender möglich eine Einladung mit dem gleichen Textinhalt an mehrere Personen zeitgleich zu verschicken.\\
+		\\
+		Ein Extra das uns von anderen unterscheiden soll ist die Statusüberprüfung. Der Anwender hat dadurch die Möglichkeit den Status seiner Gäste einzusehen. Wir bieten ihm also eine separate Seite an, wo er schauen kann welcher Gast zu-,abgesagt oder sich noch nicht entschieden hat.\\
+		Die Webseite ist also Anwenderfreundlich und vor allem auch effizient.
+		\begin{center}
+					\includegraphics[width=0.6\linewidth]{New_Invitation_Seite.PNG}
+			\captionof{figure}{Webseite für neue Einladungen}
+		\end{center}
+
+	\end{multicols}
+	
+	
+	
+}
 %
 %\begin{multicols}{2}
 %
@@ -229,27 +268,6 @@ Die Anmeldung auf dem Server ist ausschließlich mit über SSH und RSA pubic/pri
 %
 %\end{multicols}
 %}
-
-%----------------------------------------------------------------------------------------
-%	Projektverlauf
-%----------------------------------------------------------------------------------------
-
-\headerbox{Projektverlauf }{name=method,column=0,below=objectives,span=2,aligned=references}{ % This block's bottom aligns with the bottom of the conclusion block
-
-Bei diesem Projekt wurde viel Wert auf die agile Projektentwicklung gelegt. Bei diesem System handelt es sich um Scrum.
-\begin{center}
-	\includegraphics[width=0.7\linewidth]{Scrum_Board_GitHub2.PNG}
-	\captionof{figure}{Scrumboard auf GitHub}
-\end{center}
-
-Das Projekt beläuft sich auf einen Zeitraum von 2 Monaten. Dieser Zeitraum wurde in 3 Sprints eingeteilt. Dabei wurde vom Product Owner und dem Entwicklerteam für jeden Sprint User Stories, also Aufgaben ausgearbeitet und verteilt.\\
-Das nachfolgende Diagramm soll den Zeitraum mit den Sprints und ihreren jeweiligen Aufgaben zeigen.
-\begin{center}
-	\includegraphics[width=0.7\linewidth]{GanttDiagramm.PNG}
-	\captionof{figure}{GanttDiagramm}
-\end{center}
-
-}
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 2
