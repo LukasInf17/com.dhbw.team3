@@ -119,15 +119,17 @@ Im Rahmen eines Modules sollte ein Programm entworfen und ausgearbeitet werden. 
 \headerbox{Sicherheitserwägungen}{name=introduction,column=3,row=0,span=1}{
 
 Folgende Maßnahmen wurden ergriffen um die Sicherheit des Anwendungsservers, des Webservers, des Mailservers und der Datenbank für die Benutzer und Administratoren auf eine möglichst hohe Ebene zu heben.\\ 
-Es wurde ein NGINX Server Installiert welcher als Erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf. weiterleitet. Er ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als zu gerecht wird. Hierfür wurden sehr strenge Sicherheitsvorkehrungen implementiert.\\ Genaueres kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
+Es wurde ein NGINX Server Installiert welcher als Erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf. weiterleitet. Er ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als zu gerecht wird. Hierfür wurden sehr strenge Sicherheitsvorkehrungen implementiert.\\ Genaueres zeigt Abbildung \ref{Obervatory} und kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
 \begin{center}
-	\includegraphics[width=0.5\linewidth]{Observatory.PNG}
+	\includegraphics[width=0.45\linewidth]{Observatory.PNG}
 	\captionof{figure}{Domain Überprüfung}
+	\label{Obervatory}
 \end{center}
-Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration wurde zusätzlich ein Augenmerk darauf gelegt, dass E-Mails welche von diesem Server versendet werden, bei anderen Anbietern nicht als Spam eingeordnet werden. Um dies zu erreichen musste dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingstellt wurde und es mussten entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wurde ein Werkzeug namens Mail-Tester verwendet bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis kann hier eingesehen werden: \url{https://www.mail-tester.com/test-foxmj}.
+Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration wurde zusätzlich ein Augenmerk darauf gelegt, dass E-Mails welche von diesem Server versendet werden, bei anderen Anbietern nicht als Spam eingeordnet werden. Um dies zu erreichen musste dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingstellt wurde und es mussten entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wurde ein Werkzeug namens Mail-Tester verwendet bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis wird in Abbildung \ref{E-Mail_Tester} dargestellt und kann hier eingesehen werden: \url{https://www.mail-tester.com/test-foxmj}.
 \begin{center}
 	\includegraphics[width=0.5\linewidth]{E-Mail_test.PNG}
 	\captionof{figure}{Test um verschickte E-Mail zu überprüfen}
+	\label{E-Mail_Tester}
 \end{center}
 Die Webanwendung hört nur auf einen lokalen Port und wird über den NGINX Server der Außenwelt zur Verfügung gestellt.\\
 Die Transportsicherheit wird also durch den NGINX Server gewährleistet welcher mit einem Wildcard Let's Encrypt Zertifikat abgesichert ist.\\
