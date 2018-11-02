@@ -74,7 +74,7 @@ linewidth=2pt % Width of the border lines around content boxes
 %----------------------------------------------------------------------------------------
 %
 {\includegraphics[height=6em]{favicon.png}} % First university/lab logo on the left
-{\fontsize{32}{32} \textbf{\textsc{Invite Who you want When you want}}\vspace{0.5em}} % Poster title 
+{\fontsize{32}{32} \textbf{\textsc{Implementation of an Invitation Management System}}\vspace{0.5em}} % Poster title 
 {\textsc{\{ Steffen Walter, Sidney Kuyateh, Lukas Schnaithmann, Lukas Priester \} \hspace{12pt} Invitations-Factory}} % Author names and institution
 {\includegraphics[height=6em]{favicon.png}} % Second university/lab logo on the right
 
@@ -272,10 +272,15 @@ Das nachfolgende Diagramm soll den Zeitraum mit den Sprints und ihreren jeweilig
 %	Methode
 %----------------------------------------------------------------------------------------
 
-\headerbox{Methode}{name=results2,column=2,span=1,aligned=method}{ % This block's bottom aligns with the bottom of the conclusion block
-	
-	
-	
+
+\headerbox{Methode}{name=results2,column=2,span=1,aligned=method}{ 
+Zur Realisierung des Projektes kommt das Framwork \"gobuffalo\" zum Einsatz. Dabei handelt es sich um eine Umgebung, die es sich zum Ziel gemacht hat, eine Webapplikation unter verwendung der Programmiersprache GO möglichst schnell und einfach zur Enwickeln zu können. Zum Einsatz kommen neben GO noch Technologien wie JavaScript, HTML5, CSS und weitere. Die Kernfunktionen von gobuffalo werden in Abbildung \ref{features} dargestellt.
+\begin{center}
+	\includegraphics[width=0.6\linewidth]{buffalo_features.png}
+	\captionof{figure}{Kernfunktionen von gobuffalo}
+	\label{features}
+\end{center}
+
 }
 
 %----------------------------------------------------------------------------------------
@@ -286,12 +291,19 @@ Das nachfolgende Diagramm soll den Zeitraum mit den Sprints und ihreren jeweilig
 {
 	\begin{multicols}{3}
 		Das Ergebnis dieses Projekts ist mehr als zufriedenstellen. Unsere Webseite \url{invitation-factory.tk} bietet dem Anwender genau das was sie wollen. Es bietet ihnen die Möglichkeit Freunde,Familie oder Kollegen eine Einladung zu verschicken ohne großen Aufwand. Nach einer erfolgreichen Registrierung ist es dem Anwender möglich eine Einladung mit dem gleichen Textinhalt an mehrere Personen zeitgleich zu verschicken.\\
+<<<<<<< HEAD
 		\\
 		Ein Extra das uns von anderen unterscheiden soll ist die Statusüberprüfung. Der Anwender hat dadurch die Möglichkeit den Status seiner Gäste einzusehen. Wir bieten ihm also eine separate Seite an, wo er schauen kann welcher Gast zu-, abgesagt oder sich noch nicht entschieden hat.\\
 		Die Webseite ist also Anwenderfreundlich und vor allem auch effizient.
+=======
+		
+		Ein Extra das uns von anderen unterscheiden soll ist die Statusüberprüfung. Der Anwender hat dadurch die Möglichkeit den Status seiner Gäste einzusehen. Wir bieten ihm also eine separate Seite an, wo er schauen kann welcher Gast zu-,abgesagt oder sich noch nicht entschieden hat.\\
+		Die Webseite ist also Anwenderfreundlich und vor allem auch effizient. In Abbildung \ref{page_sample} wird exemplarisch die Erstellung einer Einladung dargestellt.
+>>>>>>> 4057ce5ad87623be5f5e65e56c9f16b50798511f
 		\begin{center}
 					\includegraphics[width=0.6\linewidth]{New_Invitation_Seite.PNG}
 			\captionof{figure}{Webseite für neue Einladungen}
+			\label{page_sample}
 		\end{center}
 
 	\end{multicols}
