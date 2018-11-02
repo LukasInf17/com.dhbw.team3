@@ -89,9 +89,8 @@ Im Rahmen eines Modules sollte ein Programm entworfen und ausgearbeitet werden. 
 \begin{enumerate}\compresslist
 \item Es soll nach Scrum entwickelt werden
 \item Das Programm soll am Ende verkaufsfähig sein
-\item Curabitur scelerisque arcu consequat varius
-\item Dapibus nulla id purus consectetur
-\item Fringilla integer 
+\item Unit-test sind zu implementieren
+\item Umsetzung der durch die Referate vermittelten Inhalte\\
 \end{enumerate}
 
 \vspace{0.3em} % When there are two boxes, some whitespace may need to be added if the one on the right has more content
@@ -102,15 +101,16 @@ Im Rahmen eines Modules sollte ein Programm entworfen und ausgearbeitet werden. 
 %	RESULTS 1
 %----------------------------------------------------------------------------------------
 
-\headerbox{Die Idee}{name=results,column=1,span=2,row=0}
+\headerbox{Die Idee}{name=results,column=1,span=2,row=0,}
 {
 	\begin{multicols}{2}
 	Die Idee entstand im Rahmen einer Teamsitzung. Ziel war es den Menschen etwas zu bieten was gebraucht wird.\\
-	Das Programm soll dem Anwender ermöglichen seine Einladungen leichter und effizienter an zahlreiche Gäste zeitgleich zu verschicken.
-	So entstand die Idee zu einer Webanwendung zur Verwaltung von Einladungen. Nachlesen kann man die erste Idee auch hier:\\ \url{https://github.com/stuttgart-dhbw/com.dhbw.team3/wiki/Ideenfindung}\\
+	Das Programm dient dem Anwender dafür, seine Einladungen schneller und Effizienter zu verschicken.
+	So entstand die Idee zu einer Webanwendung zur Verwaltung von Einladungen. Die Abbildung \ref{Ideenfindung} zeigt ein Ausschnitt des ersten Entwurfs. Nachlesen kann man diesen auch hier:\\ \url{https://github.com/stuttgart-dhbw/com.dhbw.team3/wiki/Ideenfindung}\\
 	\begin{center}
 		\includegraphics[width=0.7\linewidth]{Ideenfindung_Kleiner.PNG}
 		\captionof{figure}{Ideenfindung im Wiki auf GitHub}
+		\label{Ideenfindung}
 	\end{center}
 	
 	\end{multicols}
@@ -195,7 +195,7 @@ Es wurde ein NGINX Server Installiert welcher als Erster Kontaktpunkt für jegli
 Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration wurde zusätzlich ein Augenmerk darauf gelegt, dass E-Mails welche von diesem Server versendet werden, bei anderen Anbietern nicht als Spam eingeordnet werden. Um dies zu erreichen musste dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingstellt wurde und es mussten entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wurde ein Werkzeug namens Mail-Tester verwendet bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis kann hier eingesehen werden: \url{https://www.mail-tester.com/test-foxmj}.
 \begin{center}
 	\includegraphics[width=0.5\linewidth]{E-Mail_test.PNG}
-	\captionof{figure}{Test um E-Mail zu überprüfen}
+	\captionof{figure}{Test um verschickte E-Mail zu überprüfen}
 \end{center}
 Die Webanwendung hört nur auf einen lokalen Port und wird über den NGINX Server der Außenwelt zur Verfügung gestellt.\\
 Die Transportsicherheit wird also durch den NGINX Server gewährleistet welcher mit einem Wildcard Let's Encrypt Zertifikat abgesichert ist.\\
@@ -251,7 +251,7 @@ Die Anmeldung auf dem Server ist ausschließlich mit über SSH und RSA pubic/pri
 %	Projektverlauf
 %----------------------------------------------------------------------------------------
 
-\headerbox{Projektverlauf }{name=method,column=0,below=objectives,span=2,aligned=references}{ % This block's bottom aligns with the bottom of the conclusion block
+\headerbox{Projektverlauf }{name=method,column=0,below=results,span=2,aligned=references}{ % This block's bottom aligns with the bottom of the conclusion block
 
 Bei diesem Projekt wurde viel Wert auf die agile Projektentwicklung gelegt. Bei diesem System handelt es sich um Scrum.
 \begin{center}
@@ -273,6 +273,9 @@ Das nachfolgende Diagramm soll den Zeitraum mit den Sprints und ihreren jeweilig
 %----------------------------------------------------------------------------------------
 
 \headerbox{Methode}{name=results2,column=2,span=1,aligned=method}{ % This block's bottom aligns with the bottom of the conclusion block
+	
+	
+	
 }
 
 %----------------------------------------------------------------------------------------
@@ -284,7 +287,7 @@ Das nachfolgende Diagramm soll den Zeitraum mit den Sprints und ihreren jeweilig
 	\begin{multicols}{3}
 		Das Ergebnis dieses Projekts ist mehr als zufriedenstellen. Unsere Webseite \url{invitation-factory.tk} bietet dem Anwender genau das was sie wollen. Es bietet ihnen die Möglichkeit Freunde,Familie oder Kollegen eine Einladung zu verschicken ohne großen Aufwand. Nach einer erfolgreichen Registrierung ist es dem Anwender möglich eine Einladung mit dem gleichen Textinhalt an mehrere Personen zeitgleich zu verschicken.\\
 		\\
-		Ein Extra das uns von anderen unterscheiden soll ist die Statusüberprüfung. Der Anwender hat dadurch die Möglichkeit den Status seiner Gäste einzusehen. Wir bieten ihm also eine separate Seite an, wo er schauen kann welcher Gast zu-,abgesagt oder sich noch nicht entschieden hat.\\
+		Ein Extra das uns von anderen unterscheiden soll ist die Statusüberprüfung. Der Anwender hat dadurch die Möglichkeit den Status seiner Gäste einzusehen. Wir bieten ihm also eine separate Seite an, wo er schauen kann welcher Gast zu-, abgesagt oder sich noch nicht entschieden hat.\\
 		Die Webseite ist also Anwenderfreundlich und vor allem auch effizient.
 		\begin{center}
 					\includegraphics[width=0.6\linewidth]{New_Invitation_Seite.PNG}
