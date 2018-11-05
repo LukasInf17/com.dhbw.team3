@@ -19,7 +19,7 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass[landscape,a0paper,fontscale=0.35]{baposter} % Adjust the font scale/size here
-
+\usepackage{tabu}
 \usepackage{graphicx} % Required for including images
 \graphicspath{{figures/}} % Directory in which figures are stored
 \usepackage[ngerman]{babel}
@@ -168,10 +168,15 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \headerbox{Methode}{name=results2,column=2,span=1,aligned=method}
 {
-	Zur Realisierung des Projektes kam das Framework \enquote{gobuffalo} zum Einsatz. Dabei handelt es sich um eine Umgebung, die es sich zum Ziel gemacht hat, eine Webapplikation unter Verwendung der Programmiersprache GO, möglichst schnell und einfach entwickeln zu können. Zum Einsatz kommen neben GO noch Technologien wie JavaScript, HTML5, CSS und weitere. Die Kernfunktionen von gobuffalo werden in Abbildung~\ref{features} dargestellt.
+	Zur Realisierung des Projektes kam das Framework \enquote{gobuffalo} zum Einsatz. Dabei handelt es sich um eine Umgebung, die es sich zum Ziel gemacht hat, eine Webapplikation unter Verwendung der Programmiersprache GO, möglichst schnell und einfach entwickeln zu können. Zum Einsatz kommen neben GO noch Technologien wie JavaScript, HTML5, CSS und weitere. Die Kernfunktionen von gobuffalo werden in Tabelle~\ref{features} dargestellt.
 	\begin{center}
-		\includegraphics[width=0.91\linewidth]{buffalo_features.png}
-		\captionof{figure}{Kernfunktionen von gobuffalo}\label{features}
+		\begin{tabu}{ r r r r }
+			Routing & Templating & Buffalo Toolkit & Testing \\
+			\tabucline[1pt]{-}
+			asdf & asdf & asdf & asdf
+		\end{tabu}
+	\captionof{table}{Kernfunktionen von gobuffalo}
+	\label{features}
 	\end{center}
 }
 
