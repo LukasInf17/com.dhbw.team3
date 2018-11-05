@@ -84,7 +84,7 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \headerbox{Einleitung}{name=objectives,column=0,row=0}{
 
-Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausgearbeitet werden. Für das Entwickeln dieses Programms gibt es mehrere Anforderungen, die zu beachten sind.
+Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausgearbeitet werden. Für das Entwickeln dieses Programms gab es mehrere Anforderungen, die zu beachten waren.
 
 	\begin{enumerate}\compresslist
 	\item Es soll nach Scrum entwickelt werden
@@ -120,9 +120,7 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 
 	Folgende Maßnahmen sind implementiert um die Sicherheit des Anwendungsservers, des Webservers, des Mailservers und der Datenbank für die Benutzer und Administratoren auf eine möglichst hohe Ebene zu heben.
 	
-	Es ist ein NGINX Server installiert, welcher als erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf. weiterleitet. Dieser ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als gerecht wird. Hierfür sind sehr strenge Sicherheitsvorkehrungen implementiert.
-	
-	Genaueres zeigt Abbildung \ref{Obervatory} und kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
+	Es ist ein NGINX Server installiert, welcher als erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf. weiterleitet. Dieser ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als gerecht wird. Hierfür sind sehr strenge Sicherheitsvorkehrungen implementiert.\\ Genaueres zeigt Abbildung \ref{Obervatory} und kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
 	
 	\begin{center}
 		\includegraphics[width=0.45\linewidth]{Observatory.PNG}
@@ -130,7 +128,7 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 		\label{Obervatory}
 	\end{center}
 
-	Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration liegt zusätzlich ein Augenmerk auf den E-Mails, welche von diesem Server versendet werden. Ziel ist es die E-Mails nicht von einem Spamfilter abfangen zulassen. Um dies zu erreichen muss dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingestellt wird und es muss entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wird ein Werkzeug namens Mail-Tester verwendet, bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis wird in Abbildung \ref{E-Mail_Tester} dargestellt und kann hier eingesehen werden:
+	Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration liegt zusätzlich ein Augenmerk auf den E-Mails, welche von diesem Server versendet werden. Ziel ist es die E-Mails nicht von einem Spamfilter abfangen zulassen. Um dies zu erreichen musste dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingestellt wird und es mussten entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wird ein Werkzeug namens Mail-Tester verwendet, bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis wird in Abbildung \ref{E-Mail_Tester} dargestellt und kann hier eingesehen werden:
 	
 	\url{https://www.mail-tester.com/test-foxmj}.
 
@@ -178,7 +176,7 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 		\begin{tabu}{ l l l l }
 			Routing & Templating & Buffalo Toolkit & Testing \\
 			\tabucline[1pt]{-}
-			Buffalo uses\\ Gorilla toolkit to\\ manage routes,\\ sessions,\\ cookies...\\ & Write your templates with Plush, using a Rails-like syntax. Extend its features using custom helpers. & Writing a web application module always begins with the same tasks. Buffalo provides you a simple toolbox, the buffalo command, to generate many parts of your app and run usual tasks. & Since testing can be a boring task, Buffalo helps you to define test suites. Action, resource, model generators create test templates for the code you just generated.
+			Gorilla toolkit &Templates \\mit Plush& Commandline \\ Toolset. & Test Suit \\Inetgration
 		\end{tabu}
 	\captionof{table}{Kernfunktionen von gobuffalo}
 	\label{features}
@@ -190,10 +188,10 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 \headerbox{Ausblick}{name=ausblick,column=2,span=1,below=results2}
 {
 	Durch die Umsetzung des aus der Idee heraus geplanten Projekts konnten die Grundfunktionen implementiert werden. Es sind einige zusätzliche Funktionen denkbar, die das Projekt verbessern bzw. erweitern könnten.\\
-	Die Software ist unter die GPLv3 Lizenz gestellt und somit bietet es die Möglichkeit, dass eine Community gemeinschaftlich an der Weiterentwicklung mitwirken kann.\\
+	Die Software ist unter die GPLv3 Lizenz gestellt und somit bietet es die Möglichkeit, dass eine Community gemeinschaftlich an der Weiterentwicklung mitwirken kann.
 
 	Denkbar für die Zukunft sind etwa Funktionen wie die Integration von Facebook, WhatsApp und Co., um auf modernere Kommunikationswege einzugehen.
-	
+	\vspace{1.2em}
 }
 
 %	Ergebnis
