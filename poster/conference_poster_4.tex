@@ -31,6 +31,7 @@
 \usepackage{helvet} % Use the Palatino font
 \usepackage{url}
 \usepackage{csquotes}
+\usepackage{tabularx}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
 
@@ -86,13 +87,12 @@ linewidth=2pt % Width of the border lines around content boxes
 
 Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausgearbeitet werden. Für das Entwickeln dieses Programms gab es mehrere Anforderungen, die zu beachten waren.
 
-	\begin{enumerate}\compresslist
+	\begin{enumerate}\compresslist %chktex 1
 	\item Es soll nach Scrum entwickelt werden
 	\item Das Programm sollte am Ende verkaufsfähig sein
 	\item Unit-Tests waren zu implementieren
 	\item Die Umsetzung der durch die Referate vermittelten Inhalte
 	\end{enumerate}
-
 }
 
 %	Die Idee
@@ -102,12 +102,11 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 	\begin{multicols}{2}
 		Die Idee entstand im Rahmen einer Teamsitzung. Ziel war es, den Menschen etwas zu bieten, was gebraucht wird.
 		
-		So entstand die Idee einer Webanwendung zur Verwaltung von Einladungen. Das Programm soll dem Anwender helfen seine Einladungen schneller und effizienter zu verschicken. Die Abbildung \ref{Ideenfindung} zeigt einen Ausschnitt des ersten Entwurfs. Nachlesen kann man diesen auch hier:\\ \url{https://github.com/stuttgart-dhbw/com.dhbw.team3/wiki/Ideenfindung}\\
+		So entstand die Idee einer Webanwendung zur Verwaltung von Einladungen. Das Programm soll dem Anwender helfen seine Einladungen schneller und effizienter zu verschicken. Die Abbildung~\ref{Ideenfindung} zeigt einen Ausschnitt des ersten Entwurfs. Nachlesen kann man diesen auch hier:\\ \url{https://github.com/stuttgart-dhbw/com.dhbw.team3/wiki/Ideenfindung}\\
 	
 		\begin{center}
 			\includegraphics[width=0.69\linewidth]{Ideenfindung_Kleiner.PNG}
-			\captionof{figure}{Ideenfindung im Wiki auf GitHub}
-			\label{Ideenfindung}
+			\captionof{figure}{Ideenfindung im Wiki auf GitHub}\label{Ideenfindung}
 		\end{center}
 	
 
@@ -120,22 +119,20 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 
 	Folgende Maßnahmen sind implementiert um die Sicherheit des Anwendungsservers, des Webservers, des Mailservers und der Datenbank für die Benutzer und Administratoren auf eine möglichst hohe Ebene zu heben.
 	
-	Es ist ein NGINX Server installiert, welcher als erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf. weiterleitet. Dieser ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als gerecht wird. Hierfür sind sehr strenge Sicherheitsvorkehrungen implementiert.\\ Genaueres zeigt Abbildung \ref{Obervatory} und kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
+	Es ist ein NGINX Server installiert, welcher als erster Kontaktpunkt für jegliche http Anfragen dient und diese ggf.\ weiterleitet. Dieser ist derart konfiguriert, dass er den Ansprüchen von Mozillas Observatory mehr als gerecht wird. Hierfür sind sehr strenge Sicherheitsvorkehrungen implementiert.\\ Genaueres zeigt Abbildung~\ref{Obervatory} und kann hier nachgelesen werden: \url{https://observatory.mozilla.org/analyze/invitation-factory.tk}
 	
 	\begin{center}
 		\includegraphics[width=0.45\linewidth]{Observatory.PNG}
-		\captionof{figure}{Domain Überprüfung}
-		\label{Obervatory}
+		\captionof{figure}{Domain Überprüfung}\label{Obervatory}
 	\end{center}
 
-	Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration liegt zusätzlich ein Augenmerk auf den E-Mails, welche von diesem Server versendet werden. Ziel ist es die E-Mails nicht von einem Spamfilter abfangen zulassen. Um dies zu erreichen musste dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingestellt wird und es mussten entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wird ein Werkzeug namens Mail-Tester verwendet, bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis wird in Abbildung \ref{E-Mail_Tester} dargestellt und kann hier eingesehen werden:
+	Als Mailserver kommt Postfix zum Einsatz. Neben einer möglichst sicheren Konfiguration liegt zusätzlich ein Augenmerk auf den E-Mails, welche von diesem Server versendet werden. Ziel ist es die E-Mails nicht von einem Spamfilter abfangen zulassen. Um dies zu erreichen musste dafür gesorgt werden, dass die Serveranwendung den Mails entsprechende Header zufügt, dass die Postfix Konfiguration entsprechend eingestellt wird und es mussten entsprechende DNS Einträge gemacht werden. Zum Test der Konfigurationen wird ein Werkzeug namens Mail-Tester verwendet, bei dem der Postfix Server mit Bestnote abschießt. Das Ergebnis wird in Abbildung~\ref{E-Mail_Tester} dargestellt und kann hier eingesehen werden:
 	
 	\url{https://www.mail-tester.com/test-foxmj}.
 
 	\begin{center}
 		\includegraphics[width=0.5\linewidth]{E-Mail_test.PNG}
-		\captionof{figure}{Test um verschickte E-Mail zu überprüfen}
-		\label{E-Mail_Tester}
+		\captionof{figure}{Test um verschickte E-Mail zu überprüfen}\label{E-Mail_Tester}
 	\end{center}
 
 	Die Webanwendung hört nur auf einen lokalen Port und wird über den NGINX Server der Außenwelt zur Verfügung gestellt.
@@ -173,13 +170,18 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 {
 	Zur Realisierung des Projektes kam das Framework \enquote{gobuffalo} zum Einsatz. Dabei handelt es sich um eine Umgebung, die es sich zum Ziel gemacht hat, eine Webapplikation unter Verwendung der Programmiersprache GO, möglichst schnell und einfach entwickeln zu können. Zum Einsatz kommen neben GO noch Technologien wie JavaScript, HTML5, CSS und weitere. Die Kernfunktionen von gobuffalo werden in Tabelle~\ref{features} dargestellt.
 	\begin{center}
-		\begin{tabu}{ l l l l }
-			Routing & Templating & Buffalo Toolkit & Testing \\
-			\tabucline[1pt]{-}
-			Gorilla toolkit &Templates \\mit Plush& Commandline \\ Toolset. & Test Suit \\Inetgration
-		\end{tabu}
-	\captionof{table}{Kernfunktionen von gobuffalo}
-	\label{features}
+		\begin{tabular}{p{4cm}p{4cm}}
+			\toprule
+			\textbf{Routing} & \textbf{Templating} \\
+			\midrule
+			Gorilla toolkit for powerful routing & Plush toolkit for a rails-like HTML templating \\
+			\midrule
+			\textbf{Buffalo toolkit} & \textbf{Testing} \\
+			\midrule
+			Buffalo toolkit generates the application,\newline just needed to implement the logics & Define all your test suites and run them from a single command\\
+			\bottomrule
+		\end{tabular}
+	\captionof{table}{Kernfunktionen von gobuffalo}\label{features}
 	\end{center}
 }
 
@@ -187,11 +189,10 @@ Im Rahmen des Moduls Softwareengineering sollte ein Programm entworfen und ausge
 
 \headerbox{Ausblick}{name=ausblick,column=2,span=1,below=results2}
 {
-	Durch die Umsetzung des aus der Idee heraus geplanten Projekts konnten die Grundfunktionen implementiert werden. Es sind einige zusätzliche Funktionen denkbar, die das Projekt verbessern bzw. erweitern könnten.\\
+	Durch die Umsetzung des aus der Idee heraus geplanten Projekts konnten die Grundfunktionen implementiert werden. Es sind einige zusätzliche Funktionen denkbar, die das Projekt verbessern bzw.\ erweitern könnten.\\
 	Die Software ist unter die GPLv3 Lizenz gestellt und somit bietet es die Möglichkeit, dass eine Community gemeinschaftlich an der Weiterentwicklung mitwirken kann.
 
 	Denkbar für die Zukunft sind etwa Funktionen wie die Integration von Facebook, WhatsApp und Co., um auf modernere Kommunikationswege einzugehen.
-	\vspace{1.2em}
 }
 
 %	Ergebnis
