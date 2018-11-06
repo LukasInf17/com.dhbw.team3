@@ -26,6 +26,7 @@
 
 - [Buffalo](https://gobuffalo.io/en/docs/installation)
 - [Authentication](https://github.com/gobuffalo/buffalo-auth)
+- [LaTeX Poster Template](https://www.latextemplates.com/template/baposter-landscape-poster)
 
 ## How to use the web application
 
